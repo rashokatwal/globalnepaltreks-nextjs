@@ -1,3 +1,4 @@
+// app/components/cards/BlogCard.js
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -7,14 +8,13 @@ const BlogCard = ({blog}) => {
             <div className="relative h-48 overflow-hidden sm:h-56 md:h-60">
                 <img
                     src={blog.image}
-                    alt="Mount Kailash Tour"
+                    alt={blog.title}
                     className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                     loading="lazy"
                 />
             </div>
 
             <div className="p-4 sm:p-5 md:p-6">
-
                 <h3 className="mb-5 font-bold text-gray-900 text-md sm:text-lg md:text-xl">
                     {blog.title}
                 </h3>

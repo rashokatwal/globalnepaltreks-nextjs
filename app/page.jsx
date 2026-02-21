@@ -206,6 +206,8 @@ const Home = () => {
             icon: faCircleCheck
         },
     ];
+
+    
     
     return (
         <main>
@@ -579,6 +581,18 @@ const Home = () => {
                                 <FontAwesomeIcon icon={faChevronRight} />
                             </div>
                         </Swiper>
+                    </div>
+                    <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
+                        <Link 
+                            href="/blogs" 
+                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
+                        >
+                            Read More
+                            <FontAwesomeIcon 
+                                icon={faArrowRight} 
+                                className="transition-transform duration-200 group-hover:translate-x-1" 
+                            />
+                        </Link>
                     </div>
                 </div>
             </section>
