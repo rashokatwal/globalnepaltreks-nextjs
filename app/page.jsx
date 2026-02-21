@@ -31,7 +31,8 @@ import 'swiper/css/autoplay';
 import PackageCard from "./components/cards/PackageCard";
 import { useRef } from "react";
 import BlogCard from "./components/cards/BlogCard";
-import { HomeAssets, logos } from "./assets/assets";
+import { homeAssets, logos } from "./assets/assets";
+import Heading from "./components/ui/Heading";
 
 const Home = () => {
     const swiperRef = useRef(null);
@@ -45,35 +46,35 @@ const Home = () => {
     const differentActivitiesWeOffer = [
         {
             title: "Trekking",
-            image: HomeAssets.heli_tours,
+            image: homeAssets.heli_tours,
             type: "Adventure",
             color: "#098B63",
             description: "Customizable routes, difficulty levels, and schedules tailored to your preferences and fitness level."
         },
         {
             title: "Tours",
-            image: HomeAssets.heli_tours,
+            image: homeAssets.heli_tours,
             type: "Culture",
             color: "#255DD8",
             description: "Immersive cultural experiences with expert guides and authentic local encounters."
         },
         {
             title: "Rafting",
-            image: HomeAssets.rafting,
+            image: homeAssets.rafting,
             type: "Extreme",
             color: "#0C87A5",
             description: "Thrilling white water adventures with professional safety equipment and guides."
         },
         {
             title: "Peak Climbing",
-            image: HomeAssets.peak_climbing,
+            image: homeAssets.peak_climbing,
             type: "Expert",
             color: "#C86F08",
             description: "Professional guided ascents with specialized equipment and experienced Sherpa teams."
         },
         {
             title: "Heli Tour",
-            image: HomeAssets.heli_tours,
+            image: homeAssets.heli_tours,
             type: "Luxury",
             color: "#852ED3",
             description: "Breathtaking aerial views of the Himalayas with luxury accommodations and services."
@@ -212,7 +213,7 @@ const Home = () => {
             <section className="relative">
                 <div 
                     className="flex items-center justify-center w-full h-[110vh] bg-fixed bg-center bg-no-repeat bg-cover" 
-                    style={{ backgroundImage: `url(${HomeAssets.home_cover.src})` }}
+                    style={{ backgroundImage: `url(${homeAssets.home_cover.src})` }}
                 >
                     <div className="absolute w-full h-full bg-black/50"></div>
                 </div>
@@ -249,7 +250,7 @@ const Home = () => {
 
                 <div className="absolute bottom-0 min-w-full">
                     <Image 
-                        src={HomeAssets.hero_mountains.src} 
+                        src={homeAssets.hero_mountains.src} 
                         alt="Mountain silhouette" 
                         className="w-full"
                         width={1920}
@@ -264,7 +265,7 @@ const Home = () => {
                 <div className="flex flex-col items-center px-5 mx-auto lg:p-10 lg:flex-row max-w-8xl">
                     <div className="flex-1">
                         <Image 
-                            src={HomeAssets.home_about_image.src} 
+                            src={homeAssets.home_about_image.src} 
                             className="w-full h-auto" 
                             alt="About Global Nepal Treks"
                             width={600}
@@ -272,12 +273,7 @@ const Home = () => {
                         />
                     </div>
                     <div className="flex-1">
-                        <h1 className="mt-5 font-semibold text-center uppercase text-primary-color-dark text-md md:text-left md:text-2xl">
-                           who we are?
-                        </h1>
-                        <h2 className="mt-2 mb-8 text-3xl font-bold text-center md:text-left md:text-4xl">
-                            Trekking and Tour Agency in Nepal
-                        </h2>
+                        <Heading title={"Who We Are?"} subtitle={"Trekking and Tour Agency in Nepal"} />
                         <p className="mt-5 mb-4 text-sm font-medium text-center md:text-left md:text-md">
                             At Global Nepal Treks, we do more than organize trekking itineraries - we invite you to experience Nepal as our home. As a locally based trekking company in Nepal, we specialize in creating authentic, safe, and personalized trekking experiences led by experienced local guides who understand the mountains, the culture, and the people.
                             <br /><br />
@@ -348,18 +344,11 @@ const Home = () => {
             </section>
 
             {/* Activities Section */}
-            <section className="relative bg-fixed bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${HomeAssets.annapurna_background.src})` }}>
+            <section className="relative bg-fixed bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${homeAssets.annapurna_background.src})` }}>
                 <div className="absolute w-full h-full bg-black/50"></div>
                 
                 <div className="relative z-10 px-10 py-20">
-                    <div>
-                        <h1 className="font-semibold text-center uppercase text-primary-color-dark text-md md:text-left md:text-2xl">
-                            Adventure Awaits
-                        </h1>
-                        <h2 className="mt-2 mb-8 text-3xl font-bold text-center text-white md:text-left md:text-4xl">
-                            Different Activities we offer
-                        </h2>
-                    </div>
+                    <Heading title={"Adventure Awaits"} subtitle={"Different Activities we offer"} subtitleClass={"text-white"} />
                     <div className="grid grid-cols-1 gap-6 px-4 mx-auto mt-12 md:px-6 lg:px-8 max-w-8xl sm:grid-cols-2 lg:grid-cols-5">
                         {differentActivitiesWeOffer.map((activity, index) => (
                             <div key={index} className="relative overflow-hidden transition-all duration-300 bg-white rounded-md shadow-lg group hover:shadow-2xl hover:-translate-y-1">
@@ -397,15 +386,9 @@ const Home = () => {
             <section className="py-10 bg-white">
                 <div className="px-4 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
                     <div className="relative z-10 px-10 py-10">
-                        <div>
-                            <h1 className="font-semibold text-center uppercase text-primary-color-dark text-md md:text-2xl">
-                                Explore your Adventure
-                            </h1>
-                            <h2 className="mt-2 mb-8 text-3xl font-bold text-center md:text-4xl">
-                                Awesome Packages For You
-                            </h2>
-                        </div>
+                        <Heading title={"Explore your Adventure"} subtitle={"Awesome Packages For You"} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
+
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         {packageData.map((data, index) => (
                             <PackageCard key={index} packageDetails={data} />
@@ -430,14 +413,7 @@ const Home = () => {
             <section className="pb-24 pt-14 bg-dark-section">
                 <div className="mx-auto max-w-7xl">
                     <div className="relative z-10 px-10 py-10">
-                        <div>
-                            <h1 className="font-semibold text-center uppercase text-primary-color-dark text-md md:text-2xl">
-                                Why Choose Us?
-                            </h1>
-                            <h2 className="mt-2 mb-8 text-3xl font-bold text-center md:text-4xl">
-                                Expert Guidance with Thrilling Adventures
-                            </h2>
-                        </div>
+                        <Heading title={"Why Choose Us?"} subtitle={"Expert Guidance with Thrilling Adventures"} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
 
                     <div className="grid gap-6 mx-5 md:grid-cols-2 lg:grid-cols-3">
@@ -457,7 +433,7 @@ const Home = () => {
             </section>  
 
             {/* CTA Section */}
-            <section className="relative bg-fixed bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${HomeAssets.guides_background.src})` }}>
+            <section className="relative bg-fixed bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${homeAssets.guides_background.src})` }}>
                 <div className="absolute w-full h-full bg-black/60"></div>
                 <div className="px-4 py-40 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
                     <div className="relative z-10 max-w-3xl">
@@ -481,14 +457,7 @@ const Home = () => {
             <section className="py-10 bg-white">
                 <div className="px-4 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
                     <div className="relative z-10 px-10 py-10">
-                        <div>
-                            <h1 className="font-semibold text-center uppercase text-primary-color-dark text-md md:text-2xl">
-                                Adventure Packages in Nepal
-                            </h1>
-                            <h2 className="mt-2 mb-8 text-3xl font-bold text-center md:text-4xl">
-                                Top Destinations for Trekking in Nepal
-                            </h2>
-                        </div>
+                        <Heading title={"Adventure Packages in Nepal"} subtitle={"Top Destinations for Trekking in Nepal"} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         {trekkingInNepal.map((destination, index) => (
@@ -514,12 +483,7 @@ const Home = () => {
             <section className="py-10 bg-white">
                 <div className="px-4 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
                     <div className="relative z-10 px-4 py-6 text-center sm:px-6 lg:px-8">
-                        <h1 className="text-sm font-semibold uppercase text-primary-color-dark sm:text-base md:text-lg lg:text-xl">
-                            Adventure Packages in Nepal
-                        </h1>
-                        <h2 className="mt-2 mb-6 text-2xl font-bold sm:text-3xl md:text-4xl lg:mb-8">
-                            Popular Trekking Routes in Nepal
-                        </h2>
+                        <Heading title={"Adventure Packages in Nepal"} subtitle={"Popular Trekking Routes in Nepal"} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
 
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -547,12 +511,7 @@ const Home = () => {
             <section className="py-10 bg-dark-section sm:py-12 md:py-16">
                 <div className="px-4 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
                     <div className="relative z-10 px-4 py-6 text-center sm:px-6 lg:px-8">
-                        <h1 className="text-sm font-semibold uppercase text-primary-color-dark sm:text-base md:text-lg lg:text-xl">
-                            From the blogs
-                        </h1>
-                        <h2 className="mt-2 mb-6 text-2xl font-bold sm:text-3xl md:text-4xl lg:mb-8">
-                            Stories, tips, and trekking insights.
-                        </h2>
+                        <Heading title={"From the blogs"} subtitle={"Stories, Tips and Trekking Insights"} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
                     <div>
                         <Swiper
@@ -600,16 +559,16 @@ const Home = () => {
                             }}
                         >
                             <SwiperSlide>
-                                <BlogCard blog={{image: HomeAssets.heli_tours.src, postedDate: "Feb 11, 2026", title: "Tackling Its Reputation as the 'World's Highest Garbage Dump'"}} />
+                                <BlogCard blog={{image: homeAssets.heli_tours.src, postedDate: "Feb 11, 2026", title: "Tackling Its Reputation as the 'World's Highest Garbage Dump'"}} />
                             </SwiperSlide>
                             <SwiperSlide>
-                                <BlogCard blog={{image: HomeAssets.heli_tours.src, postedDate: "Feb 11, 2026", title: "Tackling Its Reputation as the 'World's Highest Garbage Dump'"}} />
+                                <BlogCard blog={{image: homeAssets.heli_tours.src, postedDate: "Feb 11, 2026", title: "Tackling Its Reputation as the 'World's Highest Garbage Dump'"}} />
                             </SwiperSlide>
                             <SwiperSlide>
-                                <BlogCard blog={{image: HomeAssets.heli_tours.src, postedDate: "Feb 11, 2026", title: "Tackling Its Reputation as the 'World's Highest Garbage Dump'"}} />
+                                <BlogCard blog={{image: homeAssets.heli_tours.src, postedDate: "Feb 11, 2026", title: "Tackling Its Reputation as the 'World's Highest Garbage Dump'"}} />
                             </SwiperSlide>
                             <SwiperSlide>
-                                <BlogCard blog={{image: HomeAssets.heli_tours.src, postedDate: "Feb 11, 2026", title: "Tackling Its Reputation as the 'World's Highest Garbage Dump'"}} />
+                                <BlogCard blog={{image: homeAssets.heli_tours.src, postedDate: "Feb 11, 2026", title: "Tackling Its Reputation as the 'World's Highest Garbage Dump'"}} />
                             </SwiperSlide>
                             
                             <div className="swipe-button-prev bg-secondary-color absolute top-1/2 transform-[translateY(-50%)] left-0 z-10 h-[50px] w-[50px] ml-2.5 text-white rounded-full flex items-center justify-center cursor-pointer duration-200 hover:bg-primary-color-dark">
@@ -630,12 +589,7 @@ const Home = () => {
                     
                     {/* Left Section - Header */}
                     <div className="w-full py-6 my-auto text-center md:w-1/3 md:text-left md:py-10">
-                        <h1 className="text-sm font-semibold uppercase text-primary-color-dark sm:text-base md:text-lg lg:text-xl">
-                            Testimonial
-                        </h1>
-                        <h2 className="mt-2 mb-4 text-2xl font-bold sm:text-3xl md:text-4xl lg:mb-6">
-                            Feedbacks & Reviews
-                        </h2>
+                        <Heading title={"Testimonial"} subtitle={"Feedbacks & Reviews"} />
                         <div className="flex justify-center gap-1 md:justify-start text-primary-color">
                             <FontAwesomeIcon icon={faStar} />
                             <FontAwesomeIcon icon={faStar} />

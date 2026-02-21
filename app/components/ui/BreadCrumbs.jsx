@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const BreadCrumbs = () => {
+const BreadCrumbs = ({className}) => {
     const pathname = usePathname();
     const [origin, setOrigin] = useState("");
 
@@ -60,7 +60,7 @@ const BreadCrumbs = () => {
             )}
             
             <nav
-                className="z-10 flex items-center gap-2 text-xs text-white cursor-default md:text-sm"
+                className={`z-10 flex items-center gap-2 text-xs text-white cursor-default md:text-sm ${className}`}
                 aria-label="Breadcrumb"
             >
                 {breadcrumbs.map((crumb, index) => (

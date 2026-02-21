@@ -1,15 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { 
   faMountain, 
   faCompass, 
   faArrowLeft, 
   faMapMarkedAlt, 
-  faRoute,
-  faPersonHiking 
+  faRoute
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 
@@ -171,45 +169,6 @@ export default function NotFound() {
           </p>
         </div>
       </div>
-
-      {/* Custom Animations */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) translateX(0px); }
-          50% { transform: translateY(-20px) translateX(10px); }
-        }
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px) translateX(0px); }
-          50% { transform: translateY(-15px) translateX(-10px); }
-        }
-        @keyframes float-slower {
-          0%, 100% { transform: translateY(0px) translateX(0px); }
-          50% { transform: translateY(-10px) translateX(5px); }
-        }
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0) translateX(-50%); }
-          50% { transform: translateY(-10px) translateX(-50%); }
-        }
-        @keyframes fade {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.8; }
-        }
-        .animate-float {
-          animation: float 8s ease-in-out infinite;
-        }
-        .animate-float-slow {
-          animation: float-slow 12s ease-in-out infinite;
-        }
-        .animate-float-slower {
-          animation: float-slower 16s ease-in-out infinite;
-        }
-        .animate-bounce-slow {
-          animation: bounce-slow 2s ease-in-out infinite;
-        }
-        .animate-fade {
-          animation: fade 5s ease-in-out infinite;
-        }
-      `}</style>
     </div>
   );
 }

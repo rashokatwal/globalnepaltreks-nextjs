@@ -1,6 +1,5 @@
 "use client";
 
-import { logos } from "../assets/assets";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { 
   faChevronDown, 
@@ -22,6 +21,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { logos } from "@/app/assets/assets";
 
 const NavBar = () => {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -43,8 +43,13 @@ const NavBar = () => {
             link: '/', 
         },
         { 
-            name: 'About Us', 
-            link: '/about'
+            name: 'About', 
+            link: '/about',
+            items: [
+                {
+                    name: "Our Team", link: "/about/our-team"
+                }
+            ]
         },
         { 
             name: 'Blogs', 
@@ -74,7 +79,7 @@ const NavBar = () => {
             name: 'Bhutan', 
             link: '/bhutan',
             items: [
-                { name: 'Trekking', link: '/bhutan/trekking' },
+                { name: 'Tours', link: '/bhutan/tours' },
             ]
         },
         { 
@@ -309,7 +314,7 @@ const NavBar = () => {
                                         <Link 
                                             rel="canonical"
                                             href={item.link}
-                                            className={`flex items-center gap-1 text-sm lg:text-base whitespace-nowrap ${
+                                            className={`flex items-center gap-1 hover:animate-pulse text-sm lg:text-base whitespace-nowrap ${
                                                 isActiveLink(item.link) ? 'font-bold underline underline-offset-4' : ''
                                             }`}
                                         >
@@ -320,7 +325,7 @@ const NavBar = () => {
 
                                     {item.items && activeDropdown === item.name && (
                                         <div 
-                                            className="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-sm min-w-[220px] z-50 border border-gray-100"
+                                            className="absolute top-full left-0 mt-2 bg-white shadow-lg rounded-sm min-w-55 z-50 border border-gray-100"
                                             onMouseEnter={() => handleDropdownMouseEnter(item.name)}
                                             onMouseLeave={handleMouseLeave}
                                         >

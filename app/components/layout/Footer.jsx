@@ -1,6 +1,6 @@
-"use-client";
+"use client";
 
-import { logos } from "../assets/assets";
+import { logos } from "../../assets/assets";
 import { faFacebookF, faInstagram, faLinkedin, faWeixin, faWhatsapp, faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
@@ -25,6 +25,33 @@ const Footer = () => {
         },
         {
             icon: faYoutube, url: "https://youtube.com", label: "Youtube"
+        }
+    ]
+
+    const footerLinks = [
+        {
+            name: "About Us",
+            link: "/about"
+        },
+        {
+            name: "Blogs",
+            link: "/blogs"
+        },
+        {
+            name: "Trekking in Nepal",
+            link: "/nepal/trekking"
+        },
+        {
+            name: "Tours in Nepal",
+            link: "/nepal/tours"
+        },
+        {
+            name: "Tours in Tibet",
+            link: "/tibet/tours"
+        },
+        {
+            name: "Contact Us",
+            link: "/contact"
         }
     ]
 
@@ -97,13 +124,13 @@ const Footer = () => {
                     <div>
                         <p className="mb-4 text-sm font-bold text-gray-700 sm:text-base">Useful Links</p>
                         <ul className="space-y-2 text-sm">
-                            {['About Us', 'Blogs', 'Trekking in Nepal', 'Tours in Nepal', 'Tours in Tibet', 'Contact Us'].map((item, index) => (
+                            {footerLinks.map((item, index) => (
                                 <li key={index}>
                                     <Link 
-                                        href={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
+                                        href={item.link}
                                         className="inline-block text-gray-600 transition-colors duration-300 hover:text-primary-color hover:pl-1"
                                     >
-                                        {item}
+                                        {item.name}
                                     </Link>
                                 </li>
                             ))}

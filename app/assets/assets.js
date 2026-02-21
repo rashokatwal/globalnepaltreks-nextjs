@@ -20,9 +20,24 @@ import rafting from './Home/rafting.jpg';
 import jungle_safari from './Home/jungle_safari.jpg';
 import peak_climbing from './Home/peak_climbing.jpg';
 
+import about_us_cover from './About/about_us_cover.jpg';
+
+import blogs_cover from './Blogs/blogs_cover.jpg';
+
+import contact_cover from './Contact/contact_cover.jpg';
+
+import team_cover from './About/Team/team_cover.jpg';
+import keshar_sherpa from './About/Team/keshar_sherpa.png';
+import diksha_randhwa from './About/Team/diksha_randhwa.png';
+import rosita_frei from './About/Team/rosita_frei.png';
+import yaseen from './About/Team/yaseen.png';
+import deepak_lamichane from './About/Team/deepak_lamichane.png';
+import saroj_ghimire from './About/Team/saroj_ghimire.jpg';
+import nabaraj_gurung from './About/Team/nabaraj_gurung.png';
+
 import walk from './Loader/walk.json';
 
-const HomeAssets = {
+const homeAssets = {
     home_cover,
     hero_mountains,
     home_about_image,
@@ -32,6 +47,18 @@ const HomeAssets = {
     jungle_safari,
     peak_climbing,
     guides_background
+}
+
+const aboutAssets = {
+    about_us_cover
+}
+
+const blogsAssets = {
+    blogs_cover
+}
+
+const contactAssets = {
+    contact_cover
 }
 
 const logos = {
@@ -48,4 +75,23 @@ const logos = {
     global_volunteer_nepal_logo
 }
 
-export { logos, HomeAssets, walk };
+const teamAssets = {
+    team_cover,
+    keshar_sherpa,
+    diksha_randhwa,
+    rosita_frei,
+    yaseen,
+    deepak_lamichane,
+    saroj_ghimire,
+    nabaraj_gurung
+}
+
+export { 
+    logos, 
+    homeAssets, 
+    aboutAssets, 
+    blogsAssets, 
+    contactAssets,
+    teamAssets,
+    walk 
+};
