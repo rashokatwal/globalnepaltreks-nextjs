@@ -327,7 +327,7 @@ const Team = () => {
 
             {/* Our Commitment */}
             <section className="py-16 bg-secondary-color text-white">
-                <div className="max-w-4xl mx-auto px-4 text-center">
+                <div className="max-w-5xl mx-auto px-4 text-center">
                     <Heading 
                         title={"Our Commitment to You"} 
                         titleClass={"text-center text-white mb-6"} 

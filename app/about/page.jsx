@@ -104,13 +104,17 @@ const About = () => {
                                 <p className="text-sm">Fair wages & responsible tourism commitment</p>
                             </div>
                         </div>
-
-                        <p className="text-lg text-gray-800 italic font-light text-center mt-12 pt-8 border-t border-gray-200">
-                            "With Global Nepal Treks, you don't just trek through the Himalayas - you experience it as we do: as home."
-                        </p>
                     </div>
                     
                     <CountUpSection stats={stats} />
+                </div>
+            </section>
+
+            <section className="py-16 bg-secondary-color text-white">
+                <div className="max-w-5xl mx-auto px-4 text-center">
+                    <p className="text-xl text-white/90 leading-relaxed italic">
+                        "With Global Nepal Treks, you don't just trek through the Himalayas - you experience it as we do: as home."
+                    </p>
                 </div>
             </section>
         </main>
