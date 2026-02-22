@@ -1,13 +1,13 @@
 // src/app/api/blogs/[slug]/route.js
 import { NextResponse } from 'next/server';
 import { BlogQueries } from '@/lib/db/queries/blogs.js';
-import { withErrorHandler, withAdmin } from '@/lib/auth/middleware.js';
+// import { withErrorHandler, withAdmin } from '@/lib/auth/middleware.js';
 import { validateBlog } from '@/lib/validators/blog.js';
 import { slugify } from '@/lib/utils/slugify.js';
 
 // GET /api/blogs/[slug] - Get single blog by slug (public)
 export async function GET(request, { params }) {
-  return withErrorHandler(async () => {
+  return (async () => {
     const { slug } = await params;
     
     const blog = await BlogQueries.findBySlug(slug);
@@ -48,7 +48,7 @@ export async function GET(request, { params }) {
 
 // PUT /api/blogs/[slug] - Update blog (admin only)
 export async function PUT(request, { params }) {
-  return withErrorHandler(async () => {
+  return (async () => {
     // Check authentication and admin role
     const authResult = await withAdmin(request);
     if (authResult) return authResult;
@@ -108,7 +108,7 @@ export async function PUT(request, { params }) {
 
 // PATCH /api/blogs/[slug] - Partial update (admin only)
 export async function PATCH(request, { params }) {
-  return withErrorHandler(async () => {
+  return (async () => {
     // Check authentication and admin role
     const authResult = await withAdmin(request);
     if (authResult) return authResult;
@@ -159,7 +159,7 @@ export async function PATCH(request, { params }) {
 
 // DELETE /api/blogs/[slug] - Delete blog (admin only)
 export async function DELETE(request, { params }) {
-  return withErrorHandler(async () => {
+  return (async () => {
     // Check authentication and admin role
     const authResult = await withAdmin(request);
     if (authResult) return authResult;
