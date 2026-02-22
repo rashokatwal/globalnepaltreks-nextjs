@@ -587,7 +587,7 @@ const Home = () => {
                             href="/blogs" 
                             className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
                         >
-                            Read More
+                            See More
                             <FontAwesomeIcon 
                                 icon={faArrowRight} 
                                 className="transition-transform duration-200 group-hover:translate-x-1" 

@@ -1,10 +1,11 @@
 // app/components/cards/BlogCard.js
-import { faCalendar } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 
 const BlogCard = ({blog}) => {
     return (
-        <div className="overflow-hidden duration-200 bg-white border border-gray-200 rounded-lg hover:shadow-lg">
+        <Link href={`/blogs/${blog.title}`} className="overflow-hidden duration-200 bg-white border border-gray-200 rounded-lg hover:shadow-lg">
             <div className="relative h-48 overflow-hidden sm:h-56 md:h-60">
                 <img
                     src={blog.image}
@@ -24,7 +25,7 @@ const BlogCard = ({blog}) => {
                     <span className="whitespace-nowrap">{blog.postedDate || "All Year"}</span>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 

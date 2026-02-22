@@ -245,7 +245,7 @@ export default async function BlogsPage() {
       </section>
 
       {/* Popular Topics */}
-      <section className="py-16 bg-gray-50">
+      {/* <section className="py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
           <Heading 
             title={"Popular Topics"} 
@@ -283,7 +283,7 @@ export default async function BlogsPage() {
             </Link>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Newsletter Signup */}
       <section className="py-16 bg-secondary-color text-white">
