@@ -41,7 +41,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Trekking and Tour Agency in Nepal | Global Nepal Treks',
     description: 'Authentic Himalayan treks with local experts. Everest, Annapurna & more.',
-    images: ['https://globalnepaltreks.com/images/home-cover.jpg'],
+    images: [homeAssets.home_cover.src],
   },
   
   alternates: {
