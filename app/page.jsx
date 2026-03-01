@@ -84,7 +84,7 @@ const Home = () => {
     const packageData = [
         {
             id: 1,
-            image: "https://images.pexels.com/photos/2902939/pexels-photo-2902939.jpeg",
+            image: "https://globalnepaltreks.com/storage/trips/November2024/annapurna-short-trek.jpg",
             country: "Nepal",
             title: "Annapurna Short Trek",
             price: 1299,
@@ -94,7 +94,7 @@ const Home = () => {
         },
         {
             id: 2,
-            image: "https://images.pexels.com/photos/28625167/pexels-photo-28625167.jpeg",
+            image: "https://globalnepaltreks.com/storage/trips/November2024/everest-tour-via-tibet.jpg",
             country: "Tibet",
             title: "Everest Tour Via Tibet",
             price: 1299,
@@ -104,7 +104,7 @@ const Home = () => {
         },
         {
             id: 3,
-            image: "https://images.pexels.com/photos/10792604/pexels-photo-10792604.jpeg",
+            image: "https://globalnepaltreks.com/storage/trips/February2024/mount%20kailash.JPG",
             country: "Tibet",
             title: "Mount Kailash Tour",
             price: 1299,
@@ -114,7 +114,7 @@ const Home = () => {
         },
         {
             id: 4,
-            image: "https://images.pexels.com/photos/31640266/pexels-photo-31640266.jpeg",
+            image: "https://globalnepaltreks.com/storage/trips/February2024/global-114.jpg",
             country: "Bhutan",
             title: "Bhutan Dragon Heart Tour",
             price: 1299,
