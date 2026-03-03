@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const BlogCard = ({blog}) => {
     return (
-        <Link href={`/blogs/${blog.title}`} className="overflow-hidden duration-200 bg-white border border-gray-200 rounded-lg hover:shadow-lg">
+        <Link href={`/blogs/${blog.slug}`} className="overflow-hidden duration-200 bg-white border border-gray-200 rounded-lg hover:shadow-md">
             <div className="relative h-48 overflow-hidden sm:h-56 md:h-60">
                 <img
                     src={blog.image}
