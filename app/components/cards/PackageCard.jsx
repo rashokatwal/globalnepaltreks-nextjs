@@ -1,9 +1,10 @@
-import { faCalendar, faClock } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faCalendar, faClock, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 
 const PackageCard = ({ packageDetails }) => {
     return (
-        <div className="overflow-hidden duration-200 bg-white border border-gray-200 rounded-lg hover:shadow-lg">
+        <Link href={packageDetails.link} className="overflow-hidden duration-200 bg-white border border-gray-200 rounded-lg hover:shadow-md">
             <div className="relative h-48 overflow-hidden sm:h-56 md:h-60">
                 <img
                     src={packageDetails.image}
@@ -22,23 +23,24 @@ const PackageCard = ({ packageDetails }) => {
                     {packageDetails.title}
                 </h3>
 
-                <div className="grid grid-cols-2 gap-3 mt-4 sm:grid-cols-3 sm:gap-4">
-                    <div>
-                        <h5 className="text-xs text-gray-500 sm:text-sm">Starting from</h5>
-                        <p className="text-base font-semibold sm:text-lg md:text-xl text-accent-color">
-                            US${packageDetails.price}
-                        </p>
-                    </div>
-                    
-                    <div className="flex items-center gap-1 text-xs text-gray-500 sm:text-sm sm:gap-2">
-                        <FontAwesomeIcon icon={faCalendar} className="text-primary-color-dark" />
-                        <span className="whitespace-nowrap">{packageDetails.availability || "All Year"}</span>
-                    </div>
+                <div className="flex items-center gap-4 my-4 text-sm text-gray-500">
+                    <span className="flex items-center gap-1">
+                        <FontAwesomeIcon icon={faClock} className="w-4 h-4 text-primary-color-dark" />
+                        {packageDetails.duration}
+                    </span>
+                </div>
 
-                    <div className="flex items-center gap-1 text-xs text-gray-500 sm:text-sm sm:gap-2">
-                        <FontAwesomeIcon icon={faClock} className="text-primary-color-dark" />
-                        <span>{packageDetails.duration}</span>
+                {/* Price and CTA */}
+                <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+                    <div>
+                        <span className="text-2xl font-bold text-primary-color-dark">
+                            ${packageDetails.price}
+                        </span>
+                        <span className="text-sm text-gray-500 ml-1">/person</span>
                     </div>
+                    <span className="text-primary-color-dark group-hover:translate-x-1 transition-transform">
+                        <FontAwesomeIcon icon={faArrowRight} className="w-4 h-4" />
+                    </span>
                 </div>
 
                 {
@@ -52,12 +54,8 @@ const PackageCard = ({ packageDetails }) => {
                         </div>
                     )
                 }
-
-                <button className="w-full py-2.5 mt-5 text-sm font-semibold tracking-wide text-white transition rounded-md sm:py-3 sm:text-base bg-primary-color-dark hover:bg-primary-color hover:shadow-md">
-                    BOOK NOW
-                </button>
             </div>
-        </div>
+        </Link>
     )
 }
 

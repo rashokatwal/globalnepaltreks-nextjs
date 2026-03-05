@@ -28,6 +28,7 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.8; }
 }
+
 .animate-float {
   animation: float 8s ease-in-out infinite;
 }
@@ -44,7 +45,7 @@
   animation: fade 5s ease-in-out infinite;
 }
 
-.blog-content h1 {
+.blog-content h1, .package-content h1 {
   font-size: 2.5rem;
   font-weight: 700;
   margin-top: 2rem;
@@ -52,7 +53,7 @@
   line-height: 1.2;
 }
 
-.blog-content h2 {
+.blog-content h2, .package-content h2 {
   font-size: 2rem;
   font-weight: 600;
   margin-top: 1.75rem;
@@ -60,7 +61,7 @@
   line-height: 1.3;
 }
 
-.blog-content h3 {
+.blog-content h3, .package-content h3 {
   font-size: 1.5rem;
   font-weight: 600;
   margin-top: 1.5rem;
@@ -68,30 +69,30 @@
   line-height: 1.4;
 }
 
-.blog-content p {
+.blog-content p, .package-content p {
   margin-bottom: 1.25rem;
   line-height: 1.7;
 }
 
-.blog-content ul,
-.blog-content ol {
+.blog-content ul, .package-content ul,
+.blog-content ol, .package-content ol {
   margin-left: 1.5rem;
   margin-bottom: 1.25rem;
 }
 
-.blog-content li {
+.blog-content li, .package-content li {
   margin-bottom: 0.5rem;
   line-height: 1.7;
 }
 
-.blog-content img {
+.blog-content img, .package-content img {
   max-width: 100%;
   height: auto;
   border-radius: 0.5rem;
   margin: 1.5rem 0;
 }
 
-.blog-content blockquote {
+.blog-content blockquote, .package-content blockquote {
   border-left: 4px solid #10b981;
   padding-left: 1.5rem;
   margin: 1.5rem 0;
@@ -99,12 +100,12 @@
   color: #4b5563;
 }
 
-.blog-content a {
+.blog-content a, .package-content a {
   color: #10b981;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
-.blog-content a:hover {
+.blog-content a:hover, .package-content a:hover {
   color: #059669;
 }

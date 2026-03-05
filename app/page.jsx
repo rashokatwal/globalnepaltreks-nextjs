@@ -90,6 +90,7 @@ const Home = () => {
             price: 1299,
             availability: "All Years",
             duration: "13 Days",
+            link: "",
             description: "A scenic Himalayan adventure featuring villages, forests, and iconic mountain views-perfect for limited timeframes."
         },
         {
@@ -100,6 +101,7 @@ const Home = () => {
             price: 1299,
             availability: "All Years",
             duration: "13 Days",
+            link: "",
             description: "A high-altitude journey to Everest's north face with dramatic landscapes, monasteries, and remote Tibetan culture."
         },
         {
@@ -110,6 +112,7 @@ const Home = () => {
             price: 1299,
             availability: "All Years",
             duration: "13 Days",
+            link: "",
             description: "A sacred pilgrimage route around one of Asia's holiest peaks, blending spirituality, rugged terrain, and breathtaking scenery."
         },
         {
@@ -120,6 +123,7 @@ const Home = () => {
             price: 1299,
             availability: "All Years",
             duration: "11 Days",
+            link: "",
             description: "Explore Himalayan kingdoms, ancient monasteries, and serene valleys in the land of the Thunder Dragon."
         },
         {
@@ -130,6 +134,7 @@ const Home = () => {
             price: 1299,
             availability: "All Years",
             duration: "4 Days",
+            link: "",
             description: "A spectacular flight to Everest with glacier landings and panoramic Himalayan views-perfect for a once-in-a-lifetime experience."
         },
         {
@@ -140,6 +145,7 @@ const Home = () => {
             price: 1299,
             availability: "All Years",
             duration: "4 Days",
+            link: "",
             description: "A spectacular flight to Everest with glacier landings and panoramic Himalayan views-perfect for a once-in-a-lifetime experience."
         }
     ];
@@ -152,6 +158,7 @@ const Home = () => {
             title: "Annapurna Short Trek",
             price: 1299,
             availability: "All Years",
+            link: "",
             duration: "13 Days"
         },
         {
@@ -161,6 +168,7 @@ const Home = () => {
             title: "Everest Tour Via Tibet",
             price: 1299,
             availability: "All Years",
+            link: "",
             duration: "13 Days"
         },
         {
@@ -170,6 +178,7 @@ const Home = () => {
             title: "Mount Kailash Tour",
             price: 1299,
             availability: "All Years",
+            link: "",
             duration: "13 Days"
         }
     ];

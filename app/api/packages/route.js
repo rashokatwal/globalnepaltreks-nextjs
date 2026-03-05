@@ -10,6 +10,9 @@ import { validatePackage, validatePackageFeature } from '@/lib/validators/packag
 import { slugify } from '@/lib/utils/slugify.js';
 
 // GET /api/packages - Public (no authentication needed)
+// app/api/packages/route.js - ADD these filters
+
+// GET /api/packages - Public (no authentication needed)
 export async function GET(request) {
     try {
         const { searchParams } = new URL(request.url);
@@ -18,12 +21,32 @@ export async function GET(request) {
         const page = parseInt(searchParams.get('page') || '1');
         const limit = parseInt(searchParams.get('limit') || '10');
         
-        // Filters
-        const countryId = searchParams.get('country_id');
-        const activityId = searchParams.get('activity_id');
+        // Filters - accept multiple parameter names for flexibility
+        const countryId = searchParams.get('country_id') || searchParams.get('countryId') || searchParams.get('country');
+        const activityId = searchParams.get('activity_id') || searchParams.get('activityId') || searchParams.get('activity');
         const difficulty = searchParams.get('difficulty');
         const featured = searchParams.get('featured') === 'true';
         const search = searchParams.get('search');
+        
+        // NEW FILTERS TO ADD
+        const minPrice = searchParams.get('min_price') || searchParams.get('minPrice');
+        const maxPrice = searchParams.get('max_price') || searchParams.get('maxPrice');
+        const maxDuration = searchParams.get('max_duration') || searchParams.get('duration');
+        const sort = searchParams.get('sort') || 'featured';
+        
+        console.log('API Request params:', { 
+            countryId, 
+            activityId, 
+            difficulty, 
+            featured, 
+            search,
+            minPrice,
+            maxPrice,
+            maxDuration,
+            sort,
+            page, 
+            limit 
+        });
         
         // Handle featured
         if (featured) {
@@ -37,7 +60,11 @@ export async function GET(request) {
                 page,
                 limit,
                 countryId: countryId ? parseInt(countryId) : null,
-                activityId: activityId ? parseInt(activityId) : null
+                activityId: activityId ? parseInt(activityId) : null,
+                minPrice: minPrice ? parseInt(minPrice) : null,
+                maxPrice: maxPrice ? parseInt(maxPrice) : null,
+                maxDuration: maxDuration ? parseInt(maxDuration) : null,
+                sort
             });
             return ApiResponse.success({
                 packages: result.packages,
@@ -53,12 +80,21 @@ export async function GET(request) {
             countryId: countryId ? parseInt(countryId) : null,
             activityId: activityId ? parseInt(activityId) : null,
             difficulty,
-            search
+            search,
+            minPrice: minPrice ? parseInt(minPrice) : null,
+            maxPrice: maxPrice ? parseInt(maxPrice) : null,
+            maxDuration: maxDuration ? parseInt(maxDuration) : null,
+            sort
         });
         
         return ApiResponse.success({
-            packages: result.packages,
-            pagination: result.pagination
+            packages: result.packages || [],
+            pagination: result.pagination || {
+                page,
+                limit,
+                total: 0,
+                totalPages: 0
+            }
         });
         
     } catch (error) {
@@ -91,7 +127,7 @@ export async function POST(request) {
             return ApiResponse.conflict('Package with this slug already exists');
         }
         
-        // Prepare package data (remove created_by if not in your table)
+        // Prepare package data
         const packageData = {
             country_id: body.country_id,
             activity_id: body.activity_id,

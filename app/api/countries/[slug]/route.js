@@ -28,14 +28,15 @@ export async function GET(request, { params }) {
         
         // If details requested, get full details
         if (includeDetails) {
-            // Get packages for this country
+            // Get packages for this country with activity information
             const packagesSql = `
-                SELECT id, title, slug, duration_days, price, difficulty,
-                       featured_image, short_description
-                FROM packages
-                WHERE country_id = ? AND is_active = 1
-                ORDER BY is_featured DESC, created_at DESC
-                LIMIT 6
+                SELECT p.id, p.title, p.slug, p.duration_days, p.price, p.difficulty,
+                       p.featured_image, p.short_description, p.is_featured,
+                       p.activity_id, a.name as activity_name, a.slug as activity_slug
+                FROM packages p
+                LEFT JOIN activities a ON p.activity_id = a.id
+                WHERE p.country_id = ? AND p.is_active = 1
+                ORDER BY p.is_featured DESC, p.created_at DESC
             `;
             
             // Get blogs for this country
@@ -54,12 +55,21 @@ export async function GET(request, { params }) {
                 query(blogsSql, [country.id])
             ]);
             
-            // Get activities
+            // Get activities with package counts
             const activities = await CountryActivityQueries.getActivitiesByCountry(country.id);
+            
+            // Add package counts to activities
+            const activitiesWithCounts = activities.map(activity => {
+                const packageCount = packages.filter(p => p.activity_id === activity.id).length;
+                return {
+                    ...activity,
+                    package_count: packageCount
+                };
+            });
             
             return ApiResponse.success({
                 ...country,
-                activities: activities || [],
+                activities: activitiesWithCounts || [],
                 packages: packages || [],
                 blogs: blogs || []
             });
