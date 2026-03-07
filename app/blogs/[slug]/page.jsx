@@ -48,7 +48,7 @@ async function getBlogPost(slug) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     const res = await fetch(`${baseUrl}/api/blogs/${slug}`, {
-      next: { revalidate: 3600 } // Revalidate every hour
+      next: { revalidate: 0 } // Revalidate every hour
     });
     
     if (!res.ok) return null;
@@ -97,12 +97,7 @@ export default async function BlogPostPage({ params }) {
     <main className="bg-white">
       {/* Hero Section */}
       <section className="relative min-h-[80vh] bg-gray-900">
-        <div className="absolute inset-0 overflow-hidden">
-          <img
-            src={post.featured_image}
-            alt={post.title}
-            className="w-full h-full object-cover opacity-70"
-          />
+        <div className="absolute inset-0 overflow-hidden bg-center bg-fixed bg-cover" style={{backgroundImage: `url(${post.featured_image})`}}>
         </div>
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent"></div>
         
