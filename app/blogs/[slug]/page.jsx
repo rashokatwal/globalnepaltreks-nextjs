@@ -46,8 +46,8 @@ export async function generateMetadata({ params }) {
 // Fetch blog post data
 async function getBlogPost(slug) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/blogs/${slug}`);
+    // const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const res = await fetch(`/api/blogs/${slug}`);
     
     if (!res.ok) return null;
     

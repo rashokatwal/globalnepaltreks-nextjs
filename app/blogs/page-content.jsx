@@ -5,11 +5,11 @@ import BlogList from './BlogList';
 
 async function getInitialData() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    // const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     
     const [blogsRes, categoriesRes] = await Promise.all([
-      fetch(`${baseUrl}/api/blogs?limit=50`),
-      fetch(`${baseUrl}/api/blogs/categories`)
+      fetch(`/api/blogs?limit=50`),
+      fetch(`/api/blogs/categories`)
     ]);
     
     const blogsData = await blogsRes.json();

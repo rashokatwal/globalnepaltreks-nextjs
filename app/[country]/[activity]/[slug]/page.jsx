@@ -56,8 +56,8 @@ export async function generateMetadata({ params }) {
 
 async function getPackage(slug) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/packages/${slug}?details=true`);
+    // const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const res = await fetch(`/api/packages/${slug}?details=true`);
     
     if (!res.ok) return null;
     const data = await res.json();
