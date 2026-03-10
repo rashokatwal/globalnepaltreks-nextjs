@@ -3,6 +3,7 @@ import "./globals.css";
 import NavBar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import { homeAssets } from "./assets/assets";
+import { icon } from "@fortawesome/fontawesome-svg-core";
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -59,6 +60,15 @@ export const metadata = {
       'max-snippet': -1,
     },
   },
+  // icons: {
+  //   icon: '/favicon.png',
+  //   shortcut: '/favicon.png',
+  //   apple: '/apple-touch-icon.png',
+  //   other: {
+  //     rel: 'apple-touch-icon',
+  //     url: '/apple-touch-icon.png',
+  //   }
+  // }
 };
 
 export default function RootLayout({ children }) {

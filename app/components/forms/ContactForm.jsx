@@ -1,56 +1,25 @@
-// app/components/forms/ContactForm.js
+// app/components/forms/ContactForm.jsx
 "use client";
 
-import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { 
-  faUser, 
-  faEnvelope, 
-  faPhone, 
-  faFlag,
-  faCalendar,
-  faPersonHiking,
-  faMessage,
-  faPaperPlane,
-  faCheckCircle,
-  faExclamationCircle
-} from "@fortawesome/free-solid-svg-icons";
+import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane, faSpinner, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    country: "",
-    trek: "",
-    startDate: "",
-    duration: "",
-    participants: "1",
-    message: ""
+    name: '',
+    email: '',
+    phone: '',
+    country: '',
+    trek: '',
+    people: '',
+    startDate: '',
+    duration: '',
+    message: ''
   });
 
-  const [status, setStatus] = useState({
-    submitted: false,
-    submitting: false,
-    success: false,
-    error: false,
-    message: ""
-  });
-
-  const trekOptions = [
-    "Everest Base Camp Trek",
-    "Annapurna Circuit Trek",
-    "Annapurna Base Camp Trek",
-    "Langtang Valley Trek",
-    "Upper Mustang Trek",
-    "Manaslu Circuit Trek",
-    "Mount Kailash Trek (Tibet)",
-    "Druk Path Trek (Bhutan)",
-    "Cultural Tours",
-    "Peak Climbing",
-    "Heli Tour",
-    "Custom Itinerary"
-  ];
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,10 +28,11 @@ export default function ContactForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus({ ...status, submitting: true, error: false, message: "" });
+    setIsSubmitting(true);
+    setSubmitStatus({ type: '', message: '' });
 
     try {
-      const response = await fetch('/api/inquiries', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,291 +43,228 @@ export default function ContactForm() {
       const data = await response.json();
 
       if (response.ok) {
-        setStatus({
-          submitted: true,
-          submitting: false,
-          success: true,
-          error: false,
-          message: "Thank you! Your message has been sent. We'll get back to you within 24 hours."
+        setSubmitStatus({ 
+          type: 'success', 
+          message: data.message || 'Thank you! Your message has been sent successfully.' 
+        });
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          country: '',
+          trek: '',
+          people: '',
+          startDate: '',
+          duration: '',
+          message: ''
         });
         
-        // Reset form
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          country: "",
-          trek: "",
-          startDate: "",
-          duration: "",
-          participants: "1",
-          message: ""
-        });
+        setTimeout(() => {
+          setSubmitStatus({ type: '', message: '' });
+        }, 10000);
       } else {
-        setStatus({
-          ...status,
-          submitting: false,
-          success: false,
-          error: true,
-          message: data.error || "Something went wrong. Please try again."
+        setSubmitStatus({ 
+          type: 'error', 
+          message: data.message || 'Something went wrong. Please try again.' 
         });
       }
     } catch (error) {
-      setStatus({
-        ...status,
-        submitting: false,
-        success: false,
-        error: true,
-        message: "Network error. Please check your connection and try again."
+      setSubmitStatus({ 
+        type: 'error', 
+        message: 'Network error. Please check your connection and try again.' 
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  if (status.success) {
-    return (
-      <div className="text-center py-12">
-        <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-          <FontAwesomeIcon icon={faCheckCircle} className="w-10 h-10 text-green-600" />
-        </div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-4">Message Sent Successfully!</h3>
-        <p className="text-gray-600 mb-8">{status.message}</p>
-        <button
-          onClick={() => setStatus({ submitted: false, submitting: false, success: false, error: false, message: "" })}
-          className="bg-primary-color-dark text-white px-6 py-3 rounded-sm font-semibold hover:bg-primary-color transition"
-        >
-          Send Another Message
-        </button>
-      </div>
-    );
-  }
-
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Name and Email */}
-      <div className="grid md:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-            Full Name <span className="text-red-500">*</span>
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FontAwesomeIcon icon={faUser} className="text-gray-400 w-4 h-4" />
-            </div>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-primary-color-dark focus:border-transparent"
-              placeholder="John Doe"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-            Email Address <span className="text-red-500">*</span>
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FontAwesomeIcon icon={faEnvelope} className="text-gray-400 w-4 h-4" />
-            </div>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-primary-color-dark focus:border-transparent"
-              placeholder="john@example.com"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Phone and Country */}
-      <div className="grid md:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-            Phone Number <span className="text-red-500">*</span>
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FontAwesomeIcon icon={faPhone} className="text-gray-400 w-4 h-4" />
-            </div>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-primary-color-dark focus:border-transparent"
-              placeholder="+1 234 567 8900"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
-            Your Country <span className="text-red-500">*</span>
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FontAwesomeIcon icon={faFlag} className="text-gray-400 w-4 h-4" />
-            </div>
-            <input
-              type="text"
-              id="country"
-              name="country"
-              required
-              value={formData.country}
-              onChange={handleChange}
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-primary-color-dark focus:border-transparent"
-              placeholder="USA, UK, Australia, etc."
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Trek Selection */}
-      {/* <div>
-        <label htmlFor="trek" className="block text-sm font-medium text-gray-700 mb-1">
-          Interested Trek/Package
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <FontAwesomeIcon icon={faPersonHiking} className="text-gray-400 w-4 h-4" />
-          </div>
-          <select
-            id="trek"
-            name="trek"
-            value={formData.trek}
-            onChange={handleChange}
-            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-color-dark focus:border-transparent appearance-none bg-white"
-          >
-            <option value="">Select a trek (optional)</option>
-            {trekOptions.map((option, index) => (
-              <option key={index} value={option}>{option}</option>
-            ))}
-          </select>
-        </div>
-      </div> */}
-
-      {/* Travel Details */}
-      {/* <div className="grid md:grid-cols-3 gap-4">
-        <div>
-          <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-1">
-            Preferred Start Date
-          </label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FontAwesomeIcon icon={faCalendar} className="text-gray-400 w-4 h-4" />
-            </div>
-            <input
-              type="date"
-              id="startDate"
-              name="startDate"
-              value={formData.startDate}
-              onChange={handleChange}
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-color-dark focus:border-transparent"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="duration" className="block text-sm font-medium text-gray-700 mb-1">
-            Duration (Days)
-          </label>
-          <input
-            type="number"
-            id="duration"
-            name="duration"
-            value={formData.duration}
-            onChange={handleChange}
-            min="1"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-color-dark focus:border-transparent"
-            placeholder="14"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="participants" className="block text-sm font-medium text-gray-700 mb-1">
-            Participants
-          </label>
-          <select
-            id="participants"
-            name="participants"
-            value={formData.participants}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-color-dark focus:border-transparent"
-          >
-            {[1,2,3,4,5,6,7,8,9,10].map(num => (
-              <option key={num} value={num}>{num} {num === 1 ? 'Person' : 'People'}</option>
-            ))}
-          </select>
-        </div>
-      </div> */}
-
-      {/* Message */}
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-          Your Message <span className="text-red-500">*</span>
-        </label>
-        <div className="relative">
-          <div className="absolute top-3 left-3 pointer-events-none">
-            <FontAwesomeIcon icon={faMessage} className="text-gray-400 w-4 h-4" />
-          </div>
-          <textarea
-            id="message"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            required
-            rows="5"
-            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-primary-color-dark focus:border-transparent"
-            placeholder="Tell us about your dream trek, questions, or special requirements..."
-          />
-        </div>
-      </div>
-
-      {/* Error Message */}
-      {status.error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-sm flex items-start gap-3">
-          <FontAwesomeIcon icon={faExclamationCircle} className="w-5 h-5 text-red-500 mt-0.5" />
-          <p className="text-red-700 text-sm">{status.message}</p>
+      {submitStatus.message && (
+        <div className={`mb-6 p-4 rounded-lg flex items-start gap-3 ${
+          submitStatus.type === 'success' 
+            ? 'bg-green-50 text-green-800 border border-green-200' 
+            : 'bg-red-50 text-red-800 border border-red-200'
+        }`}>
+          {submitStatus.type === 'success' ? (
+            <FontAwesomeIcon icon={faCheckCircle} className="w-5 h-5 mt-0.5 shrink-0 text-green-600" />
+          ) : (
+            <FontAwesomeIcon icon={faExclamationCircle} className="w-5 h-5 mt-0.5 shrink-0 text-red-600" />
+          )}
+          <p className="text-sm">{submitStatus.message}</p>
         </div>
       )}
 
-      {/* Submit Button */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+            Full Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-color-dark focus:border-transparent outline-none transition"
+            placeholder="Your name"
+          />
+        </div>
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            Email Address <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-color-dark focus:border-transparent outline-none transition"
+            placeholder="your@email.com"
+          />
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+            Phone Number
+          </label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-color-dark focus:border-transparent outline-none transition"
+            placeholder="Include country code"
+          />
+        </div>
+        <div>
+          <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-2">
+            Country of Residence
+          </label>
+          <input
+            type="text"
+            id="country"
+            name="country"
+            value={formData.country}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-color-dark focus:border-transparent outline-none transition"
+            placeholder="Your country"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="trek" className="block text-sm font-medium text-gray-700 mb-2">
+          Trek/Tour Interested In
+        </label>
+        <select
+          id="trek"
+          name="trek"
+          value={formData.trek}
+          onChange={handleChange}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-color-dark focus:border-transparent outline-none transition bg-white"
+        >
+          <option value="">Select a trek or tour</option>
+          <option value="Everest Base Camp Trek">Everest Base Camp Trek</option>
+          <option value="Annapurna Base Camp Trek">Annapurna Base Camp Trek</option>
+          <option value="Annapurna Circuit Trek">Annapurna Circuit Trek</option>
+          <option value="Langtang Valley Trek">Langtang Valley Trek</option>
+          <option value="Manaslu Circuit Trek">Manaslu Circuit Trek</option>
+          <option value="Upper Mustang Trek">Upper Mustang Trek</option>
+          <option value="Kanchenjunga Base Camp Trek">Kanchenjunga Base Camp Trek</option>
+          <option value="Tibet Tour">Tibet Tour</option>
+          <option value="Bhutan Tour">Bhutan Tour</option>
+          <option value="Cultural Tour">Cultural Tour</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="people" className="block text-sm font-medium text-gray-700 mb-2">
+            Number of People
+          </label>
+          <input
+            type="number"
+            id="people"
+            name="people"
+            value={formData.people}
+            onChange={handleChange}
+            min="1"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-color-dark focus:border-transparent outline-none transition"
+            placeholder="e.g., 2"
+          />
+        </div>
+        <div>
+          <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-2">
+            Preferred Start Date
+          </label>
+          <input
+            type="date"
+            id="startDate"
+            name="startDate"
+            value={formData.startDate}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-color-dark focus:border-transparent outline-none transition"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="duration" className="block text-sm font-medium text-gray-700 mb-2">
+          Trek Duration (Days)
+        </label>
+        <input
+          type="number"
+          id="duration"
+          name="duration"
+          value={formData.duration}
+          onChange={handleChange}
+          min="1"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-color-dark focus:border-transparent outline-none transition"
+          placeholder="Number of days"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+          Your Message <span className="text-red-500">*</span>
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          required
+          rows="5"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-color-dark focus:border-transparent outline-none transition resize-none"
+          placeholder="Tell us about your dream adventure, specific requirements, or any questions you have..."
+        ></textarea>
+      </div>
+
       <button
         type="submit"
-        disabled={status.submitting}
-        className="w-full bg-primary-color-dark text-white py-3 px-6 rounded-sm font-semibold hover:bg-primary-color transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        disabled={isSubmitting}
+        className="w-full bg-primary-color-dark text-white py-4 px-6 rounded-lg font-semibold hover:bg-primary-color transition flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
       >
-        {status.submitting ? (
+        {isSubmitting ? (
           <>
-            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
+            <FontAwesomeIcon icon={faSpinner} className="w-5 h-5 animate-spin" />
             Sending...
           </>
         ) : (
           <>
-            <FontAwesomeIcon icon={faPaperPlane} className="w-4 h-4" />
+            <FontAwesomeIcon icon={faPaperPlane} className="w-5 h-5" />
             Send Message
           </>
         )}
       </button>
-
-      <p className="text-xs text-gray-500 text-center">
-        By submitting this form, you agree to our privacy policy and terms of service.
-        We'll never share your information with third parties.
-      </p>
     </form>
   );
 }

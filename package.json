@@ -21,9 +21,12 @@
     "lottie-react": "^2.4.1",
     "mysql2": "^3.17.4",
     "next": "16.1.6",
+    "nodemailer": "^8.0.1",
     "react": "19.2.3",
     "react-countup": "^6.5.3",
     "react-dom": "19.2.3",
+    "react-google-recaptcha": "^3.1.0",
+    "react-google-recaptcha-v3": "^1.11.0",
     "swiper": "^12.1.2"
   },
   "devDependencies": {

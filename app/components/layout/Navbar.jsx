@@ -282,7 +282,7 @@ const NavBar = () => {
                         
                         {/* Book Now Button */}
                         <Link 
-                            href="/book-now"
+                            href="/book"
                             className="w-full px-6 py-3 font-medium text-center text-white duration-200 rounded bg-primary-color-dark hover:bg-secondary-color lg:w-auto"
                         >
                             Book Now
