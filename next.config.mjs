@@ -14,6 +14,10 @@ const nextConfig = {
         hostname: 'localhost',
       },
       {
+        protocol: 'http',
+        hostname: 'globalnepaltreks.vercel.app',
+      },
+      {
         protocol: 'https',
         hostname: 'images.pexels.com',
         port: '',
