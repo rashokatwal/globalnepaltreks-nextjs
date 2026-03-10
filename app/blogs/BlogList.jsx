@@ -39,10 +39,10 @@ export default function BlogList({ initialBlogs = [] }) {
     async function fetchBlogs() {
       setLoading(true);
       try {
-        // const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
         const url = category 
-          ? `/api/blogs/categories/${encodeURIComponent(category)}/posts?limit=50`
-          : `/api/blogs?limit=50`;
+          ? `${baseUrl}/api/blogs/categories/${encodeURIComponent(category)}/posts?limit=50`
+          : `${baseUrl}/api/blogs?limit=50`;
         
         console.log('Fetching from:', url);
         
