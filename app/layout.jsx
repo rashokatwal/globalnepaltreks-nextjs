@@ -2,7 +2,7 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import NavBar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
-import { homeAssets } from "./assets/assets";
+import { homeAssets, logos } from "./assets/assets";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 
 const montserrat = Montserrat({
@@ -28,7 +28,7 @@ export const metadata = {
     siteName: 'Global Nepal Treks',
     images: [
       {
-        url: homeAssets.home_cover.src,
+        url: logos.globalnepaltreks_logo.src,
         width: 1200,
         height: 630,
         alt: 'Himalayan mountain landscape with trekking route',
