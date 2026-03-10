@@ -84,7 +84,7 @@ async function getCountryData(countrySlug) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     const res = await fetch(`${baseUrl}/api/countries/${countrySlug}?details=true`, {
-      next: { revalidate: 0 }
+      next: { revalidate: 1000 }
     });
     
     if (!res.ok) return null;

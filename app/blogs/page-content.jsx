@@ -9,10 +9,10 @@ async function getInitialData() {
     
     const [blogsRes, categoriesRes] = await Promise.all([
       fetch(`${baseUrl}/api/blogs?limit=50`, {
-        next: { revalidate: 0 }
+        next: { revalidate: 1000 }
       }),
       fetch(`${baseUrl}/api/blogs/categories`, {
-        next: { revalidate: 0 }
+        next: { revalidate: 1000 }
       })
     ]);
     
