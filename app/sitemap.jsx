@@ -1,7 +1,7 @@
 // app/sitemap.js
 import db from '@/lib/db'; // Your existing database connection
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://globalnepaltreks.com';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://globalnepaltreks.vercel.app';
 
 export default async function sitemap() {
   // --- 1. Static Pages ---
