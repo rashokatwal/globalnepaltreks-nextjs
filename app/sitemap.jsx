@@ -1,20 +1,24 @@
 // app/sitemap.js
-import db from '@/lib/db'; // Your existing database connection
+import db from '@/lib/db';
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://globalnepaltreks.vercel.app';
+export const dynamic = 'force-dynamic'; // 👈 Add this line
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://globalnepaltreks.com';
 
 export default async function sitemap() {
-  // --- 1. Static Pages ---
+  console.log('🚀 Generating sitemap...');
+
+  // --- Static pages ---
   const staticPages = [
     { url: BASE_URL, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
     { url: `${BASE_URL}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${BASE_URL}/about/our-team`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE_URL}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE_URL}/packages`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/blogs`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/book`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
   ];
 
-  // --- 2. Fetch packages from database directly ---
+  // --- Fetch packages (same as before) ---
   let packages = [];
   try {
     const [rows] = await db.execute(`
@@ -28,12 +32,11 @@ export default async function sitemap() {
       WHERE p.is_active = 1
     `);
     packages = rows;
-    console.log(`Fetched ${packages.length} packages for sitemap`);
   } catch (error) {
     console.error('Error fetching packages for sitemap:', error);
   }
 
-  // --- 3. Fetch blogs from database directly ---
+  // --- Fetch blogs ---
   let blogs = [];
   try {
     const [rows] = await db.execute(`
@@ -42,22 +45,18 @@ export default async function sitemap() {
       WHERE is_published = 1
     `);
     blogs = rows;
-    console.log(`Fetched ${blogs.length} blogs for sitemap`);
   } catch (error) {
     console.error('Error fetching blogs for sitemap:', error);
   }
 
-  // --- 4. Country Pages ---
+  // --- Build URLs (country, activity, package, blog) ---
   const countryMap = new Map();
   packages.forEach(pkg => {
     if (pkg.country_slug) {
       const pkgDate = new Date(pkg.updated_at || pkg.created_at);
       const existing = countryMap.get(pkg.country_slug);
       if (!existing || pkgDate > existing.lastModified) {
-        countryMap.set(pkg.country_slug, { 
-          slug: pkg.country_slug, 
-          lastModified: pkgDate 
-        });
+        countryMap.set(pkg.country_slug, { slug: pkg.country_slug, lastModified: pkgDate });
       }
     }
   });
@@ -68,7 +67,6 @@ export default async function sitemap() {
     priority: 0.8,
   }));
 
-  // --- 5. Country+Activity Pages ---
   const activityMap = new Map();
   packages.forEach(pkg => {
     if (pkg.country_slug && pkg.activity_slug) {
@@ -91,7 +89,6 @@ export default async function sitemap() {
     priority: 0.8,
   }));
 
-  // --- 6. Package Pages ---
   const packageUrls = packages.map(pkg => ({
     url: `${BASE_URL}/${pkg.country_slug}/${pkg.activity_slug}/${pkg.slug}`,
     lastModified: new Date(pkg.updated_at || pkg.created_at),
@@ -99,7 +96,6 @@ export default async function sitemap() {
     priority: 0.8,
   }));
 
-  // --- 7. Blog Pages ---
   const blogUrls = blogs.map(blog => ({
     url: `${BASE_URL}/blogs/${blog.slug}`,
     lastModified: new Date(blog.published_at || blog.updated_at),
@@ -107,15 +103,11 @@ export default async function sitemap() {
     priority: 0.7,
   }));
 
-  // Log the total URLs generated
-  const allUrls = [
+  return [
     ...staticPages,
     ...countryUrls,
     ...activityUrls,
     ...packageUrls,
-    ...blogUrls
+    ...blogUrls,
   ];
-  console.log(`Generated ${allUrls.length} total URLs for sitemap`);
-
-  return allUrls;
 }
