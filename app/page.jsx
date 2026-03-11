@@ -29,7 +29,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
 import PackageCard from "./components/cards/PackageCard";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import BlogCard from "./components/cards/BlogCard";
 import { homeAssets, logos } from "./assets/assets";
 import Heading from "./components/ui/Heading";
@@ -37,6 +37,53 @@ import Heading from "./components/ui/Heading";
 const Home = () => {
     const swiperRef = useRef(null);
     
+    // States for dynamic data
+    const [reviews, setReviews] = useState([]);
+    const [packages, setPackages] = useState([]);
+    const [blogs, setBlogs] = useState([]);
+    const [loading, setLoading] = useState({
+        reviews: true,
+        packages: true,
+        blogs: true
+    });
+
+    // Fetch all data on mount
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Fetch reviews
+                const reviewsRes = await fetch('/api/reviews?limit=10');
+                const reviewsData = await reviewsRes.json();
+                if (reviewsData.success) {
+                    setReviews(reviewsData.data || []);
+                }
+                
+                // Fetch packages
+                const packagesRes = await fetch('/api/packages?limit=6');
+                const packagesData = await packagesRes.json();
+                if (packagesData.success) {
+                    setPackages(packagesData.data.packages || []);
+                }
+                
+                // Fetch blogs
+                const blogsRes = await fetch('/api/blogs?limit=4');
+                const blogsData = await blogsRes.json();
+                if (blogsData.success) {
+                    setBlogs(blogsData.data.data || []);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setLoading({
+                    reviews: false,
+                    packages: false,
+                    blogs: false
+                });
+            }
+        };
+        fetchData();
+    }, []);
+
     const stats = [
         { number: 15, symbol: "+", label: "Years of Experience" },
         { number: 1000, symbol: "+", label: "Successful Treks" },
@@ -81,108 +128,6 @@ const Home = () => {
         }
     ];
 
-    const packageData = [
-        {
-            id: 1,
-            image: "https://globalnepaltreks.com/storage/trips/November2024/annapurna-short-trek.jpg",
-            country: "Nepal",
-            title: "Annapurna Short Trek",
-            price: 1299,
-            availability: "All Years",
-            duration: "13 Days",
-            link: "",
-            description: "A scenic Himalayan adventure featuring villages, forests, and iconic mountain views-perfect for limited timeframes."
-        },
-        {
-            id: 2,
-            image: "https://globalnepaltreks.com/storage/trips/November2024/everest-tour-via-tibet.jpg",
-            country: "Tibet",
-            title: "Everest Tour Via Tibet",
-            price: 1299,
-            availability: "All Years",
-            duration: "13 Days",
-            link: "",
-            description: "A high-altitude journey to Everest's north face with dramatic landscapes, monasteries, and remote Tibetan culture."
-        },
-        {
-            id: 3,
-            image: "https://globalnepaltreks.com/storage/trips/February2024/mount%20kailash.JPG",
-            country: "Tibet",
-            title: "Mount Kailash Tour",
-            price: 1299,
-            availability: "All Years",
-            duration: "13 Days",
-            link: "",
-            description: "A sacred pilgrimage route around one of Asia's holiest peaks, blending spirituality, rugged terrain, and breathtaking scenery."
-        },
-        {
-            id: 4,
-            image: "https://globalnepaltreks.com/storage/trips/February2024/global-114.jpg",
-            country: "Bhutan",
-            title: "Bhutan Dragon Heart Tour",
-            price: 1299,
-            availability: "All Years",
-            duration: "11 Days",
-            link: "",
-            description: "Explore Himalayan kingdoms, ancient monasteries, and serene valleys in the land of the Thunder Dragon."
-        },
-        {
-            id: 5,
-            image: "https://images.pexels.com/photos/27940580/pexels-photo-27940580.jpeg",
-            country: "Nepal",
-            title: "Everest Helicopter Tour",
-            price: 1299,
-            availability: "All Years",
-            duration: "4 Days",
-            link: "",
-            description: "A spectacular flight to Everest with glacier landings and panoramic Himalayan views-perfect for a once-in-a-lifetime experience."
-        },
-        {
-            id: 6,
-            image: "https://images.pexels.com/photos/27940580/pexels-photo-27940580.jpeg",
-            country: "Nepal",
-            title: "Everest Helicopter Tour",
-            price: 1299,
-            availability: "All Years",
-            duration: "4 Days",
-            link: "",
-            description: "A spectacular flight to Everest with glacier landings and panoramic Himalayan views-perfect for a once-in-a-lifetime experience."
-        }
-    ];
-
-    const trekkingInNepal = [
-        {
-            id: 1,
-            image: "https://images.pexels.com/photos/2902939/pexels-photo-2902939.jpeg",
-            country: "Nepal",
-            title: "Annapurna Short Trek",
-            price: 1299,
-            availability: "All Years",
-            link: "",
-            duration: "13 Days"
-        },
-        {
-            id: 2,
-            image: "https://images.pexels.com/photos/28625167/pexels-photo-28625167.jpeg",
-            country: "Tibet",
-            title: "Everest Tour Via Tibet",
-            price: 1299,
-            availability: "All Years",
-            link: "",
-            duration: "13 Days"
-        },
-        {
-            id: 3,
-            image: "https://images.pexels.com/photos/10792604/pexels-photo-10792604.jpeg",
-            country: "Tibet",
-            title: "Mount Kailash Tour",
-            price: 1299,
-            availability: "All Years",
-            link: "",
-            duration: "13 Days"
-        }
-    ];
-
     const whyChooseUs = [
         {
             title: "Local Mountain Experts",
@@ -216,11 +161,35 @@ const Home = () => {
         },
     ];
 
-    
-    
+    // Helper to format package data for PackageCard
+    const formatPackageForCard = (pkg) => ({
+        id: pkg.id,
+        image: pkg.featured_image || "/images/placeholder.jpg",
+        country: pkg.country_name || "Nepal",
+        title: pkg.title,
+        price: Math.round(parseFloat(pkg.price)),
+        availability: pkg.best_season || "All Year",
+        duration: `${pkg.duration_days} Days`,
+        link: `/packages/${pkg.slug}`,
+        description: pkg.short_description || "Experience the Himalayas with our expert guides."
+    });
+
+    // Helper to format blog data for BlogCard
+    const formatBlogForCard = (blog) => ({
+        id: blog.id,
+        image: blog.featured_image || "/images/placeholder.jpg",
+        postedDate: new Date(blog.published_at).toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric', 
+            year: 'numeric' 
+        }),
+        title: blog.title,
+        slug: blog.slug
+    });
+
     return (
         <main>
-            {/* Hero Section */}
+            {/* Hero Section (unchanged) */}
             <section className="relative">
                 <div 
                     className="flex items-center justify-center w-full h-[110vh] bg-fixed bg-center bg-no-repeat bg-cover" 
@@ -271,7 +240,7 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* About Section */}
+            {/* About Section (unchanged) */}
             <section className="py-10 bg-white">
                 <div className="flex flex-col items-center px-5 mx-auto lg:p-10 lg:flex-row max-w-8xl">
                     <div className="flex-1">
@@ -354,7 +323,7 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Activities Section */}
+            {/* Activities Section (unchanged) */}
             <section className="relative bg-fixed bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${homeAssets.annapurna_background.src})` }}>
                 <div className="absolute w-full h-full bg-black/50"></div>
                 
@@ -393,18 +362,25 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Packages Section */}
+            {/* Packages Section (Awesome Packages For You) */}
             <section className="py-10 bg-white">
                 <div className="px-4 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
                     <div className="relative z-10 px-10 py-10">
                         <Heading title={"Explore your Adventure"} subtitle={"Awesome Packages For You"} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
 
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {packageData.map((data, index) => (
-                            <PackageCard key={index} packageDetails={data} />
-                        ))}
-                    </div>
+                    {loading.packages ? (
+                        <div className="flex justify-center py-12">
+                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            {packages.slice(0, 6).map((pkg) => (
+                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
+                            ))}
+                        </div>
+                    )}
+                    
                     <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
                         <Link 
                             href="/trekking-packages" 
@@ -420,7 +396,7 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Why Choose Us Section */}
+            {/* Why Choose Us Section (unchanged) */}
             <section className="pb-24 pt-14 bg-dark-section">
                 <div className="mx-auto max-w-7xl">
                     <div className="relative z-10 px-10 py-10">
@@ -443,7 +419,7 @@ const Home = () => {
                 </div>
             </section>  
 
-            {/* CTA Section */}
+            {/* CTA Section (unchanged) */}
             <section className="relative bg-fixed bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${homeAssets.guides_background.src})` }}>
                 <div className="absolute w-full h-full bg-black/60"></div>
                 <div className="px-4 py-40 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
@@ -464,17 +440,25 @@ const Home = () => {
                 </div>
             </section>          
 
-            {/* Nepal Treks Section */}
+            {/* Nepal Treks Section (Top Destinations for Trekking in Nepal) */}
             <section className="py-10 bg-white">
                 <div className="px-4 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
                     <div className="relative z-10 px-10 py-10">
                         <Heading title={"Adventure Packages in Nepal"} subtitle={"Top Destinations for Trekking in Nepal"} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {trekkingInNepal.map((destination, index) => (
-                            <PackageCard key={index} packageDetails={destination} />
-                        ))}
-                    </div>
+                    
+                    {loading.packages ? (
+                        <div className="flex justify-center py-12">
+                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            {packages.slice(0, 3).map((pkg) => (
+                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
+                            ))}
+                        </div>
+                    )}
+                    
                     <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
                         <Link 
                             href="/trekking-packages" 
@@ -490,18 +474,24 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Popular Routes Section */}
+            {/* Popular Routes Section (Popular Trekking Routes in Nepal) */}
             <section className="py-10 bg-white">
                 <div className="px-4 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
                     <div className="relative z-10 px-4 py-6 text-center sm:px-6 lg:px-8">
                         <Heading title={"Adventure Packages in Nepal"} subtitle={"Popular Trekking Routes in Nepal"} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
 
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {trekkingInNepal.map((destination, index) => (
-                            <PackageCard key={index} packageDetails={destination} />
-                        ))}
-                    </div>
+                    {loading.packages ? (
+                        <div className="flex justify-center py-12">
+                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            {packages.slice(0, 3).map((pkg) => (
+                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
+                            ))}
+                        </div>
+                    )}
 
                     <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
                         <Link 
@@ -524,73 +514,74 @@ const Home = () => {
                     <div className="relative z-10 px-4 py-6 text-center sm:px-6 lg:px-8">
                         <Heading title={"From the blogs"} subtitle={"Stories, Tips and Trekking Insights"} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
-                    <div>
-                        <Swiper
-                            modules={[Navigation, Autoplay]}
-                            spaceBetween={24}
-                            slidesPerView={1}
-                            centeredSlides={false}
-                            loop={true}
-                            autoplay={{
-                                delay: 3000,
-                                disableOnInteraction: false,
-                                pauseOnMouseEnter: false,
-                            }}
-                            navigation={{
-                                nextEl: '.swipe-button-next',
-                                prevEl: '.swipe-button-prev',
-                            }}
-                            breakpoints={{
-                                640: {
-                                    slidesPerView: 1,
-                                    centeredSlides: false,
-                                    spaceBetween: 16,
-                                },
-                                768: {
-                                    slidesPerView: 2,
-                                    centeredSlides: false,
-                                    spaceBetween: 20,
-                                },
-                                1024: {
-                                    slidesPerView: 3,
-                                    centeredSlides: false,
-                                    spaceBetween: 24,
-                                },
-                                1280: {
-                                    slidesPerView: 3,
-                                    centeredSlides: true,
-                                    spaceBetween: 24,
-                                },
-                            }}
-                            speed={500}
-                            grabCursor={true}
-                            className="mySwiper"
-                            onSwiper={(swiper) => {
-                                swiperRef.current = swiper;
-                            }}
-                        >
-                            <SwiperSlide>
-                                <BlogCard blog={{image: homeAssets.heli_tours.src, postedDate: "Feb 11, 2026", title: "Tackling Its Reputation as the 'World's Highest Garbage Dump'"}} />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <BlogCard blog={{image: homeAssets.heli_tours.src, postedDate: "Feb 11, 2026", title: "Tackling Its Reputation as the 'World's Highest Garbage Dump'"}} />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <BlogCard blog={{image: homeAssets.heli_tours.src, postedDate: "Feb 11, 2026", title: "Tackling Its Reputation as the 'World's Highest Garbage Dump'"}} />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <BlogCard blog={{image: homeAssets.heli_tours.src, postedDate: "Feb 11, 2026", title: "Tackling Its Reputation as the 'World's Highest Garbage Dump'"}} />
-                            </SwiperSlide>
-                            
-                            <div className="swipe-button-prev bg-secondary-color absolute top-1/2 transform-[translateY(-50%)] left-0 z-10 h-[50px] w-[50px] ml-2.5 text-white rounded-full flex items-center justify-center cursor-pointer duration-200 hover:bg-primary-color-dark">
-                                <FontAwesomeIcon icon={faChevronLeft} />
-                            </div>
+                    
+                    {loading.blogs ? (
+                        <div className="flex justify-center py-12">
+                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
+                        </div>
+                    ) : (
+                        <div>
+                            <Swiper
+                                modules={[Navigation, Autoplay]}
+                                spaceBetween={24}
+                                slidesPerView={1}
+                                centeredSlides={false}
+                                loop={true}
+                                autoplay={{
+                                    delay: 3000,
+                                    disableOnInteraction: false,
+                                    pauseOnMouseEnter: false,
+                                }}
+                                navigation={{
+                                    nextEl: '.swipe-button-next',
+                                    prevEl: '.swipe-button-prev',
+                                }}
+                                breakpoints={{
+                                    640: {
+                                        slidesPerView: 1,
+                                        centeredSlides: false,
+                                        spaceBetween: 16,
+                                    },
+                                    768: {
+                                        slidesPerView: 2,
+                                        centeredSlides: false,
+                                        spaceBetween: 20,
+                                    },
+                                    1024: {
+                                        slidesPerView: 3,
+                                        centeredSlides: false,
+                                        spaceBetween: 24,
+                                    },
+                                    1280: {
+                                        slidesPerView: 3,
+                                        centeredSlides: true,
+                                        spaceBetween: 24,
+                                    },
+                                }}
+                                speed={500}
+                                grabCursor={true}
+                                className="mySwiper"
+                                onSwiper={(swiper) => {
+                                    swiperRef.current = swiper;
+                                }}
+                            >
+                                {blogs.map((blog) => (
+                                    <SwiperSlide key={blog.id}>
+                                        <BlogCard blog={formatBlogForCard(blog)} />
+                                    </SwiperSlide>
+                                ))}
+                                
+                                <div className="swipe-button-prev bg-secondary-color absolute top-1/2 transform-[translateY(-50%)] left-0 z-10 h-[50px] w-[50px] ml-2.5 text-white rounded-full flex items-center justify-center cursor-pointer duration-200 hover:bg-primary-color-dark">
+                                    <FontAwesomeIcon icon={faChevronLeft} />
+                                </div>
 
-                            <div className="swipe-button-next bg-secondary-color absolute top-1/2 transform-[translateY(-50%)] right-0 z-10 h-[50px] w-[50px] mr-2.5 text-white rounded-full flex items-center justify-center cursor-pointer duration-200 hover:bg-primary-color-dark">
-                                <FontAwesomeIcon icon={faChevronRight} />
-                            </div>
-                        </Swiper>
-                    </div>
+                                <div className="swipe-button-next bg-secondary-color absolute top-1/2 transform-[translateY(-50%)] right-0 z-10 h-[50px] w-[50px] mr-2.5 text-white rounded-full flex items-center justify-center cursor-pointer duration-200 hover:bg-primary-color-dark">
+                                    <FontAwesomeIcon icon={faChevronRight} />
+                                </div>
+                            </Swiper>
+                        </div>
+                    )}
+                    
                     <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
                         <Link 
                             href="/blogs" 
@@ -630,69 +621,66 @@ const Home = () => {
                         <div className="w-full h-0.5 md:w-0.5 md:h-32 lg:h-40 bg-gray-400"></div>
                     </div>
 
-                    {/* Right Section - Swiper */}
+                    {/* Right Section - Swiper with Dynamic Reviews */}
                     <div className="w-full md:w-2/3">
-                        <Swiper
-                            modules={[Autoplay]}
-                            slidesPerView={1}
-                            loop={true}
-                            autoplay={{
-                                delay: 3000,
-                                disableOnInteraction: false,
-                            }}
-                            pagination={{
-                                clickable: true,
-                            }}
-                            speed={500}
-                            grabCursor={true}
-                            className="pb-8 mySwiper md:pb-10"
-                        >
-                            {/* Slide 1 */}
-                            <SwiperSlide>
-                                <div className="p-4 transition-colors duration-300 bg-white border border-gray-200 rounded-lg sm:p-5 md:p-6 hover:border-primary-color">
-                                    <div className="flex flex-col items-center text-center">
-                                        <Image 
-                                            src="https://globalnepaltreks.com/storage/testimonials/February2024/sergi%2078-cropped.jpg" 
-                                            className="object-cover w-16 h-16 mb-3 rounded-full sm:w-20 sm:h-20 md:w-24 md:h-24"
-                                            width={96}
-                                            height={96}
-                                            alt="Sergi Barrantes"
-                                        />
-                                        <h2 className="mb-2 text-base font-semibold sm:text-lg md:text-xl lg:mb-4">
-                                            Sergi Barrantes
-                                        </h2>
-                                        <p className="text-sm text-gray-700 sm:text-base md:text-lg">
-                                            We were really very satisfied with the trekking and the organisation. The guide and porter were very friendly and considerate. I really recommend Global Nepal Treks.
-                                        </p>
-                                    </div>
-                                </div>
-                            </SwiperSlide>
-
-                            {/* Slide 2 */}
-                            <SwiperSlide>
-                                <div className="p-4 transition-colors duration-300 bg-white border border-gray-200 rounded-lg sm:p-5 md:p-6 hover:border-primary-color">
-                                    <div className="flex flex-col items-center text-center">
-                                        <Image 
-                                            src="https://globalnepaltreks.com/storage/testimonials/February2024/sergi%2078-cropped.jpg" 
-                                            className="object-cover w-16 h-16 mb-3 rounded-full sm:w-20 sm:h-20 md:w-24 md:h-24"
-                                            width={96}
-                                            height={96}
-                                            alt="Sergi Barrantes"
-                                        />
-                                        <h2 className="mb-2 text-base font-semibold sm:text-lg md:text-xl lg:mb-4">
-                                            Sergi Barrantes
-                                        </h2>
-                                        <p className="text-sm text-gray-700 sm:text-base md:text-lg">
-                                            We were really very satisfied with the trekking and the organisation. The guide and porter were very friendly and considerate. I really recommend Global Nepal Treks.
-                                        </p>
-                                    </div>
-                                </div>
-                            </SwiperSlide>
-                        </Swiper>
+                        {loading.reviews ? (
+                            <div className="flex justify-center py-12">
+                                <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
+                            </div>
+                        ) : reviews.length > 0 ? (
+                            <Swiper
+                                modules={[Autoplay]}
+                                slidesPerView={1}
+                                loop={true}
+                                autoplay={{
+                                    delay: 3000,
+                                    disableOnInteraction: false,
+                                }}
+                                pagination={{
+                                    clickable: true,
+                                }}
+                                speed={500}
+                                grabCursor={true}
+                                className="pb-8 mySwiper md:pb-10"
+                            >
+                                {reviews.map((review) => (
+                                    <SwiperSlide key={review.id}>
+                                        <div className="p-4 transition-colors duration-300 bg-white border border-gray-200 rounded-lg sm:p-5 md:p-6 hover:border-primary-color">
+                                            <div className="flex flex-col items-center text-center">
+                                                {review.reviewer_image ? (
+                                                    <Image 
+                                                        src={review.reviewer_image}
+                                                        className="object-cover w-16 h-16 mb-3 rounded-full sm:w-20 sm:h-20 md:w-24 md:h-24"
+                                                        width={96}
+                                                        height={96}
+                                                        alt={review.reviewer_name}
+                                                    />
+                                                ) : (
+                                                    <div className="flex items-center justify-center w-16 h-16 mb-3 rounded-full sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gray-300 text-gray-600 text-2xl font-bold">
+                                                        {review.reviewer_name?.charAt(0) || '?'}
+                                                    </div>
+                                                )}
+                                                <h2 className="mb-2 text-base font-semibold sm:text-lg md:text-xl lg:mb-4">
+                                                    {review.reviewer_name}
+                                                    {review.reviewer_country && <span className="text-sm font-normal text-gray-500">, {review.reviewer_country}</span>}
+                                                </h2>
+                                                <p className="text-sm text-gray-700 sm:text-base md:text-lg">
+                                                    {review.review_text?.length > 250 
+                                                        ? `${review.review_text.substring(0, 250)}...` 
+                                                        : review.review_text}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                        ) : (
+                            <p className="py-12 text-center text-gray-500">No reviews yet.</p>
+                        )}
                     </div>
                 </div>
                 
-                {/* Review Platforms */}
+                {/* Review Platforms (unchanged) */}
                 <div className="flex flex-col items-center gap-4 mx-auto my-10 sm:my-12 md:my-16 lg:my-20 sm:flex-row sm:gap-3 md:gap-4 lg:gap-5 w-fit">
                     <p className="text-sm text-center sm:text-base md:text-lg">
                         Read reviews on
@@ -751,6 +739,6 @@ const Home = () => {
             </section>
         </main>
     );
-}
+};
 
 export default Home;
