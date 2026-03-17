@@ -383,10 +383,10 @@ const Home = () => {
                     
                     <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
                         <Link 
-                            href="/trekking-packages" 
+                            href="/nepal/trekking" 
                             className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
                         >
-                            See More
+                            Explore More Packages
                             <FontAwesomeIcon 
                                 icon={faArrowRight} 
                                 className="transition-transform duration-200 group-hover:translate-x-1" 
@@ -461,10 +461,10 @@ const Home = () => {
                     
                     <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
                         <Link 
-                            href="/trekking-packages" 
+                            href="/nepal/tours" 
                             className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
                         >
-                            See More
+                            More Destinations
                             <FontAwesomeIcon 
                                 icon={faArrowRight} 
                                 className="transition-transform duration-200 group-hover:translate-x-1" 
@@ -495,10 +495,10 @@ const Home = () => {
 
                     <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
                         <Link 
-                            href="/trekking-packages" 
+                            href="/nepal/trekking" 
                             className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
                         >
-                            See More
+                            More Routes
                             <FontAwesomeIcon 
                                 icon={faArrowRight} 
                                 className="transition-transform duration-200 group-hover:translate-x-1" 
@@ -587,7 +587,7 @@ const Home = () => {
                             href="/blogs" 
                             className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
                         >
-                            See More
+                            More Blogs
                             <FontAwesomeIcon 
                                 icon={faArrowRight} 
                                 className="transition-transform duration-200 group-hover:translate-x-1" 
