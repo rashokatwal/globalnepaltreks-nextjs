@@ -423,9 +423,9 @@ const Home = () => {
                 <div className="absolute w-full h-full bg-black/60"></div>
                 <div className="px-4 py-40 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
                     <div className="relative z-10 max-w-3xl">
-                        <h1 className="mb-5 text-5xl font-semibold text-white">
+                        <h2 className="mb-5 text-5xl font-semibold text-white">
                             Enhance your trekking skills with our expert guides
-                        </h1>
+                        </h2>
                         <p className="text-white ">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
                         </p>
