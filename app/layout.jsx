@@ -18,7 +18,7 @@ export const metadata = {
     default: 'Trekking and Tour Agency in Nepal | Global Nepal Treks',
     template: '%s | Global Nepal Treks'
   },
-  description: 'Global Nepal Treks: Locally based trekking company in Nepal offering authentic Everest Base Camp, Annapurna Circuit, and cultural tours. Experience the Himalayas with expert local guides who know the mountains, culture, and people.',
+  description: 'Locally based trekking company in Nepal offering Everest Base Camp, Annapurna Circuit, and cultural tours with expert local guides.',
   keywords: 'trekking in nepal, nepal trekking agency, everest base camp trek, annapurna circuit trek, nepal tour operator, himalayan trekking, local guides nepal, nepal travel company, upper mustang trek, poon hill trek',
 
   openGraph: {
