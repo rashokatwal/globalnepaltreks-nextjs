@@ -19,28 +19,21 @@ async function getInitialData() {
     const blogsData = await blogsRes.json();
     const categoriesData = await categoriesRes.json();
     
-    console.log('Initial blogs response:', JSON.stringify(blogsData, null, 2));
-    console.log('Categories response:', JSON.stringify(categoriesData, null, 2));
-    
     // Extract blogs - check different possible structures
     let initialBlogs = [];
     
     if (blogsData?.data && Array.isArray(blogsData.data)) {
       // Structure: { data: [...] }
       initialBlogs = blogsData.data;
-      console.log('Using blogsData.data (array):', initialBlogs.length);
     } else if (blogsData?.data?.data && Array.isArray(blogsData.data.data)) {
       // Structure: { data: { data: [...] } }
       initialBlogs = blogsData.data.data;
-      console.log('Using blogsData.data.data:', initialBlogs.length);
     } else if (blogsData?.blogs && Array.isArray(blogsData.blogs)) {
       // Structure: { blogs: [...] }
       initialBlogs = blogsData.blogs;
-      console.log('Using blogsData.blogs:', initialBlogs.length);
     } else if (Array.isArray(blogsData)) {
       // Structure: [...] (direct array)
       initialBlogs = blogsData;
-      console.log('Using direct array:', initialBlogs.length);
     }
     
     // Extract categories
@@ -51,14 +44,12 @@ async function getInitialData() {
       categories = categoriesData;
     }
     
-    console.log('Final initialBlogs:', initialBlogs.length, 'items');
     
     return {
       initialBlogs,
       categories
     };
   } catch (error) {
-    console.error('Error fetching initial data:', error);
     return {
       initialBlogs: [],
       categories: []
@@ -69,7 +60,6 @@ async function getInitialData() {
 export default async function BlogPageContent() {
   const { initialBlogs, categories } = await getInitialData();
   
-  console.log('Rendering BlogPageContent with:', initialBlogs.length, 'blogs');
   
   return (
     <>

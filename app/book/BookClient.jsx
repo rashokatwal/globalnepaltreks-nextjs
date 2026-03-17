@@ -185,7 +185,6 @@ export default function BookClient() {
         });
       }
     } catch (error) {
-      console.error('Submission error:', error);
       setSubmitStatus({ 
         type: 'error', 
         message: error.message || 'Network error. Please check your connection and try again.' 

@@ -113,7 +113,6 @@ export default function ContactClient() {
         });
       }
     } catch (error) {
-      console.error('Submission error:', error);
       setSubmitStatus({ 
         type: 'error', 
         message: error.message || 'Network error. Please check your connection and try again.' 

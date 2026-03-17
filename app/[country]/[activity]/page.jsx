@@ -80,7 +80,6 @@ export default function ActivityPage({ params, searchParams }) {
           fetchedPackages = packagesData.data.packages;
         }
         
-        console.log('Fetched packages with sort:', filters.sort, fetchedPackages.map(p => ({ title: p.title, price: p.price })));
         setPackages(fetchedPackages);
         
         // Calculate filter options
@@ -97,7 +96,6 @@ export default function ActivityPage({ params, searchParams }) {
         });
         
       } catch (error) {
-        console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }

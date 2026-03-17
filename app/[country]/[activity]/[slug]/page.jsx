@@ -65,7 +65,6 @@ async function getPackage(slug) {
     const data = await res.json();
     return data.data;
   } catch (error) {
-    console.error('Error fetching package:', error);
     return null;
   }
 }

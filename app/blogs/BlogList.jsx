@@ -28,7 +28,6 @@ export default function BlogList({ initialBlogs = [] }) {
 
   // Initialize from props
   useEffect(() => {
-    console.log('Initial blogs received:', initialBlogs);
     const blogsArray = Array.isArray(initialBlogs) ? initialBlogs : [];
     setBlogs(blogsArray);
     setFeaturedPost(blogsArray[0] || null);
@@ -44,12 +43,8 @@ export default function BlogList({ initialBlogs = [] }) {
           ? `${baseUrl}/api/blogs/categories/${encodeURIComponent(category)}/posts?limit=50`
           : `${baseUrl}/api/blogs?limit=50`;
         
-        console.log('Fetching from:', url);
-        
         const res = await fetch(url);
         const response = await res.json();
-        
-        console.log('Full API Response:', JSON.stringify(response, null, 2));
         
         // Handle different response structures
         let blogsArray = [];
@@ -57,40 +52,32 @@ export default function BlogList({ initialBlogs = [] }) {
         if (category) {
           // For category filter: response.data.blogs is the array
           blogsArray = response?.data?.blogs || [];
-          console.log('Category filter - using response.data.blogs:', blogsArray);
         } else {
           // For all posts: check different possible structures
           if (response?.data && Array.isArray(response.data)) {
             // Structure: { data: [...] }
             blogsArray = response.data;
-            console.log('All posts - using response.data (array):', blogsArray);
           } else if (response?.data?.data && Array.isArray(response.data.data)) {
             // Structure: { data: { data: [...] } }
             blogsArray = response.data.data;
-            console.log('All posts - using response.data.data:', blogsArray);
           } else if (response?.blogs && Array.isArray(response.blogs)) {
             // Structure: { blogs: [...] }
             blogsArray = response.blogs;
-            console.log('All posts - using response.blogs:', blogsArray);
           } else if (Array.isArray(response)) {
             // Structure: [...] (direct array)
             blogsArray = response;
-            console.log('All posts - using direct array:', blogsArray);
           }
         }
         
         // Final safety check
         if (!Array.isArray(blogsArray)) {
-          console.warn('Expected array but got:', blogsArray);
           blogsArray = [];
         }
         
-        console.log('Final blogs array:', blogsArray);
         
         setBlogs(blogsArray);
         setFeaturedPost(blogsArray[0] || null);
       } catch (error) {
-        console.error('Error fetching blogs:', error);
         setBlogs([]);
       } finally {
         setLoading(false);
@@ -101,7 +88,6 @@ export default function BlogList({ initialBlogs = [] }) {
       fetchBlogs();
     } else {
       // Reset to initial blogs when no category
-      console.log('No category, using initial blogs:', initialBlogs);
       const blogsArray = Array.isArray(initialBlogs) ? initialBlogs : [];
       setBlogs(blogsArray);
       setFeaturedPost(blogsArray[0] || null);
