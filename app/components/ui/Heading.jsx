@@ -9,9 +9,9 @@ const Heading = ({ title, subtitle, titleClass = "", subtitleClass = "" }) => {
     return (
         <div>
             {title && (
-                <h1 className={combinedTitleClasses}>
+                <h2 className={combinedTitleClasses}>
                     {title}
-                </h1>
+                </h2>
             )}
             {subtitle && (
                 <p className={combinedSubtitleClasses}>
