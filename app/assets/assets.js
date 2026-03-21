@@ -19,6 +19,8 @@ import heli_tours from './Home/heli_tours.jpg';
 import rafting from './Home/rafting.jpg';
 import jungle_safari from './Home/jungle_safari.jpg';
 import peak_climbing from './Home/peak_climbing.jpg';
+import tours from './Home/tours.jpg';
+import trekking from './Home/trekking.jpeg';
 
 import about_us_cover from './About/about_us_cover.jpg';
 
@@ -46,7 +48,9 @@ const homeAssets = {
     rafting,
     jungle_safari,
     peak_climbing,
-    guides_background
+    guides_background,
+    tours,
+    trekking
 }
 
 const aboutAssets = {

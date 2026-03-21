@@ -92,14 +92,14 @@ const Home = () => {
     const differentActivitiesWeOffer = [
         {
             title: "Trekking",
-            image: homeAssets.heli_tours,
+            image: homeAssets.trekking,
             type: "Adventure",
             color: "#098B63",
             description: "Customizable routes, difficulty levels, and schedules tailored to your preferences and fitness level."
         },
         {
             title: "Tours",
-            image: homeAssets.heli_tours,
+            image: homeAssets.tours,
             type: "Culture",
             color: "#255DD8",
             description: "Immersive cultural experiences with expert guides and authentic local encounters."
