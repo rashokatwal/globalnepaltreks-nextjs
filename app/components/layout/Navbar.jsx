@@ -225,7 +225,7 @@ const NavBar = () => {
                         <Link href="/" className="block">
                             <Image 
                                 src={logos.globalnepaltreks_logo} 
-                                className="h-auto w-[120px] lg:w-[200px]" 
+                                className="h-auto w-30 lg:w-50" 
                                 width={200}
                                 height={60}
                                 alt="Global Nepal Treks Logo"
@@ -258,7 +258,7 @@ const NavBar = () => {
                         >
                             <Image 
                                 src={logos.tripadvisor_logo} 
-                                className="h-auto w-[120px]" 
+                                className="h-auto w-30" 
                                 width={120}
                                 height={40}
                                 alt="TripAdvisor Logo" 
