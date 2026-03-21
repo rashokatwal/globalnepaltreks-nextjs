@@ -72,7 +72,7 @@ export default function PageNavigation({ sections }) {
   };
 
   return (
-    <nav className="sticky top-20 z-40 bg-white border-b border-gray-200 shadow-sm">
+    <nav className="sticky top-0 md:top-20 z-40 bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex overflow-x-auto no-scrollbar gap-1">
           {sections.map((section) => (

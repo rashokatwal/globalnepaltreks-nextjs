@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faSlidersH } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faSlidersH, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 export default function FilterSidebar({ filterOptions, currentFilters, baseUrl }) {
   const router = useRouter();
@@ -45,22 +45,21 @@ export default function FilterSidebar({ filterOptions, currentFilters, baseUrl }
   // Mobile filter toggle
   if (mobileFilterOpen) {
     return (
-      <div className="lg:hidden fixed inset-0 bg-white z-50 overflow-y-auto">
+      <div className="fixed inset-0 bg-white z-50 overflow-y-auto lg:hidden animate-in slide-in-from-right duration-300">
+        <div className="sticky top-0 border-b border-gray-200 p-4 flex justify-between items-center">
+          <h3 className="text-lg font-bold flex items-center gap-2">
+            <FontAwesomeIcon icon={faSlidersH} className="w-4 h-4 text-primary-color-dark" />
+            Filters
+          </h3>
+          <button 
+            onClick={() => setMobileFilterOpen(false)}
+            className="w-8 h-8 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors"
+          >
+            <FontAwesomeIcon icon={faTimes} className="w-4 h-4" />
+          </button>
+        </div>
+        
         <div className="p-4">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-bold flex items-center gap-2">
-              <FontAwesomeIcon icon={faSlidersH} className="w-4 h-4" />
-              Filters
-            </h3>
-            <button 
-              onClick={() => setMobileFilterOpen(false)}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              ✕
-            </button>
-          </div>
-          
-          {/* Mobile filter content - same as desktop but simplified */}
           <FilterContent 
             filterOptions={filterOptions}
             currentFilters={currentFilters}
@@ -81,25 +80,33 @@ export default function FilterSidebar({ filterOptions, currentFilters, baseUrl }
       {/* Mobile Filter Button */}
       <button
         onClick={() => setMobileFilterOpen(true)}
-        className="lg:hidden w-full bg-white border border-gray-200 rounded-lg p-3 mb-4 flex items-center justify-center gap-2"
+        className="lg:hidden w-full bg-white border border-gray-200 rounded-xl p-3 mb-4 flex items-center justify-center gap-2 hover:border-primary-color-dark hover:shadow-sm transition-all duration-200"
       >
-        <FontAwesomeIcon icon={faSlidersH} className="w-4 h-4" />
-        Show Filters
+        <FontAwesomeIcon icon={faSlidersH} className="w-4 h-4 text-primary-color-dark" />
+        <span className="font-medium text-gray-700">Show Filters</span>
+        {Object.keys(currentFilters).length > 0 && (
+          <span className="bg-primary-color-dark text-white text-xs px-2 py-0.5 rounded-full ml-1">
+            {Object.keys(currentFilters).length}
+          </span>
+        )}
       </button>
 
       {/* Desktop Sidebar */}
-      <div className="hidden lg:block bg-white border border-gray-200 rounded-lg p-6 sticky top-24">
-        <h3 className="text-lg font-bold mb-6 flex items-center justify-between">
-          <span>Filters</span>
+      <div className="hidden lg:block bg-white border border-gray-200 rounded-xl shadow-sm p-6 sticky top-24">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+            <FontAwesomeIcon icon={faSlidersH} className="w-4 h-4 text-primary-color-dark" />
+            Filters
+          </h3>
           {Object.keys(currentFilters).length > 0 && (
             <button
               onClick={clearFilters}
-              className="text-sm text-primary-color-dark hover:underline font-normal"
+              className="text-sm text-primary-color-dark hover:underline font-medium"
             >
               Clear all
             </button>
           )}
-        </h3>
+        </div>
 
         <FilterContent 
           filterOptions={filterOptions}
@@ -126,54 +133,55 @@ function FilterContent({
   clearFilters 
 }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Difficulty Filter */}
       {filterOptions.difficulties.length > 0 && (
         <div>
-          <h4 className="font-semibold mb-3">Difficulty</h4>
-          <div className="space-y-2">
-            {filterOptions.difficulties.map((difficulty) => (
-              <label key={difficulty} className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="difficulty"
-                  value={difficulty}
-                  checked={currentFilters.difficulty === difficulty}
-                  onChange={(e) => updateFilters('difficulty', e.target.value)}
-                  className="text-primary-color-dark focus:ring-primary-color-dark"
-                />
-                <span className={`px-2 py-1 rounded-full text-xs ${difficultyColors[difficulty] || 'bg-gray-100 text-gray-800'}`}>
+          <h4 className="font-semibold text-gray-800 mb-3">Difficulty</h4>
+          <div className="flex flex-wrap gap-2">
+            {filterOptions.difficulties.map((difficulty) => {
+              const isActive = currentFilters.difficulty === difficulty;
+              return (
+                <button
+                  key={difficulty}
+                  onClick={() => updateFilters('difficulty', isActive ? '' : difficulty)}
+                  className={`
+                    px-3 py-1.5 cursor-pointer rounded-full text-xs font-medium transition-all duration-200
+                    ${difficultyColors[difficulty] || 'bg-gray-100 text-gray-800'}
+                    ${isActive ? 'ring-2 ring-offset-1 ring-primary-color-dark scale-105' : 'hover:opacity-80'}
+                  `}
+                >
                   {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
-                </span>
-              </label>
-            ))}
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
 
       {/* Price Range Filter */}
       <div>
-        <h4 className="font-semibold mb-3">Price Range</h4>
+        <h4 className="font-semibold text-gray-800 mb-3">Price Range (USD)</h4>
         <div className="space-y-3">
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <div className="flex-1">
-              <label className="text-xs text-gray-500">Min ($)</label>
+              <label className="text-xs text-gray-500 block mb-1">Min</label>
               <input
                 type="number"
                 value={priceRange.min}
                 onChange={(e) => setPriceRange({ ...priceRange, min: parseInt(e.target.value) })}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-primary-color-dark focus:ring-1 focus:ring-primary-color-dark outline-none transition"
                 min={filterOptions.priceRange.min}
                 max={filterOptions.priceRange.max}
               />
             </div>
             <div className="flex-1">
-              <label className="text-xs text-gray-500">Max ($)</label>
+              <label className="text-xs text-gray-500 block mb-1">Max</label>
               <input
                 type="number"
                 value={priceRange.max}
                 onChange={(e) => setPriceRange({ ...priceRange, max: parseInt(e.target.value) })}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:border-primary-color-dark focus:ring-1 focus:ring-primary-color-dark outline-none transition"
                 min={filterOptions.priceRange.min}
                 max={filterOptions.priceRange.max}
               />
@@ -181,9 +189,9 @@ function FilterContent({
           </div>
           <button
             onClick={applyPriceFilter}
-            className="w-full bg-primary-color-dark text-white py-2 rounded-lg text-sm hover:bg-primary-color transition"
+            className="w-full bg-primary-color-dark cursor-pointer text-white py-2.5 rounded-lg text-sm font-medium hover:bg-primary-color transition-colors"
           >
-            Apply Price Range
+            Apply
           </button>
         </div>
       </div>
@@ -191,11 +199,11 @@ function FilterContent({
       {/* Duration Filter */}
       {filterOptions.durations.length > 0 && (
         <div>
-          <h4 className="font-semibold mb-3">Max Duration</h4>
+          <h4 className="font-semibold text-gray-800 mb-3">Max Duration</h4>
           <select
             value={currentFilters.duration || ''}
             onChange={(e) => updateFilters('duration', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-color-dark"
+            className="w-full px-3 py-2 border cursor-pointer border-gray-200 rounded-lg text-sm focus:border-primary-color-dark focus:ring-1 focus:ring-primary-color-dark outline-none transition bg-white"
           >
             <option value="">Any duration</option>
             {filterOptions.durations.map((days) => (
@@ -207,8 +215,8 @@ function FilterContent({
 
       {/* Active Filters Summary */}
       {Object.keys(currentFilters).length > 0 && (
-        <div className="pt-4 border-t">
-          <h4 className="font-semibold mb-2">Active Filters</h4>
+        <div className="pt-4 border-t border-gray-100">
+          <h4 className="font-semibold text-gray-800 mb-2">Active Filters</h4>
           <div className="flex flex-wrap gap-2">
             {Object.entries(currentFilters).map(([key, value]) => (
               value && (
@@ -216,11 +224,11 @@ function FilterContent({
                   key={key}
                   className="bg-gray-100 px-2 py-1 rounded-full text-xs flex items-center gap-1"
                 >
-                  <span className="capitalize">{key}:</span>
-                  <span className="font-medium">{value}</span>
+                  <span className="capitalize text-gray-600">{key}:</span>
+                  <span className="font-medium text-gray-800">{value}</span>
                   <button
                     onClick={() => updateFilters(key, '')}
-                    className="ml-1 text-gray-500 hover:text-gray-700"
+                    className="ml-1 text-gray-400 hover:text-gray-600 transition-colors"
                   >
                     ×
                   </button>

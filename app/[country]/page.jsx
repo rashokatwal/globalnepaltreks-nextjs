@@ -215,7 +215,7 @@ export default async function CountryPage({ params }) {
             className="absolute inset-0 overflow-hidden bg-fixed bg-cover bg-top" 
             style={{ backgroundImage: `url(${countryData.featured_image})` }}
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+            <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-transparent"></div>
           </div>
 
           {/* Country Title and Quick Info */}

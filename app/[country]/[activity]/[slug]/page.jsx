@@ -430,7 +430,7 @@ export default async function PackagePage({ params }) {
 
             {/* Sidebar - Booking Section */}
             <aside className="lg:w-1/3">
-              <div className="sticky top-40">
+              <div className="sticky top-35">
                 <BookingSidebar 
                   package={pkg}
                   countryName={countryName}

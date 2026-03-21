@@ -110,7 +110,7 @@ export default function ActivityPage({ params, searchParams }) {
   if (loading) {
     return (
       <main className="bg-white">
-        <section className="bg-linear-to-r from-primary-color-dark to-secondary-color text-white py-16">
+        <section className="h-[80vh] bg-linear-to-t from-black to-secondary-color text-white py-16">
           <div className="max-w-7xl mx-auto px-4 text-center">
             <div className="h-10 bg-white/20 rounded-lg animate-pulse w-96 mx-auto mb-4"></div>
             <div className="h-6 bg-white/20 rounded-lg animate-pulse w-64 mx-auto"></div>
@@ -130,9 +130,9 @@ export default function ActivityPage({ params, searchParams }) {
   }
 
   return (
-    <main className="bg-white">
+    <main className="bg-gray-900">
       {/* Hero Section */}
-      <section className="bg-linear-to-r from-primary-color-dark to-secondary-color text-white py-16">
+      <section className="bg-linear-to-t from-black/90 via-black/50 to-transparent h-[80vh] flex items-end text-white py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 font-montserrat">
             {activityName} in {countryName}
@@ -217,7 +217,7 @@ export default function ActivityPage({ params, searchParams }) {
       </section>
 
       {/* Main Content with Filters */}
-      <section className="py-12">
+      <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Filter Sidebar */}
