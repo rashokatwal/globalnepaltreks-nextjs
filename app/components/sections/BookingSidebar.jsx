@@ -108,7 +108,7 @@ export default function BookingSidebar({ package: pkg, countryName, activityName
           <div className="flex items-center">
             <button
               onClick={() => setTravelers(Math.max(1, travelers - 1))}
-              className="p-2 border border-gray-200 rounded-l-xl bg-gray-50 hover:bg-gray-100 transition"
+              className="p-2 cursor-pointer border border-gray-200 rounded-l-xl bg-gray-50 hover:bg-gray-100 transition"
             >
               <FontAwesomeIcon icon={faMinus} className="w-3 h-3 text-gray-600" />
             </button>
@@ -122,7 +122,7 @@ export default function BookingSidebar({ package: pkg, countryName, activityName
             />
             <button
               onClick={() => setTravelers(Math.min(pkg.group_size_max || 10, travelers + 1))}
-              className="p-2 border border-gray-200 rounded-r-xl bg-gray-50 hover:bg-gray-100 transition"
+              className="p-2 cursor-pointer border border-gray-200 rounded-r-xl bg-gray-50 hover:bg-gray-100 transition"
             >
               <FontAwesomeIcon icon={faPlus} className="w-3 h-3 text-gray-600" />
             </button>
