@@ -56,7 +56,7 @@ export default function BookingSidebar({ package: pkg, countryName, activityName
 
   const handleBooking = () => {
     if (!selectedDate) return;
-    window.location.href = `/booking?package=${pkg.slug}&date=${selectedDate}&travelers=${travelers}`;
+    window.location.href = `/book?package=${pkg.slug}&date=${selectedDate}&travelers=${travelers}`;
   };
 
   const handleInquiry = () => {
