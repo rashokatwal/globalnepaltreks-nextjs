@@ -503,7 +503,7 @@ const NavBar = () => {
                             >
                                 <Image 
                                     src={logos.tripadvisor_logo} 
-                                    className="h-auto w-[120px]" 
+                                    className="h-auto w-30" 
                                     width={120}
                                     height={40}
                                     alt="TripAdvisor Logo" 

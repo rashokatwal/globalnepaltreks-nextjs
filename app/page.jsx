@@ -427,7 +427,7 @@ const Home = () => {
                             Enhance your trekking skills with our expert guides
                         </h2>
                         <p className="text-white ">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
+                            Gain confidence and essential trekking skills through personalized guidance from local experts. Learn the secrets of safe, successful Himalayan adventures.
                         </p>
                         <Link 
                             href="/contact" 
@@ -694,7 +694,7 @@ const Home = () => {
                             >
                                 <Image 
                                     src={logos.tripadvisor_logo} 
-                                    className="h-auto w-[90px] md:w-[100px] lg:w-[120px] transition-transform hover:scale-105" 
+                                    className="h-auto w-22.5 md:w-25 lg:w-30 transition-transform hover:scale-105" 
                                     width={120}
                                     height={40}
                                     alt="TripAdvisor Logo" 
