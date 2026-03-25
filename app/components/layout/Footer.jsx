@@ -59,7 +59,7 @@ const Footer = () => {
         <footer className="w-full px-4 py-10 bg-secondary-color sm:px-6 md:px-10 lg:px-16 xl:px-20">
             <div className="p-4 bg-white rounded-lg shadow-lg sm:p-6 md:p-8 lg:p-10">
                 {/* Main Content Grid */}
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 xl:gap-12">
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:gap-12">
                     {/* Company Info Column */}
                     <div className="space-y-4 text-sm">
                         <div>
@@ -100,7 +100,7 @@ const Footer = () => {
                         </div>
                     </div>
 
-                    <div className="hidden space-y-4 md:block">
+                    {/* <div className="hidden space-y-4 md:block">
                         <p className="text-sm font-bold text-center text-gray-700 sm:text-base">Volunteer Programs</p>
                         <div className="flex items-center justify-center gap-5 md:block">
                             <Link href={"https://www.pvnnepal.org"} target="_blank" className="block transition-transform hover:scale-105">
@@ -118,7 +118,7 @@ const Footer = () => {
                                 />
                             </Link>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Useful Links Column 1 */}
                     <div>

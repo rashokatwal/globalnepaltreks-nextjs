@@ -15,17 +15,17 @@ const PackageCard = ({ packageDetails }) => {
             </div>
 
             <div className="p-4 sm:p-5 md:p-6">
-                <p className="text-xs font-semibold tracking-wide uppercase sm:text-sm text-lime-700">
+                <p className="text-xs font-semibold tracking-wide uppercase sm:text-sm text-primary-color-dark">
                     {packageDetails.country}
                 </p>
 
-                <h3 className="mt-1 text-lg font-bold text-gray-900 sm:text-xl md:text-2xl">
+                <h3 className="mt-1 text-md font-bold text-gray-900 sm:text-lg md:text-xl">
                     {packageDetails.title}
                 </h3>
 
                 <div className="flex items-center gap-4 my-4 text-sm text-gray-500">
                     <span className="flex items-center gap-1">
-                        <FontAwesomeIcon icon={faClock} className="w-4 h-4 text-primary-color-dark" />
+                        <FontAwesomeIcon icon={faClock} className="w-4 h-4 text-accent-color" />
                         {packageDetails.duration}
                     </span>
                 </div>
@@ -33,12 +33,12 @@ const PackageCard = ({ packageDetails }) => {
                 {/* Price and CTA */}
                 <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
                     <div>
-                        <span className="text-2xl font-bold text-primary-color-dark">
+                        <span className="text-2xl font-bold text-accent-color">
                             ${packageDetails.price}
                         </span>
                         <span className="text-sm text-gray-500 ml-1">/person</span>
                     </div>
-                    <span className="text-primary-color-dark group-hover:translate-x-1 transition-transform">
+                    <span className="text-accent-color group-hover:translate-x-1 transition-transform">
                         <FontAwesomeIcon icon={faArrowRight} className="w-4 h-4" />
                     </span>
                 </div>
@@ -48,7 +48,7 @@ const PackageCard = ({ packageDetails }) => {
                         <div>
                             <div className="h-px my-5 bg-gray-200" />
 
-                            <p className="text-sm leading-relaxed text-gray-600">
+                            <p className="line-clamp-3 text-sm leading-relaxed text-gray-600">
                                 {packageDetails.description}
                             </p>
                         </div>

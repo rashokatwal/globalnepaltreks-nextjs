@@ -15,6 +15,7 @@
     "@fortawesome/free-solid-svg-icons": "^7.2.0",
     "@fortawesome/react-fontawesome": "^3.2.0",
     "@next/env": "^16.1.6",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.19",
     "bcryptjs": "^3.0.3",
     "jsonwebtoken": "^9.0.3",

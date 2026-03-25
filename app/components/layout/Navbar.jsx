@@ -52,10 +52,6 @@ const NavBar = () => {
             ]
         },
         { 
-            name: 'Blogs', 
-            link: '/blogs'
-        },
-        { 
             name: 'Nepal', 
             link: '/nepal',
             items: [
@@ -81,6 +77,10 @@ const NavBar = () => {
             items: [
                 { name: 'Tours', link: '/bhutan/tours' },
             ]
+        },
+        { 
+            name: 'Blogs', 
+            link: '/blogs'
         },
         { 
             name: 'Contact Us', 
@@ -283,7 +283,7 @@ const NavBar = () => {
                         {/* Book Now Button */}
                         <Link 
                             href="/book"
-                            className="w-full px-6 py-3 font-medium text-center text-white duration-200 rounded bg-primary-color-dark hover:bg-secondary-color lg:w-auto"
+                            className="w-full px-6 py-3 font-medium text-center text-white duration-200 rounded bg-accent-color hover:bg-secondary-color lg:w-auto"
                         >
                             Book Now
                         </Link>
@@ -301,7 +301,7 @@ const NavBar = () => {
                     }`}
                     style={{ zIndex: 60 }}
                 >
-                    <div className="flex flex-col items-center justify-between px-4 py-4 mx-2 font-semibold text-white rounded-md shadow-lg lg:flex-row lg:px-10 lg:mx-6 bg-secondary-color">
+                    <div className="flex flex-col items-center justify-between px-4 py-4 mx-2 font-semibold text-white rounded-md shadow-lg lg:flex-row lg:px-10 lg:mx-6 bg-accent-color">
                         <ul className="flex flex-wrap justify-center w-full gap-4 font-medium lg:justify-start lg:gap-8 lg:w-auto">
                             {navItems.map((item) => (
                                 <li 
@@ -357,7 +357,7 @@ const NavBar = () => {
                                     placeholder="Search treks, destinations..."
                                     className="w-full px-4 py-3 pr-10 rounded-full border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-800 dark:text-white focus:outline-none focus:border-primary-color-dark transition-colors"
                                 />
-                                <button className="absolute right-1 top-1/2 transform -translate-y-1/2 cursor-pointer bg-primary-color-dark text-white p-2 rounded-full h-10 w-10 hover:bg-primary-color transition-colors">
+                                <button className="absolute right-1 top-1/2 transform -translate-y-1/2 cursor-pointer bg-secondary-color-dark text-white p-2 rounded-full h-10 w-10 hover:bg-primary-color transition-colors">
                                     <FontAwesomeIcon icon={faRoute} className="w-3 h-3" />
                                 </button>
                             </div>
@@ -527,7 +527,7 @@ const NavBar = () => {
                             
                             <Link 
                                 href="/book-now" 
-                                className="w-full px-6 py-3 mt-4 font-medium text-center text-white duration-200 rounded bg-primary-color-dark hover:bg-secondary-color"
+                                className="w-full px-6 py-3 mt-4 font-medium text-center text-white duration-200 rounded bg-accent-color hover:bg-secondary-color"
                                 onClick={closeAll}
                             >
                                 Book Now

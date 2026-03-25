@@ -191,15 +191,15 @@ const Home = () => {
             {/* Hero Section (unchanged) */}
             <section className="relative">
                 <div 
-                    className="flex items-center justify-center w-full h-[110vh] bg-fixed bg-center bg-no-repeat bg-cover" 
+                    className="flex items-center justify-center w-full h-[80vh] bg-fixed bg-top bg-no-repeat bg-cover" 
                     style={{ backgroundImage: `url(${homeAssets.home_cover.src})` }}
                 >
-                    <div className="absolute w-full h-full bg-black/50"></div>
+                    <div className="absolute w-full h-full bg-black/20"></div>
                 </div>
 
-                <div className="absolute z-10 flex flex-col items-center w-full px-5 transform -translate-x-1/2 -translate-y-1/2 md:mx-0 md:w-fit top-1/2 left-1/2">
-                    <h1 className="text-3xl font-semibold text-center text-white md:text-4xl">Discover the World Beyond the Trails</h1>
-                    <p className="mt-4 text-center text-white text-md md:text-lg">Unforgettable treks. Untamed landscapes. Life-changing journeys.</p>
+                <div className="absolute z-10 flex flex-col items-center w-full px-5 transform -translate-x-1/2 -translate-y-1/3 md:translate-y-0 md:mx-0 md:w-fit top-1/2 left-1/2">
+                    <h1 className="text-3xl font-semibold text-center text-white md:text-4xl">Beyond Travel, Into Relationships.</h1>
+                    <p className="mt-4 text-center text-white text-md md:text-lg">Hospitality, Authenticity, Connection, Sustainability.</p>
                     <div className={`relative duration-200 overflow-hidden w-full my-5`}>
                         <input
                             type="text"
@@ -227,7 +227,7 @@ const Home = () => {
                     </div>
                 </div>
 
-                <div className="absolute bottom-0 min-w-full">
+                {/* <div className="absolute bottom-0 min-w-full">
                     <Image 
                         src={homeAssets.hero_mountains.src} 
                         alt="Mountain silhouette" 
@@ -236,23 +236,179 @@ const Home = () => {
                         height={200}
                         priority={false}
                     />
+                </div> */}
+            </section>
+
+            <section className="py-5 bg-white">
+                <div className="grid px-4 md:px-0 mx-auto mt-5 lg:grid-cols-4 md:grid-cols-2 max-w-7xl gap-x-10 gap-y-5">
+                    <div className="p-0 flex items-center gap-5">
+                        <FontAwesomeIcon icon={faPersonHiking} className="text-3xl text-primary-color-dark" />
+                        <div>
+                            <h3 className="mt-2 font-medium text-md">Custom Trek Planning</h3>
+                            <p className="text-sm md:text-md">Tailor routes, difficulty levels, and schedules to your needs.</p>
+                        </div>
+                    </div>
+                    <div className="p-0 flex items-center gap-5">
+                        <FontAwesomeIcon icon={faRoute} className="text-3xl text-primary-color-dark" />
+                        <div>
+                            <h3 className="mt-2 font-medium text-md">Handpicked Trek Routes</h3>
+                            <p className="text-sm md:text-md">From beginner-friendly trails to extreme high-altitude expeditions.</p>
+                        </div>
+                    </div>
+                    <div className="p-0 flex items-center gap-5">
+                        <FontAwesomeIcon icon={faShieldAlt} className="text-3xl text-primary-color-dark" />
+                        <div>
+                            <h3 className="mt-2 font-medium text-md">Safety First Approach</h3>
+                            <p className="text-sm md:text-md">Emergency protocols, oxygen supply, satellite phones, and insurance support.</p>
+                        </div>
+                    </div>
+                    <div className="p-0 flex items-center gap-5">
+                        <FontAwesomeIcon icon={faLeaf} className="text-3xl text-primary-color-dark" />
+                        <div>
+                            <h3 className="mt-2 font-medium text-md">Eco-Friendly Travel</h3>
+                            <p className="text-sm md:text-md">Sustainable and responsible travel practices for all trekkers.</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="px-4 py-10 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
+                    <div className="relative z-10 py-10">
+                        <Heading title={"Explore your Adventure"} subtitle={"Best Selling Packages"} titleClass={"text-center"} subtitleClass={"text-center"} />
+                    </div>
+
+                    {loading.packages ? (
+                        <div className="flex justify-center py-12">
+                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                            {packages.slice(0, 6).map((pkg) => (
+                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
+                            ))}
+                        </div>
+                    )}
+                    
+                    <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
+                        <Link 
+                            href="/nepal/trekking" 
+                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
+                        >
+                            Explore More Packages
+                            <FontAwesomeIcon 
+                                icon={faArrowRight} 
+                                className="transition-transform duration-200 group-hover:translate-x-1" 
+                            />
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* Nepal Treks Section (Top Destinations for Trekking in Nepal) */}
+            <section className="py-10 bg-dark-section">
+                <div className="px-4 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
+                    <div className="relative z-10 px-10 py-10">
+                        <Heading title={"Adventure Packages in Nepal"} subtitle={"Featured Packages"} titleClass={"text-center"} subtitleClass={"text-center"} />
+                    </div>
+                    
+                    {loading.packages ? (
+                        <div className="flex justify-center py-12">
+                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                            {packages.slice(0, 3).map((pkg) => (
+                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
+                            ))}
+                        </div>
+                    )}
+                    
+                    <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
+                        <Link 
+                            href="/nepal/tours" 
+                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
+                        >
+                            More Destinations
+                            <FontAwesomeIcon 
+                                icon={faArrowRight} 
+                                className="transition-transform duration-200 group-hover:translate-x-1" 
+                            />
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* Nepal Treks Section (Top Destinations for Trekking in Nepal) */}
+            <section className="py-10 bg-white">
+                <div className="px-4 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
+                    <div className="relative z-10 px-10 py-10">
+                        <Heading title={"Adventure Packages in Nepal"} subtitle={"Luxuary Packages"} titleClass={"text-center"} subtitleClass={"text-center"} />
+                    </div>
+                    
+                    {loading.packages ? (
+                        <div className="flex justify-center py-12">
+                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                            {packages.slice(0, 3).map((pkg) => (
+                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
+                            ))}
+                        </div>
+                    )}
+                    
+                    <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
+                        <Link 
+                            href="/nepal/tours" 
+                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
+                        >
+                            More Destinations
+                            <FontAwesomeIcon 
+                                icon={faArrowRight} 
+                                className="transition-transform duration-200 group-hover:translate-x-1" 
+                            />
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            <section className="py-10 bg-dark-section">
+                <div className="px-4 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
+                    <div className="relative z-10 px-10 py-10">
+                        <Heading title={"Adventure Packages in Nepal"} subtitle={"Adventure Packages"} titleClass={"text-center"} subtitleClass={"text-center"} />
+                    </div>
+                    
+                    {loading.packages ? (
+                        <div className="flex justify-center py-12">
+                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                            {packages.slice(0, 3).map((pkg) => (
+                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
+                            ))}
+                        </div>
+                    )}
+                    
+                    <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
+                        <Link 
+                            href="/nepal/tours" 
+                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
+                        >
+                            More Destinations
+                            <FontAwesomeIcon 
+                                icon={faArrowRight} 
+                                className="transition-transform duration-200 group-hover:translate-x-1" 
+                            />
+                        </Link>
+                    </div>
                 </div>
             </section>
 
             {/* About Section (unchanged) */}
-            <section className="py-10 bg-white">
-                <div className="flex flex-col items-center px-5 mx-auto lg:p-10 lg:flex-row max-w-8xl">
+            <section className="py-0 bg-white">
+                
+                <div className="flex flex-col-reverse md:flex-col items-center gap-10 justify-center px-5 mx-auto lg:p-10 lg:flex-row max-w-7xl">
                     <div className="flex-1">
-                        <Image 
-                            src={homeAssets.home_about_image.src} 
-                            className="w-full h-auto" 
-                            alt="About Global Nepal Treks"
-                            width={600}
-                            height={400}
-                        />
-                    </div>
-                    <div className="flex-1">
-                        <Heading title={"Who We Are?"} subtitle={"Trekking and Tour Agency in Nepal"} />
+                        <Heading title={"Who We Are?"} subtitle={"Trekking and Tour Agency in Nepal"} titleClass={"md:text-left text-center"} subtitleClass={"md:text-left text-center"} />
                         <p className="mt-5 mb-4 text-sm font-medium text-center md:text-left md:text-md">
                             At Global Nepal Treks, we do more than organize trekking itineraries - we invite you to experience Nepal as our home. As a locally based trekking company in Nepal, we specialize in creating authentic, safe, and personalized trekking experiences led by experienced local guides who understand the mountains, the culture, and the people.
                             <br /><br />
@@ -296,307 +452,19 @@ const Home = () => {
                             </div>
                         </div>
                     </div>
+                    <div className="flex-1">
+                        <Image 
+                            src={homeAssets.home_about_image.src} 
+                            className="w-150 h-auto mx-auto" 
+                            alt="About Global Nepal Treks"
+                            width={700}
+                            height={500}
+                        />
+                    </div>
                 </div>
                 
-                <div className="grid px-5 mx-auto mt-10 lg:grid-cols-4 md:grid-cols-2 max-w-8xl gap-x-10 gap-y-5">
-                    <div className="p-5 border border-gray-400 rounded-md">
-                        <FontAwesomeIcon icon={faPersonHiking} className="text-4xl text-primary-color-dark" />
-                        <h3 className="mt-2 font-medium text-md">Custom Trek Planning</h3>
-                        <p className="text-sm md:text-md">Tailor routes, difficulty levels, and schedules to your needs.</p>
-                    </div>
-                    <div className="p-5 border border-gray-400 rounded-md">
-                        <FontAwesomeIcon icon={faRoute} className="text-4xl text-primary-color-dark" />
-                        <h3 className="mt-2 font-medium text-md">Handpicked Trek Routes</h3>
-                        <p className="text-sm md:text-md">From beginner-friendly trails to extreme high-altitude expeditions.</p>
-                    </div>
-                    <div className="p-5 border border-gray-400 rounded-md">
-                        <FontAwesomeIcon icon={faShieldAlt} className="text-4xl text-primary-color-dark" />
-                        <h3 className="mt-2 font-medium text-md">Safety First Approach</h3>
-                        <p className="text-sm md:text-md">Emergency protocols, oxygen supply, satellite phones, and insurance support.</p>
-                    </div>
-                    <div className="p-5 border border-gray-400 rounded-md">
-                        <FontAwesomeIcon icon={faLeaf} className="text-4xl text-primary-color-dark" />
-                        <h3 className="mt-2 font-medium text-md">Eco-Friendly Travel</h3>
-                        <p className="text-sm md:text-md">Sustainable and responsible travel practices for all trekkers.</p>
-                    </div>
-                </div>
             </section>
-
-            {/* Activities Section (unchanged) */}
-            <section className="relative bg-fixed bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${homeAssets.annapurna_background.src})` }}>
-                <div className="absolute w-full h-full bg-black/50"></div>
-                
-                <div className="relative z-10 px-10 py-20">
-                    <Heading title={"Adventure Awaits"} subtitle={"Different Activities we offer"} subtitleClass={"text-white"} />
-                    <div className="grid grid-cols-1 gap-6 px-4 mx-auto mt-12 md:px-6 lg:px-8 max-w-8xl sm:grid-cols-2 lg:grid-cols-5">
-                        {differentActivitiesWeOffer.map((activity, index) => (
-                            <div key={index} className="relative overflow-hidden transition-all duration-300 bg-white rounded-md shadow-lg group hover:shadow-2xl hover:-translate-y-1">
-                                <div className="relative h-48 overflow-hidden">
-                                    <Image 
-                                        src={activity.image} 
-                                        alt={`${activity.title} in Nepal`} 
-                                        className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                                        width={300}
-                                        height={200}
-                                    />
-                                    <div className="absolute inset-0 transition-opacity duration-300 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-70"></div>
-                                    <div className="absolute bottom-4 left-4">
-                                        <span className="inline-flex items-center px-3 py-1 text-xs font-semibold text-white rounded-full backdrop-blur-sm" style={{backgroundColor: activity.color}}>
-                                            {activity.type}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="p-5">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <h3 className="text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-primary-color-dark">{activity.title}</h3>
-                                        <svg className="w-5 h-5 transition-opacity duration-300 opacity-0 text-primary-color-dark group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                                        </svg>
-                                    </div>
-                                    <p className="text-sm leading-relaxed text-gray-600">{activity.description}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Packages Section (Awesome Packages For You) */}
-            <section className="py-10 bg-white">
-                <div className="px-4 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
-                    <div className="relative z-10 px-10 py-10">
-                        <Heading title={"Explore your Adventure"} subtitle={"Awesome Packages For You"} titleClass={"text-center"} subtitleClass={"text-center"} />
-                    </div>
-
-                    {loading.packages ? (
-                        <div className="flex justify-center py-12">
-                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                            {packages.slice(0, 6).map((pkg) => (
-                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
-                            ))}
-                        </div>
-                    )}
-                    
-                    <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
-                        <Link 
-                            href="/nepal/trekking" 
-                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
-                        >
-                            Explore More Packages
-                            <FontAwesomeIcon 
-                                icon={faArrowRight} 
-                                className="transition-transform duration-200 group-hover:translate-x-1" 
-                            />
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* Why Choose Us Section (unchanged) */}
-            <section className="pb-24 pt-14 bg-dark-section">
-                <div className="mx-auto max-w-7xl">
-                    <div className="relative z-10 px-10 py-10">
-                        <Heading title={"Why Choose Us?"} subtitle={"Expert Guidance with Thrilling Adventures"} titleClass={"text-center"} subtitleClass={"text-center"} />
-                    </div>
-
-                    <div className="grid gap-6 mx-5 md:grid-cols-2 lg:grid-cols-3">
-                        {whyChooseUs.map((point, index) => (
-                            <div key={index} className="flex items-center gap-5 p-5 border rounded-md border-primary-color">
-                                <div>
-                                    <FontAwesomeIcon icon={point.icon} className="text-4xl text-primary-color-dark" />
-                                </div>
-                                <div>
-                                    <h3 className="mb-2 font-semibold text-md">{point.title}</h3>
-                                    <p className="text-sm md:text-md">{point.description}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>  
-
-            {/* CTA Section (unchanged) */}
-            <section className="relative bg-fixed bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${homeAssets.guides_background.src})` }}>
-                <div className="absolute w-full h-full bg-black/60"></div>
-                <div className="px-4 py-40 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
-                    <div className="relative z-10 max-w-3xl">
-                        <h2 className="mb-5 text-5xl font-semibold text-white">
-                            Enhance your trekking skills with our expert guides
-                        </h2>
-                        <p className="text-white ">
-                            Gain confidence and essential trekking skills through personalized guidance from local experts. Learn the secrets of safe, successful Himalayan adventures.
-                        </p>
-                        <Link 
-                            href="/contact" 
-                            className="inline-block w-full px-6 py-3 mt-6 text-sm font-medium text-center text-white duration-200 border-2 rounded whitespace-nowrap md:text-md md:w-fit border-primary-color-dark hover:bg-primary-color-dark"
-                        >
-                            Request Info
-                        </Link>
-                    </div>
-                </div>
-            </section>          
-
-            {/* Nepal Treks Section (Top Destinations for Trekking in Nepal) */}
-            <section className="py-10 bg-white">
-                <div className="px-4 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
-                    <div className="relative z-10 px-10 py-10">
-                        <Heading title={"Adventure Packages in Nepal"} subtitle={"Top Destinations for Trekking in Nepal"} titleClass={"text-center"} subtitleClass={"text-center"} />
-                    </div>
-                    
-                    {loading.packages ? (
-                        <div className="flex justify-center py-12">
-                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                            {packages.slice(0, 3).map((pkg) => (
-                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
-                            ))}
-                        </div>
-                    )}
-                    
-                    <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
-                        <Link 
-                            href="/nepal/tours" 
-                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
-                        >
-                            More Destinations
-                            <FontAwesomeIcon 
-                                icon={faArrowRight} 
-                                className="transition-transform duration-200 group-hover:translate-x-1" 
-                            />
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* Popular Routes Section (Popular Trekking Routes in Nepal) */}
-            <section className="py-10 bg-white">
-                <div className="px-4 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
-                    <div className="relative z-10 px-4 py-6 text-center sm:px-6 lg:px-8">
-                        <Heading title={"Adventure Packages in Nepal"} subtitle={"Popular Trekking Routes in Nepal"} titleClass={"text-center"} subtitleClass={"text-center"} />
-                    </div>
-
-                    {loading.packages ? (
-                        <div className="flex justify-center py-12">
-                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                            {packages.slice(0, 3).map((pkg) => (
-                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
-                            ))}
-                        </div>
-                    )}
-
-                    <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
-                        <Link 
-                            href="/nepal/trekking" 
-                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
-                        >
-                            More Routes
-                            <FontAwesomeIcon 
-                                icon={faArrowRight} 
-                                className="transition-transform duration-200 group-hover:translate-x-1" 
-                            />
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* Blog Section */}
-            <section className="py-10 bg-dark-section sm:py-12 md:py-16">
-                <div className="px-4 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
-                    <div className="relative z-10 px-4 py-6 text-center sm:px-6 lg:px-8">
-                        <Heading title={"From the blogs"} subtitle={"Stories, Tips and Trekking Insights"} titleClass={"text-center"} subtitleClass={"text-center"} />
-                    </div>
-                    
-                    {loading.blogs ? (
-                        <div className="flex justify-center py-12">
-                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
-                        </div>
-                    ) : (
-                        <div>
-                            <Swiper
-                                modules={[Navigation, Autoplay]}
-                                spaceBetween={24}
-                                slidesPerView={1}
-                                centeredSlides={false}
-                                loop={true}
-                                autoplay={{
-                                    delay: 3000,
-                                    disableOnInteraction: false,
-                                    pauseOnMouseEnter: false,
-                                }}
-                                navigation={{
-                                    nextEl: '.swipe-button-next',
-                                    prevEl: '.swipe-button-prev',
-                                }}
-                                breakpoints={{
-                                    640: {
-                                        slidesPerView: 1,
-                                        centeredSlides: false,
-                                        spaceBetween: 16,
-                                    },
-                                    768: {
-                                        slidesPerView: 2,
-                                        centeredSlides: false,
-                                        spaceBetween: 20,
-                                    },
-                                    1024: {
-                                        slidesPerView: 3,
-                                        centeredSlides: false,
-                                        spaceBetween: 24,
-                                    },
-                                    1280: {
-                                        slidesPerView: 3,
-                                        centeredSlides: true,
-                                        spaceBetween: 24,
-                                    },
-                                }}
-                                speed={500}
-                                grabCursor={true}
-                                className="mySwiper"
-                                onSwiper={(swiper) => {
-                                    swiperRef.current = swiper;
-                                }}
-                            >
-                                {blogs.map((blog) => (
-                                    <SwiperSlide key={blog.id}>
-                                        <BlogCard blog={formatBlogForCard(blog)} />
-                                    </SwiperSlide>
-                                ))}
-                                
-                                <div className="swipe-button-prev bg-secondary-color absolute top-1/2 transform-[translateY(-50%)] left-0 z-10 h-[50px] w-[50px] ml-2.5 text-white rounded-full flex items-center justify-center cursor-pointer duration-200 hover:bg-primary-color-dark">
-                                    <FontAwesomeIcon icon={faChevronLeft} />
-                                </div>
-
-                                <div className="swipe-button-next bg-secondary-color absolute top-1/2 transform-[translateY(-50%)] right-0 z-10 h-[50px] w-[50px] mr-2.5 text-white rounded-full flex items-center justify-center cursor-pointer duration-200 hover:bg-primary-color-dark">
-                                    <FontAwesomeIcon icon={faChevronRight} />
-                                </div>
-                            </Swiper>
-                        </div>
-                    )}
-                    
-                    <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
-                        <Link 
-                            href="/blogs" 
-                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
-                        >
-                            More Blogs
-                            <FontAwesomeIcon 
-                                icon={faArrowRight} 
-                                className="transition-transform duration-200 group-hover:translate-x-1" 
-                            />
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* Testimonials Section */}
+             {/* Testimonials Section */}
             <section className="py-10 bg-white sm:py-12 md:py-16">
                 <div className="relative flex flex-col items-center px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 md:flex-row">
                     
@@ -614,7 +482,7 @@ const Home = () => {
 
                     {/* Vertical Divider with Quote Icon */}
                     <div className="relative flex items-center justify-center w-full my-4 md:w-auto md:my-0 md:mx-8 lg:mx-10">
-                        <div className="absolute z-10 flex items-center justify-center w-10 h-10 rounded-full sm:w-12 sm:h-12 md:w-14 md:h-14 bg-primary-color">
+                        <div className="absolute z-10 flex items-center justify-center w-10 h-10 rounded-full sm:w-12 sm:h-12 md:w-14 md:h-14 bg-accent-color">
                             <FontAwesomeIcon icon={faQuoteLeft} className="text-sm text-white sm:text-base md:text-xl lg:text-2xl" />
                         </div>
                         <div className="w-full h-0.5 md:w-0.5 md:h-32 lg:h-40 bg-gray-400"></div>
@@ -720,7 +588,7 @@ const Home = () => {
                         
                         <div>
                             <Link 
-                                href="https://share.google/RMUXb8GiXKvMVKJfD" 
+                                href="https://share.google/HMk7ORFTwYiAe55zj" 
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -736,6 +604,251 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Activities Section (unchanged) */}
+            <section className="relative bg-fixed bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${homeAssets.annapurna_background.src})` }}>
+                <div className="absolute w-full h-full bg-black/50"></div>
+                
+                <div className="relative z-10 px-10 py-20">
+                    <Heading title={"Adventure Awaits"} subtitle={"Different Activities we offer"} subtitleClass={"text-white"} />
+                    <div className="grid grid-cols-1 gap-6 px-4 mx-auto mt-12 md:px-6 lg:px-8 max-w-8xl sm:grid-cols-2 lg:grid-cols-5">
+                        {differentActivitiesWeOffer.map((activity, index) => (
+                            <div key={index} className="relative overflow-hidden transition-all duration-300 bg-white rounded-md shadow-lg group hover:shadow-2xl hover:-translate-y-1">
+                                <div className="relative h-48 overflow-hidden">
+                                    <Image 
+                                        src={activity.image} 
+                                        alt={`${activity.title} in Nepal`} 
+                                        className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                                        width={300}
+                                        height={200}
+                                    />
+                                    <div className="absolute inset-0 transition-opacity duration-300 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-70"></div>
+                                    <div className="absolute bottom-4 left-4">
+                                        <span className="inline-flex items-center px-3 py-1 text-xs font-semibold text-white rounded-full backdrop-blur-sm" style={{backgroundColor: activity.color}}>
+                                            {activity.type}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="p-5">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <h3 className="text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-primary-color-dark">{activity.title}</h3>
+                                        <svg className="w-5 h-5 transition-opacity duration-300 opacity-0 text-primary-color-dark group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                        </svg>
+                                    </div>
+                                    <p className="text-sm leading-relaxed text-gray-600">{activity.description}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Packages Section (Awesome Packages For You) */}
+            {/* <section className="py-10 bg-white">
+                <div className="px-4 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
+                    <div className="relative z-10 px-10 py-10">
+                        <Heading title={"Explore your Adventure"} subtitle={"Awesome Packages For You"} titleClass={"text-center"} subtitleClass={"text-center"} />
+                    </div>
+
+                    {loading.packages ? (
+                        <div className="flex justify-center py-12">
+                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            {packages.slice(0, 6).map((pkg) => (
+                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
+                            ))}
+                        </div>
+                    )}
+                    
+                    <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
+                        <Link 
+                            href="/nepal/trekking" 
+                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
+                        >
+                            Explore More Packages
+                            <FontAwesomeIcon 
+                                icon={faArrowRight} 
+                                className="transition-transform duration-200 group-hover:translate-x-1" 
+                            />
+                        </Link>
+                    </div>
+                </div>
+            </section> */}
+
+            {/* Why Choose Us Section (unchanged) */}
+            <section className="pb-24 pt-14 bg-white">
+                <div className="mx-auto max-w-7xl">
+                    <div className="relative z-10 px-10 py-10">
+                        <Heading title={"Why Choose Us?"} subtitle={"Expert Guidance with Thrilling Adventures"} titleClass={"text-center"} subtitleClass={"text-center"} />
+                    </div>
+
+                    <div className="grid gap-6 mx-5 md:grid-cols-2 lg:grid-cols-3">
+                        {whyChooseUs.map((point, index) => (
+                            <div key={index} className="flex items-center gap-5 p-5 border rounded-md border-accent-color">
+                                <div>
+                                    <FontAwesomeIcon icon={point.icon} className="text-4xl text-primary-color-dark" />
+                                </div>
+                                <div>
+                                    <h3 className="mb-2 font-semibold text-md">{point.title}</h3>
+                                    <p className="text-sm md:text-md">{point.description}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>  
+
+            {/* CTA Section (unchanged) */}
+            <section className="relative bg-fixed bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${homeAssets.guides_background.src})` }}>
+                <div className="absolute w-full h-full bg-black/60"></div>
+                <div className="px-4 py-40 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
+                    <div className="relative z-10 max-w-3xl">
+                        <h2 className="mb-5 text-5xl font-semibold text-white">
+                            Enhance your trekking skills with our expert guides
+                        </h2>
+                        <p className="text-white ">
+                            Gain confidence and essential trekking skills through personalized guidance from local experts. Learn the secrets of safe, successful Himalayan adventures.
+                        </p>
+                        <Link 
+                            href="/contact" 
+                            className="inline-block w-full px-6 py-3 mt-6 text-sm font-medium text-center text-white duration-200 border-2 rounded whitespace-nowrap md:text-md md:w-fit border-primary-color-dark hover:bg-primary-color-dark"
+                        >
+                            Request Info
+                        </Link>
+                    </div>
+                </div>
+            </section>          
+
+            {/* Blog Section */}
+            <section className="py-10 bg-white sm:py-12 md:py-16">
+                <div className="px-4 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
+                    <div className="relative z-10 px-4 py-6 text-center sm:px-6 lg:px-8">
+                        <Heading title={"From the blogs"} subtitle={"Stories, Tips and Trekking Insights"} titleClass={"text-center"} subtitleClass={"text-center"} />
+                    </div>
+                    
+                    {loading.blogs ? (
+                        <div className="flex justify-center py-12">
+                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
+                        </div>
+                    ) : (
+                        <div>
+                            <Swiper
+                                modules={[Navigation, Autoplay]}
+                                spaceBetween={24}
+                                slidesPerView={1}
+                                centeredSlides={false}
+                                loop={true}
+                                autoplay={{
+                                    delay: 3000,
+                                    disableOnInteraction: false,
+                                    pauseOnMouseEnter: false,
+                                }}
+                                navigation={{
+                                    nextEl: '.swipe-button-next',
+                                    prevEl: '.swipe-button-prev',
+                                }}
+                                breakpoints={{
+                                    640: {
+                                        slidesPerView: 1,
+                                        centeredSlides: false,
+                                        spaceBetween: 16,
+                                    },
+                                    768: {
+                                        slidesPerView: 2,
+                                        centeredSlides: false,
+                                        spaceBetween: 20,
+                                    },
+                                    1024: {
+                                        slidesPerView: 3,
+                                        centeredSlides: false,
+                                        spaceBetween: 24,
+                                    },
+                                    1280: {
+                                        slidesPerView: 3,
+                                        centeredSlides: true,
+                                        spaceBetween: 24,
+                                    },
+                                }}
+                                speed={500}
+                                grabCursor={true}
+                                className="mySwiper"
+                                onSwiper={(swiper) => {
+                                    swiperRef.current = swiper;
+                                }}
+                            >
+                                {blogs.map((blog) => (
+                                    <SwiperSlide key={blog.id}>
+                                        <BlogCard blog={formatBlogForCard(blog)} />
+                                    </SwiperSlide>
+                                ))}
+                                
+                                <div className="swipe-button-prev bg-secondary-color absolute top-1/2 transform-[translateY(-50%)] left-0 z-10 h-[50px] w-[50px] ml-2.5 text-white rounded-full flex items-center justify-center cursor-pointer duration-200 hover:bg-primary-color-dark">
+                                    <FontAwesomeIcon icon={faChevronLeft} />
+                                </div>
+
+                                <div className="swipe-button-next bg-secondary-color absolute top-1/2 transform-[translateY(-50%)] right-0 z-10 h-[50px] w-[50px] mr-2.5 text-white rounded-full flex items-center justify-center cursor-pointer duration-200 hover:bg-primary-color-dark">
+                                    <FontAwesomeIcon icon={faChevronRight} />
+                                </div>
+                            </Swiper>
+                        </div>
+                    )}
+                    
+                    <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
+                        <Link 
+                            href="/blogs" 
+                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
+                        >
+                            More Blogs
+                            <FontAwesomeIcon 
+                                icon={faArrowRight} 
+                                className="transition-transform duration-200 group-hover:translate-x-1" 
+                            />
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+           <section className="pb-24 pt-14 bg-dark-section">
+                <div className="mx-auto max-w-6xl">
+                    <div className="relative z-10 px-10 py-10">
+                        <Heading title={"Partners"} subtitle={"Our Trusted Partners"} titleClass={"text-center"} subtitleClass={"text-center"} />
+                    </div>
+
+                    <div className="grid gap-12 md:gap-8 mx-5 md:grid-cols-2 lg:grid-cols-4">
+                        <Link href={"https://www.cooperatingvolunteers.com/"} target="_blank" className="block transition-transform hover:scale-105">
+                            <Image 
+                                src={logos.cooperating_volunteer_logo} 
+                                className="w-32 mx-auto sm:w-36 md:w-40" 
+                                alt="Cooperating Volunteer Logo"
+                            />
+                        </Link>
+                        <Link href={"https://www.globalvolunteernepal.org/"} target="_blank" className="block transition-transform hover:scale-105">
+                            <Image 
+                                src={logos.global_volunteer_nepal_logo} 
+                                className="w-32 mx-auto sm:w-36 md:w-40" 
+                                alt="Global Volunteer Nepal Logo"
+                            />
+                        </Link>
+                        <Link href={""} target="_blank" className="block transition-transform hover:scale-105">
+                            <Image 
+                                src={logos.aaima_logo} 
+                                className="w-32 mx-auto sm:w-36 md:w-40" 
+                                alt="AAIMA Logo"
+                            />
+                        </Link>
+                        <Link href={"https://www.pvnnepal.org"} target="_blank" className="block transition-transform hover:scale-105">
+                            <Image 
+                                src={logos.pvn_nepal_logo} 
+                                className="w-32 mx-auto sm:w-36 md:w-50" 
+                                alt="PVN Nepal Logo"
+                            />
+                        </Link>
+                    </div>
+                </div>
+            </section>  
         </main>
     );
 };

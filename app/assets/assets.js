@@ -9,10 +9,12 @@ import ntb_logo from './Logos/ntb.png';
 import taan_logo from './Logos/taan.png';
 import pvn_nepal_logo from './Logos/pvn_nepal_logo.png';
 import global_volunteer_nepal_logo from './Logos/global_volunteer_nepal_logo.png';
+import aaima_logo from './Logos/aaima.jpeg';
+import cooperating_volunteer_logo from './Logos/cooperating_volunteer.png';
 
 import home_cover from './Home/home_cover.jpg';
 import hero_mountains from './Home/hero_mountains.png';
-import home_about_image from './Home/home_about_image.png';
+import home_about_image from './Home/home_about_image.jpg';
 import annapurna_background from './Home/annapurna_background.jpg';
 import guides_background from './Home/guides_background.jpg';
 import heli_tours from './Home/heli_tours.jpg';
@@ -76,7 +78,9 @@ const logos = {
     ntb_logo,
     taan_logo,
     pvn_nepal_logo,
-    global_volunteer_nepal_logo
+    global_volunteer_nepal_logo,
+    aaima_logo,
+    cooperating_volunteer_logo
 }
 
 const teamAssets = {
