@@ -242,37 +242,37 @@ const Home = () => {
             <section className="py-5 bg-white">
                 <div className="grid px-4 md:px-0 mx-auto mt-5 lg:grid-cols-4 md:grid-cols-2 max-w-7xl gap-x-10 gap-y-5">
                     <div className="p-0 flex items-center gap-5">
-                        <FontAwesomeIcon icon={faPersonHiking} className="text-3xl text-primary-color-dark" />
+                        <FontAwesomeIcon icon={faPersonHiking} className="text-3xl text-accent-color" />
                         <div>
-                            <h3 className="mt-2 font-medium text-md">Custom Trek Planning</h3>
+                            <h3 className="font-medium text-md">Custom Trek Planning</h3>
                             <p className="text-sm md:text-md">Tailor routes, difficulty levels, and schedules to your needs.</p>
                         </div>
                     </div>
                     <div className="p-0 flex items-center gap-5">
-                        <FontAwesomeIcon icon={faRoute} className="text-3xl text-primary-color-dark" />
+                        <FontAwesomeIcon icon={faRoute} className="text-3xl text-accent-color" />
                         <div>
-                            <h3 className="mt-2 font-medium text-md">Handpicked Trek Routes</h3>
+                            <h3 className="font-medium text-md">Handpicked Trek Routes</h3>
                             <p className="text-sm md:text-md">From beginner-friendly trails to extreme high-altitude expeditions.</p>
                         </div>
                     </div>
                     <div className="p-0 flex items-center gap-5">
-                        <FontAwesomeIcon icon={faShieldAlt} className="text-3xl text-primary-color-dark" />
+                        <FontAwesomeIcon icon={faShieldAlt} className="text-3xl text-accent-color" />
                         <div>
-                            <h3 className="mt-2 font-medium text-md">Safety First Approach</h3>
+                            <h3 className="font-medium text-md">Safety First Approach</h3>
                             <p className="text-sm md:text-md">Emergency protocols, oxygen supply, satellite phones, and insurance support.</p>
                         </div>
                     </div>
                     <div className="p-0 flex items-center gap-5">
-                        <FontAwesomeIcon icon={faLeaf} className="text-3xl text-primary-color-dark" />
+                        <FontAwesomeIcon icon={faLeaf} className="text-3xl text-accent-color" />
                         <div>
-                            <h3 className="mt-2 font-medium text-md">Eco-Friendly Travel</h3>
+                            <h3 className="font-medium text-md">Eco-Friendly Travel</h3>
                             <p className="text-sm md:text-md">Sustainable and responsible travel practices for all trekkers.</p>
                         </div>
                     </div>
                 </div>
                 <div className="px-4 py-10 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
                     <div className="relative z-10 py-10">
-                        <Heading title={"Explore your Adventure"} subtitle={"Best Selling Packages"} titleClass={"text-center"} subtitleClass={"text-center"} />
+                        <Heading title={"Best Selling Packages"} subtitle={"Experience the pinnacle of the Himalayas with our top-rated, expert-led trekking adventures."} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
 
                     {loading.packages ? (
@@ -306,7 +306,7 @@ const Home = () => {
             <section className="py-10 bg-dark-section">
                 <div className="px-4 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
                     <div className="relative z-10 px-10 py-10">
-                        <Heading title={"Adventure Packages in Nepal"} subtitle={"Featured Packages"} titleClass={"text-center"} subtitleClass={"text-center"} />
+                        <Heading title={"Best Packages in Nepal"} subtitle={"Featured Packages"} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
                     
                     {loading.packages ? (
@@ -811,38 +811,38 @@ const Home = () => {
                 </div>
             </section>
 
-           <section className="pb-24 pt-14 bg-dark-section">
+           <section className="pb-10 pt-10 bg-dark-section">
                 <div className="mx-auto max-w-6xl">
                     <div className="relative z-10 px-10 py-10">
-                        <Heading title={"Partners"} subtitle={"Our Trusted Partners"} titleClass={"text-center"} subtitleClass={"text-center"} />
+                        <Heading title={"Partners"} titleClass={"text-center text-secondary-color"} />
                     </div>
 
-                    <div className="grid gap-12 md:gap-8 mx-5 md:grid-cols-2 lg:grid-cols-4">
-                        <Link href={"https://www.cooperatingvolunteers.com/"} target="_blank" className="block transition-transform hover:scale-105">
+                    <div className="w-fit mx-auto grid gap-12 md:gap-10 md:grid-cols-2 lg:grid-cols-4">
+                        <Link href={"https://www.cooperatingvolunteers.com/"} target="_blank" className="block transition-transform w-fit hover:scale-105">
                             <Image 
                                 src={logos.cooperating_volunteer_logo} 
-                                className="w-32 mx-auto sm:w-36 md:w-40" 
+                                className="w-32 mx-auto sm:w-36 md:w-25" 
                                 alt="Cooperating Volunteer Logo"
                             />
                         </Link>
-                        <Link href={"https://www.globalvolunteernepal.org/"} target="_blank" className="block transition-transform hover:scale-105">
+                        <Link href={"https://www.globalvolunteernepal.org/"} target="_blank" className="block transition-transform w-fit hover:scale-105">
                             <Image 
                                 src={logos.global_volunteer_nepal_logo} 
-                                className="w-32 mx-auto sm:w-36 md:w-40" 
+                                className="w-32 mx-auto sm:w-36 md:w-25" 
                                 alt="Global Volunteer Nepal Logo"
                             />
                         </Link>
-                        <Link href={""} target="_blank" className="block transition-transform hover:scale-105">
+                        <Link href={""} target="_blank" className="block transition-transform w-fit hover:scale-105">
                             <Image 
                                 src={logos.aaima_logo} 
-                                className="w-32 mx-auto sm:w-36 md:w-40" 
+                                className="w-32 mx-auto sm:w-36 md:w-25" 
                                 alt="AAIMA Logo"
                             />
                         </Link>
-                        <Link href={"https://www.pvnnepal.org"} target="_blank" className="block transition-transform hover:scale-105">
+                        <Link href={"https://www.pvnnepal.org"} target="_blank" className="block transition-transform w-fit hover:scale-105">
                             <Image 
                                 src={logos.pvn_nepal_logo} 
-                                className="w-32 mx-auto sm:w-36 md:w-50" 
+                                className="w-32 mx-auto sm:w-36 md:w-25" 
                                 alt="PVN Nepal Logo"
                             />
                         </Link>

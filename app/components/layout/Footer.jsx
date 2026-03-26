@@ -1,7 +1,8 @@
 "use client";
 
+import { faX } from "@fortawesome/free-solid-svg-icons";
 import { logos } from "../../assets/assets";
-import { faFacebookF, faInstagram, faLinkedin, faWeixin, faWhatsapp, faYoutube } from "@fortawesome/free-brands-svg-icons";
+import { faFacebookF, faInstagram, faLinkedin, faTiktok, faWeixin, faWhatsapp, faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,22 +10,28 @@ import Link from "next/link";
 const Footer = () => {
     const socialMediaLinks = [
         {
-            icon: faFacebookF, url: "https://facebook.com", label: "Facebook"
+            icon: faFacebookF, url: "https://www.facebook.com/GlobalNepalTreks", label: "Facebook"
         },
         {
-            icon: faInstagram, url: "https://instagram.com", label: "Instagram"
+            icon: faInstagram, url: "https://www.instagram.com/globalnepaltreks", label: "Instagram"
         },
         {
-            icon: faLinkedin, url: "https://linkedin.com", label: "LinkedIn"
+            icon: faLinkedin, url: "https://www.linkedin.com/company/global-nepal-treks-your-travel-partner-in-nepal/", label: "LinkedIn"
         },
         {
-            icon: faWhatsapp, url: "https://whatsapp.com", label: "WhatsApp"
+            icon: faWhatsapp, url: "https://www.whatsapp.com", label: "WhatsApp"
         },
         {
-            icon: faWeixin, url: "https://wechat.com", label: "WeChat"
+            icon: faWeixin, url: "https://www.wechat.com", label: "WeChat"
         },
         {
-            icon: faYoutube, url: "https://youtube.com", label: "Youtube"
+            icon: faTiktok, url: "https://www.tiktok.com/@globalnepaltreks", label: "TikTok"
+        },
+        {
+            icon: faX, url: "https://x.com/Sakarsarthak147?t=zcbv2PDB2ZXwAW9-CC3c-w&s=07", label: "TikTok"
+        },
+        {
+            icon: faYoutube, url: "https://www.youtube.com/@GlobalnepalTreks5", label: "Youtube"
         }
     ]
 
