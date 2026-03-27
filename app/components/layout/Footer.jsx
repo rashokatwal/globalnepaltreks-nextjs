@@ -65,11 +65,49 @@ const Footer = () => {
         }
     ]
 
+    const featuredPackages = [
+        {
+            name: "Everest Base Camp Trek",
+            link: "/nepal/trekking/everest-base-camp-trek"
+        },
+        {
+            name: "Annapurna Circuit Trek",
+            link: "/nepal/trekking/annapurna-circuit-trek"
+        },
+        {
+            name: "Muktinath Tour",
+            link: "/nepal/tours/muktinath-tour"
+        },
+        {
+            name: "Bhutan Cultural Tour",
+            link: "/bhutan/tours/bhutan-cultural-tour"
+        }
+    ]
+
+    const bestSellingPackages = [
+        {
+            name: "Kathmandu Pokhara Tour",
+            link: "/nepal/tours/kathmandu-pokhara-tour"
+        },
+        {
+            name: "Annapurna Base Camp Trek",
+            link: "/nepal/trekking/annapurna-base-camp-trekking"
+        },
+        {
+            name: "Upper Mustang Trek",
+            link: "/nepal/trekking/upper-mustang-treks"
+        },
+        {
+            name: "Everest Base Camp Trek",
+            link: "/nepal/trekking/everest-base-camp-trek"
+        }
+    ]
+
     return (
         <footer className="w-full px-4 py-10 bg-secondary-color sm:px-6 md:px-10 lg:px-16 xl:px-20">
             <div className="p-4 bg-white rounded-lg shadow-lg sm:p-6 md:p-8 lg:p-10">
                 {/* Main Content Grid */}
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:gap-12">
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5 xl:gap-12">
                     {/* Company Info Column */}
                     <div className="space-y-4 text-sm">
                         <div>
@@ -132,13 +170,13 @@ const Footer = () => {
 
                     {/* Useful Links Column 1 */}
                     <div>
-                        <p className="mb-4 text-sm font-bold text-gray-700 sm:text-base">Useful Links</p>
+                        <p className="mb-4 text-sm font-bold text-gray-700 sm:text-base">Destinations</p>
                         <ul className="space-y-2 text-sm">
                             {footerLinks.map((item, index) => (
                                 <li key={index}>
                                     <Link 
                                         href={item.link}
-                                        className="inline-block text-gray-600 transition-colors duration-300 hover:text-primary-color hover:pl-1"
+                                        className="inline-block text-gray-900 font-medium transition-colors duration-300 hover:text-primary-color hover:pl-1"
                                     >
                                         {item.name}
                                     </Link>
@@ -155,9 +193,41 @@ const Footer = () => {
                                 <li key={index}>
                                     <Link 
                                         href={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
-                                        className="inline-block text-gray-600 transition-colors duration-300 hover:text-primary-color hover:pl-1"
+                                        className="inline-block text-gray-900 font-medium transition-colors duration-300 hover:text-primary-color hover:pl-1"
                                     >
                                         {item}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div>
+                        <p className="mb-4 text-sm font-bold text-gray-700 sm:text-base">Featured Packages</p>
+                        <ul className="space-y-2 text-sm">
+                            {featuredPackages.map((item, index) => (
+                                <li key={index}>
+                                    <Link 
+                                        href={item.link}
+                                        className="inline-block text-gray-900 font-medium transition-colors duration-300 hover:text-primary-color hover:pl-1"
+                                    >
+                                        {item.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div>
+                        <p className="mb-4 text-sm font-bold text-gray-700 sm:text-base">Best Selling Packages</p>
+                        <ul className="space-y-2 text-sm">
+                            {bestSellingPackages.map((item, index) => (
+                                <li key={index}>
+                                    <Link 
+                                        href={item.link}
+                                        className="inline-block text-gray-900 font-medium transition-colors duration-300 hover:text-primary-color hover:pl-1"
+                                    >
+                                        {item.name}
                                     </Link>
                                 </li>
                             ))}
