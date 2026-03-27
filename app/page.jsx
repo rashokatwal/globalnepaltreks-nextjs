@@ -56,42 +56,54 @@ const Home = () => {
         const fetchData = async () => {
             try {
                 // Fetch reviews
-                const reviewsRes = await fetch('/api/reviews?limit=10');
+                const reviewsRes = await fetch('/api/reviews?limit=10', {
+                    next: { revalidate: 1000 }
+                });
                 const reviewsData = await reviewsRes.json();
                 if (reviewsData.success) {
                     setReviews(reviewsData.data || []);
                 }
                 
                 // Fetch packages
-                const bestSellingPackagesRes = await fetch('/api/packages?limit=4&best_selling=true');
+                const bestSellingPackagesRes = await fetch('/api/packages?limit=4&best_selling=true', {
+                    next: { revalidate: 1000 }
+                });
                 const bestSellingPackagesData = await bestSellingPackagesRes.json();
                 if (bestSellingPackagesData.success) {
                     setBestSellingPackages(bestSellingPackagesData.data || []);
                 }
 
                 // Fetch featured packages
-                const featuredPackagesRes = await fetch('/api/packages?limit=4&featured=true');
+                const featuredPackagesRes = await fetch('/api/packages?limit=4&featured=true', {
+                    next: { revalidate: 1000 }
+                });
                 const featuredPackagesData = await featuredPackagesRes.json();
                 if (featuredPackagesData.success) {
                     setFeaturedPackages(featuredPackagesData.data || []);
                 }
 
                 // Fetch adventure packages
-                const adventurePackagesRes = await fetch('/api/packages?limit=4&adventure=true');
+                const adventurePackagesRes = await fetch('/api/packages?limit=4&adventure=true', {
+                    next: { revalidate: 1000 }
+                });
                 const adventurePackagesData = await adventurePackagesRes.json();
                 if (adventurePackagesData.success) {
                     setAdventurePackages(adventurePackagesData.data || []);
                 }
 
                 // Fetch luxury packages
-                const luxuryPackagesRes = await fetch('/api/packages?limit=4&luxury=true');
+                const luxuryPackagesRes = await fetch('/api/packages?limit=4&luxury=true', {
+                    next: { revalidate: 1000 }
+                });
                 const luxuryPackagesData = await luxuryPackagesRes.json();
                 if (luxuryPackagesData.success) {
                     setLuxuryPackages(luxuryPackagesData.data || []);
                 }
 
                 // Fetch blogs
-                const blogsRes = await fetch('/api/blogs?limit=4');
+                const blogsRes = await fetch('/api/blogs?limit=4', {
+                    next: { revalidate: 1000 }
+                });
                 const blogsData = await blogsRes.json();
                 if (blogsData.success) {
                     setBlogs(blogsData.data.data || []);
