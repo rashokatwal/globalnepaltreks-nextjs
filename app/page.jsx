@@ -296,28 +296,28 @@ const Home = () => {
                     <div className="p-0 flex items-center gap-5">
                         <FontAwesomeIcon icon={faPersonHiking} className="text-3xl text-accent-color" />
                         <div>
-                            <h3 className="font-medium text-md">Custom Trek Planning</h3>
+                            <h2 className="font-medium text-md">Custom Trek Planning</h2>
                             <p className="text-sm md:text-md">Tailor routes, difficulty levels, and schedules to your needs.</p>
                         </div>
                     </div>
                     <div className="p-0 flex items-center gap-5">
                         <FontAwesomeIcon icon={faRoute} className="text-3xl text-accent-color" />
                         <div>
-                            <h3 className="font-medium text-md">Handpicked Trek Routes</h3>
+                            <h2 className="font-medium text-md">Handpicked Trek Routes</h2>
                             <p className="text-sm md:text-md">From beginner-friendly trails to extreme high-altitude expeditions.</p>
                         </div>
                     </div>
                     <div className="p-0 flex items-center gap-5">
                         <FontAwesomeIcon icon={faShieldAlt} className="text-3xl text-accent-color" />
                         <div>
-                            <h3 className="font-medium text-md">Safety First Approach</h3>
+                            <h2 className="font-medium text-md">Safety First Approach</h2>
                             <p className="text-sm md:text-md">Emergency protocols, oxygen supply, satellite phones, and insurance support.</p>
                         </div>
                     </div>
                     <div className="p-0 flex items-center gap-5">
                         <FontAwesomeIcon icon={faLeaf} className="text-3xl text-accent-color" />
                         <div>
-                            <h3 className="font-medium text-md">Eco-Friendly Travel</h3>
+                            <h2 className="font-medium text-md">Eco-Friendly Travel</h2>
                             <p className="text-sm md:text-md">Sustainable and responsible travel practices for all trekkers.</p>
                         </div>
                     </div>
