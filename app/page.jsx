@@ -39,7 +39,11 @@ const Home = () => {
     
     // States for dynamic data
     const [reviews, setReviews] = useState([]);
-    const [packages, setPackages] = useState([]);
+    // const [packages, setPackages] = useState([]);
+    const [bestSellingPackages, setBestSellingPackages] = useState([]);
+    const [featuredPackages, setFeaturedPackages] = useState([]);
+    const [adventurePackages, setAdventurePackages] = useState([]);
+    const [luxuryPackages, setLuxuryPackages] = useState([]);
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState({
         reviews: true,
@@ -59,12 +63,33 @@ const Home = () => {
                 }
                 
                 // Fetch packages
-                const packagesRes = await fetch('/api/packages?limit=6');
-                const packagesData = await packagesRes.json();
-                if (packagesData.success) {
-                    setPackages(packagesData.data.packages || []);
+                const bestSellingPackagesRes = await fetch('/api/packages?limit=4&best_selling=true');
+                const bestSellingPackagesData = await bestSellingPackagesRes.json();
+                if (bestSellingPackagesData.success) {
+                    setBestSellingPackages(bestSellingPackagesData.data || []);
                 }
-                
+
+                // Fetch featured packages
+                const featuredPackagesRes = await fetch('/api/packages?limit=4&featured=true');
+                const featuredPackagesData = await featuredPackagesRes.json();
+                if (featuredPackagesData.success) {
+                    setFeaturedPackages(featuredPackagesData.data || []);
+                }
+
+                // Fetch adventure packages
+                const adventurePackagesRes = await fetch('/api/packages?limit=4&adventure=true');
+                const adventurePackagesData = await adventurePackagesRes.json();
+                if (adventurePackagesData.success) {
+                    setAdventurePackages(adventurePackagesData.data || []);
+                }
+
+                // Fetch luxury packages
+                const luxuryPackagesRes = await fetch('/api/packages?limit=4&luxury=true');
+                const luxuryPackagesData = await luxuryPackagesRes.json();
+                if (luxuryPackagesData.success) {
+                    setLuxuryPackages(luxuryPackagesData.data || []);
+                }
+
                 // Fetch blogs
                 const blogsRes = await fetch('/api/blogs?limit=4');
                 const blogsData = await blogsRes.json();
@@ -160,6 +185,21 @@ const Home = () => {
         },
     ];
 
+    const countries = {
+        1: { name: "Nepal", slug: "nepal" },
+        2: { name: "Tibet", slug: "tibet" },
+        3: { name: "Bhutan", slug: "bhutan" },
+    }
+
+    const activities = {
+        1: { name: "Trekking", slug: "trekking" },
+        2: { name: "Tours", slug: "tours" },
+        3: { name: "Rafting", slug: "rafting" },
+        4: { name: "Peak Climbing", slug: "peak-climbing" },
+        5: { name: "Heli Tour", slug: "heli-tour" },
+        6: { name: "Jungle Safari", slug: "jungle-safari" },
+    };
+
     // Helper to format package data for PackageCard
     const formatPackageForCard = (pkg) => ({
         id: pkg.id,
@@ -169,7 +209,7 @@ const Home = () => {
         price: Math.round(parseFloat(pkg.price)),
         availability: pkg.best_season || "All Year",
         duration: `${pkg.duration_days} Days`,
-        link: `/packages/${pkg.slug}`,
+        link: `/${countries[pkg.country_id]?.slug || "nepal"}/${activities[pkg.activity_id]?.slug || "trekking"}/${pkg.slug}`,
         description: pkg.short_description || "Experience the Himalayas with our expert guides."
     });
 
@@ -272,7 +312,7 @@ const Home = () => {
                 </div>
                 <div className="px-4 py-10 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
                     <div className="relative z-10 py-10">
-                        <Heading title={"Best Selling Packages"} subtitle={"Experience the pinnacle of the Himalayas with our top-rated, expert-led trekking adventures."} titleClass={"text-center"} subtitleClass={"text-center"} />
+                        <Heading title={"Best Selling Packages"} subtitle={'"Experience the pinnacle of the Himalayas with our top-rated, expert-led trekking adventures."'} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
 
                     {loading.packages ? (
@@ -281,7 +321,7 @@ const Home = () => {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                            {packages.slice(0, 6).map((pkg) => (
+                            {bestSellingPackages.slice(0, 4).map((pkg) => (
                                 <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
                             ))}
                         </div>
@@ -306,7 +346,7 @@ const Home = () => {
             <section className="py-10 bg-dark-section">
                 <div className="px-4 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
                     <div className="relative z-10 px-10 py-10">
-                        <Heading title={"Best Packages in Nepal"} subtitle={"Featured Packages"} titleClass={"text-center"} subtitleClass={"text-center"} />
+                        <Heading title={"Featured Packages"} subtitle={'"Peak performance meets total peace of mind - everything you need for the ultimate ascent."'} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
                     
                     {loading.packages ? (
@@ -315,7 +355,7 @@ const Home = () => {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                            {packages.slice(0, 3).map((pkg) => (
+                            {featuredPackages.slice(0, 4).map((pkg) => (
                                 <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
                             ))}
                         </div>
@@ -340,7 +380,7 @@ const Home = () => {
             <section className="py-10 bg-white">
                 <div className="px-4 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
                     <div className="relative z-10 px-10 py-10">
-                        <Heading title={"Adventure Packages in Nepal"} subtitle={"Luxuary Packages"} titleClass={"text-center"} subtitleClass={"text-center"} />
+                        <Heading title={"Luxury Packages"} subtitle={'"Savor the grandeur of Nepal from the comfort of a curated, premier experience."'} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
                     
                     {loading.packages ? (
@@ -349,7 +389,7 @@ const Home = () => {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                            {packages.slice(0, 3).map((pkg) => (
+                            {luxuryPackages.slice(0, 4).map((pkg) => (
                                 <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
                             ))}
                         </div>
@@ -373,7 +413,7 @@ const Home = () => {
             <section className="py-10 bg-dark-section">
                 <div className="px-4 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
                     <div className="relative z-10 px-10 py-10">
-                        <Heading title={"Adventure Packages in Nepal"} subtitle={"Adventure Packages"} titleClass={"text-center"} subtitleClass={"text-center"} />
+                        <Heading title={"Adventure Packages"} subtitle={'"Transform every step into a story of courage and discovery"'} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
                     
                     {loading.packages ? (
@@ -382,7 +422,7 @@ const Home = () => {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                            {packages.slice(0, 3).map((pkg) => (
+                            {adventurePackages.slice(0, 4).map((pkg) => (
                                 <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
                             ))}
                         </div>

@@ -10,25 +10,25 @@ import { validatePackage, validatePackageFeature } from '@/lib/validators/packag
 import { slugify } from '@/lib/utils/slugify.js';
 
 // GET /api/packages - Public (no authentication needed)
-// app/api/packages/route.js - ADD these filters
-
-// GET /api/packages - Public (no authentication needed)
 export async function GET(request) {
     try {
         const { searchParams } = new URL(request.url);
         
         // Pagination
         const page = parseInt(searchParams.get('page') || '1');
-        const limit = parseInt(searchParams.get('limit') || '10');
+        let limit = parseInt(searchParams.get('limit') || '10');
         
-        // Filters - accept multiple parameter names for flexibility
+        // Filters – accept multiple parameter names for flexibility
         const countryId = searchParams.get('country_id') || searchParams.get('countryId') || searchParams.get('country');
         const activityId = searchParams.get('activity_id') || searchParams.get('activityId') || searchParams.get('activity');
         const difficulty = searchParams.get('difficulty');
         const featured = searchParams.get('featured') === 'true';
+        const bestSelling = searchParams.get('best_selling') === 'true';
+        const luxury = searchParams.get('luxury') === 'true';
+        const adventure = searchParams.get('adventure') === 'true';
         const search = searchParams.get('search');
         
-        // NEW FILTERS TO ADD
+        // Price and duration filters
         const minPrice = searchParams.get('min_price') || searchParams.get('minPrice');
         const maxPrice = searchParams.get('max_price') || searchParams.get('maxPrice');
         const maxDuration = searchParams.get('max_duration') || searchParams.get('duration');
@@ -38,7 +38,10 @@ export async function GET(request) {
             countryId, 
             activityId, 
             difficulty, 
-            featured, 
+            featured,
+            bestSelling,
+            luxury,
+            adventure,
             search,
             minPrice,
             maxPrice,
@@ -48,12 +51,32 @@ export async function GET(request) {
             limit 
         });
         
-        // Handle featured
+        // --- Special category requests (return arrays directly) ---
+        // Handle featured packages
         if (featured) {
             const packages = await PackageQueries.getFeatured(limit);
             return ApiResponse.success(packages);
         }
         
+        // Handle best selling packages
+        if (bestSelling) {
+            const packages = await PackageQueries.getBestSelling(limit);
+            return ApiResponse.success(packages);
+        }
+        
+        // Handle luxury packages
+        if (luxury) {
+            const packages = await PackageQueries.getLuxury(limit);
+            return ApiResponse.success(packages);
+        }
+        
+        // Handle adventure packages
+        if (adventure) {
+            const packages = await PackageQueries.getAdventure(limit);
+            return ApiResponse.success(packages);
+        }
+        
+        // --- Regular filtered requests ---
         // Handle search
         if (search) {
             const result = await PackageQueries.search(search, {
@@ -150,6 +173,9 @@ export async function POST(request) {
             meta_description: body.meta_description || body.short_description || `Book ${body.title} with expert guides.`,
             keywords: body.keywords || null,
             is_featured: body.is_featured || false,
+            is_best_selling: body.is_best_selling || false,
+            is_luxury: body.is_luxury || false,
+            is_adventure: body.is_adventure || false,
             is_active: body.is_active !== undefined ? body.is_active : true
         };
         
