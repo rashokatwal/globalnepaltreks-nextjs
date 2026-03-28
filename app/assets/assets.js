@@ -30,6 +30,8 @@ import blogs_cover from './Blogs/blogs_cover.jpg';
 
 import contact_cover from './Contact/contact_cover.jpg';
 
+import book_cover from './Book/book_now_cover.jpg';
+
 import team_cover from './About/Team/team_cover.jpg';
 import keshar_sherpa from './About/Team/keshar_sherpa.png';
 import diksha_randhwa from './About/Team/diksha_randhwa.png';
@@ -38,6 +40,11 @@ import yaseen from './About/Team/yaseen.png';
 import deepak_lamichane from './About/Team/deepak_lamichane.png';
 import saroj_ghimire from './About/Team/saroj_ghimire.jpg';
 import nabaraj_gurung from './About/Team/nabaraj_gurung.png';
+
+import travel_guides_cover from './TravelGuides/travel_guides_cover.jpg';
+import travel_gear_and_equipment_cover from './TravelGuides/travel_gear_and_equipment_cover.jpg';
+import protected_areas_of_nepal_cover from './TravelGuides/protected_areas_of_nepal_cover.jpg';
+import visa_information_cover from './TravelGuides/visa_information_cover.jpg';
 
 import walk from './Loader/walk.json';
 
@@ -65,6 +72,17 @@ const blogsAssets = {
 
 const contactAssets = {
     contact_cover
+}
+
+const bookAssets = {
+    book_cover
+}
+
+const travelGuidesAssets = {
+    travel_gear_and_equipment_cover,
+    protected_areas_of_nepal_cover,
+    visa_information_cover,
+    travel_guides_cover
 }
 
 const logos = {
@@ -101,5 +119,6 @@ export {
     blogsAssets, 
     contactAssets,
     teamAssets,
+    travelGuidesAssets,
     walk 
 };
