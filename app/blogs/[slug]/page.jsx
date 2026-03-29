@@ -35,7 +35,14 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      images: [post.featured_image || blogsAssets.everest_blog],
+      images: [
+        {
+          url: post.featured_image,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
       type: 'article',
       publishedTime: post.published_at,
       authors: [post.author]
