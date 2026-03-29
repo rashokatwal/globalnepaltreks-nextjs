@@ -31,12 +31,19 @@ import HeroSection from "@/app/components/sections/HeroSection";
 import Heading from "@/app/components/ui/Heading";
 import { useState, useEffect, useCallback } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import PackageCard from "../components/cards/PackageCard";
 
 export default function BookClient() {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
   const [isRecaptchaReady, setIsRecaptchaReady] = useState(false);
+  const [popularTreks, setPopularTreks] = useState([]);
+  const [loading, setLoading] = useState({
+        reviews: true,
+        packages: true,
+        blogs: true
+    });
   
   const { executeRecaptcha } = useGoogleReCaptcha();
 
@@ -45,6 +52,30 @@ export default function BookClient() {
       setIsRecaptchaReady(true);
     }
   }, [executeRecaptcha]);
+
+  useEffect(() => {
+        const fetchData = async () => {
+            try {
+                
+                // Fetch packages
+                const popularTreksRes = await fetch('/api/packages?limit=4&best_selling=true', {
+                    next: { revalidate: 1000 }
+                });
+                const popularTreksData = await popularTreksRes.json();
+                if (popularTreksData.success) {
+                    setPopularTreks(popularTreksData.data || []);
+                }
+            } catch (error) {
+            } finally {
+                setLoading({
+                    reviews: false,
+                    packages: false,
+                    blogs: false
+                });
+            }
+        };
+        fetchData();
+    }, []);
 
   const [formData, setFormData] = useState({
     // Personal Information
@@ -194,16 +225,43 @@ export default function BookClient() {
     }
   }, [executeRecaptcha, formData, isRecaptchaReady]);
 
-  const popularTreks = [
-    "Everest Base Camp Trek",
-    "Annapurna Base Camp Trek",
-    "Annapurna Circuit Trek",
-    "Langtang Valley Trek",
-    "Manaslu Circuit Trek",
-    "Upper Mustang Trek",
-    "Ghorepani Poon Hill Trek",
-    "Kanchenjunga Base Camp Trek"
-  ];
+  const countries = {
+      1: { name: "Nepal", slug: "nepal" },
+      2: { name: "Tibet", slug: "tibet" },
+      3: { name: "Bhutan", slug: "bhutan" },
+  }
+
+  const activities = {
+      1: { name: "Trekking", slug: "trekking" },
+      2: { name: "Tours", slug: "tours" },
+      3: { name: "Rafting", slug: "rafting" },
+      4: { name: "Peak Climbing", slug: "peak-climbing" },
+      5: { name: "Heli Tour", slug: "heli-tour" },
+      6: { name: "Jungle Safari", slug: "jungle-safari" },
+  };
+
+  const formatPackageForCard = (pkg) => ({
+      id: pkg.id,
+      image: pkg.featured_image || "/images/placeholder.jpg",
+      country: pkg.country_name || "Nepal",
+      title: pkg.title,
+      price: Math.round(parseFloat(pkg.price)),
+      availability: pkg.best_season || "All Year",
+      duration: `${pkg.duration_days} Days`,
+      link: `/${countries[pkg.country_id]?.slug || "nepal"}/${activities[pkg.activity_id]?.slug || "trekking"}/${pkg.slug}`,
+      description: pkg.short_description || "Experience the Himalayas with our expert guides."
+  });
+
+  // const popularTreks = [
+  //   "Everest Base Camp Trek",
+  //   "Annapurna Base Camp Trek",
+  //   "Annapurna Circuit Trek",
+  //   "Langtang Valley Trek",
+  //   "Manaslu Circuit Trek",
+  //   "Upper Mustang Trek",
+  //   "Ghorepani Poon Hill Trek",
+  //   "Kanchenjunga Base Camp Trek"
+  // ];
 
   const getMinDate = () => {
     const tomorrow = new Date();
@@ -461,7 +519,7 @@ export default function BookClient() {
                     >
                       <option value="">Choose a trek...</option>
                       {popularTreks.map(trek => (
-                        <option key={trek} value={trek}>{trek}</option>
+                        <option key={trek} value={trek.name}>{trek.name}</option>
                       ))}
                       <option value="Custom Trek">Custom Trek / Other</option>
                     </select>
@@ -882,31 +940,21 @@ export default function BookClient() {
       <section className="py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
           <Heading 
-            title={"Popular Treks You Can Book"} 
+            title={"Popular Packages You Can Book"} 
             titleClass={"text-center mb-8"} 
           />
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {popularTreks.slice(0, 4).map((trek, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition">
-                <div className="w-12 h-12 bg-primary-color-dark/10 rounded-full flex items-center justify-center mb-4">
-                  <FontAwesomeIcon icon={faMountain} className="w-6 h-6 text-primary-color-dark" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{trek}</h3>
-                <p className="text-sm text-gray-600 mb-4">Duration: 12-16 days</p>
-                <button 
-                  onClick={() => {
-                    setFormData(prev => ({ ...prev, trekName: trek }));
-                    setStep(2);
-                    window.scrollTo({ top: 400, behavior: 'smooth' });
-                  }}
-                  className="text-primary-color-dark font-medium hover:underline flex items-center gap-2"
-                >
-                  Book Now <FontAwesomeIcon icon={faArrowRight} className="w-3 h-3" />
-                </button>
+          {loading.packages ? (
+              <div className="flex justify-center py-12">
+                  <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
               </div>
-            ))}
-          </div>
+          ) : (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                  {popularTreks.slice(0, 4).map((pkg) => (
+                      <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
+                  ))}
+              </div>
+          )}
         </div>
       </section>
 
