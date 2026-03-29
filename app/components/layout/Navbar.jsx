@@ -297,16 +297,13 @@ const NavBar = () => {
             items: [
                 { name: 'About Us', link: '/about' },
                 { name: 'Our Team', link: '/about/our-team' },
+                { name: 'Blogs', link: '/blogs' },
                 // { name: 'Why Choose Us', link: '/about/why-choose-us' },
                 // { name: 'Legal Documents', link: '/about/legal-documents' },
                 // { name: 'Terms & Conditions', link: '/about/terms-conditions' },
                 // { name: 'Booking Policies', link: '/about/booking-policy' },
                 // { name: 'Privacy Policy', link: '/about/privacy-policy' },
             ]
-        },
-        { 
-            name: 'Blogs', 
-            link: '/blogs'
         },
         { 
             name: 'Contact Us', 
@@ -421,16 +418,21 @@ const NavBar = () => {
                 >
                     {/* Logo and Mobile Menu Button */}
                     <div className="flex items-center justify-between w-full mb-0 lg:w-auto">
-                        <Link href="/" className="block">
-                            <Image
-                                src={logos.globalnepaltreks_logo}
-                                className="h-auto w-30 lg:w-50"
-                                width={200}
-                                height={60}
-                                alt="Global Nepal Treks Logo"
-                                priority
-                            />
-                        </Link>
+                        <div className="flex items-center justify-center gap-10">
+                            <Link href="/" className="block">
+                                <Image
+                                    src={logos.globalnepaltreks_logo}
+                                    className="h-auto w-30 lg:w-50"
+                                    width={200}
+                                    height={60}
+                                    alt="Global Nepal Treks Logo"
+                                    priority
+                                />
+                            </Link>
+                            <div>
+                                <p className="font-semibold text-accent-color uppercase underline">Lisence Number: <span className="text-secondary-color">3058</span></p>
+                            </div>
+                        </div>
                         <button
                             className="p-2 text-gray-700 rounded-md lg:hidden hover:bg-gray-100"
                             onClick={toggleMobileMenu}

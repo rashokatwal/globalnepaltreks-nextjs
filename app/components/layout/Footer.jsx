@@ -258,26 +258,6 @@ const Footer = () => {
                             </div>
                     </div>
 
-                    <div className="space-y-4 md:hidden">
-                        <p className="text-sm font-bold text-center text-gray-700 sm:text-base">Volunteer Programs</p>
-                        <div className="flex items-center justify-center gap-5 md:block">
-                            <Link href={"https://www.pvnnepal.org"} target="_blank" className="block transition-transform hover:scale-105">
-                                <Image 
-                                    src={logos.pvn_nepal_logo} 
-                                    className="w-32 mx-auto sm:w-36 md:w-40" 
-                                    alt="PVN Nepal Logo"
-                                />
-                            </Link>
-                            <Link href={"https://www.globalvolunteernepal.org"} target="_blank" className="block transition-transform hover:scale-105">
-                                <Image 
-                                    src={logos.global_volunteer_nepal_logo} 
-                                    className="w-32 mx-auto sm:w-36 md:w-40" 
-                                    alt="Global Volunteer Nepal Logo"
-                                />
-                            </Link>
-                        </div>
-                    </div>
-
                     <div>
                         <p className="mb-4 text-sm font-bold text-center text-gray-700 sm:text-base md:text-left">Sign up for Updates & New Deals</p>
                         <div>
