@@ -431,7 +431,7 @@ const NavBar = () => {
                         </Link>
 
                         <Link href="/book" className="w-full px-6 py-3 font-medium text-center text-white duration-200 rounded bg-accent-color hover:bg-secondary-color lg:w-auto">
-                            Book Now
+                            Plan Your Trip
                         </Link>
                     </div>
                 </div>
@@ -827,7 +827,7 @@ const NavBar = () => {
                             </Link>
 
                             <Link href="/book-now" className="w-full px-6 py-3 mt-4 font-medium text-center text-white duration-200 rounded bg-accent-color hover:bg-secondary-color" onClick={closeAll}>
-                                Book Now
+                                Plan Your Trip
                             </Link>
                         </div>
                     </div>

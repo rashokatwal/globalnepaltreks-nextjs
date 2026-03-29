@@ -32,6 +32,7 @@ import Heading from "@/app/components/ui/Heading";
 import { useState, useEffect, useCallback } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import PackageCard from "../components/cards/PackageCard";
+import { bookAssets } from "../assets/assets";
 
 export default function BookClient() {
   const [step, setStep] = useState(1);
@@ -292,8 +293,8 @@ export default function BookClient() {
   return (
     <main>
       <HeroSection 
-        image={"/images/booking-cover.jpg"} 
-        heading={"Book Your Himalayan Adventure"} 
+        image={bookAssets.book_cover?.src} 
+        heading={"Plan Your Himalayan Adventure"} 
         subheading={"Secure your spot on the trek of a lifetime"} 
       />
 
@@ -310,7 +311,7 @@ export default function BookClient() {
       <section className="py-12 bg-white">
         <div className="max-w-5xl mx-auto px-4 text-center">
           <Heading 
-            title={"Start Your Booking"} 
+            title={"Start Your Planning"} 
             titleClass={"text-center mb-4"} 
           />
           <p className="text-md text-gray-600 leading-relaxed">

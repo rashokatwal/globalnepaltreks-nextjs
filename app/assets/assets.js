@@ -120,5 +120,6 @@ export {
     contactAssets,
     teamAssets,
     travelGuidesAssets,
+    bookAssets,
     walk 
 };
