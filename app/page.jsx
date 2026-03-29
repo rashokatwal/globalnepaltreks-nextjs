@@ -884,7 +884,7 @@ const Home = () => {
                                 alt="Global Volunteer Nepal Logo"
                             />
                         </Link>
-                        <Link href={""} target="_blank" className="block transition-transform w-fit hover:scale-105">
+                        <Link href={"https://www.aimatravels.com/"} target="_blank" className="block transition-transform w-fit hover:scale-105">
                             <Image 
                                 src={logos.aaima_logo} 
                                 className="w-32 mx-auto sm:w-36 md:w-25" 

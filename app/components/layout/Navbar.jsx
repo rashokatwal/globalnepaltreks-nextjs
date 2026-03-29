@@ -44,74 +44,110 @@ const NavBar = () => {
             name: 'Home', 
             link: '/', 
         },
-        { 
-            name: 'Nepal', 
-            link: '/nepal',
-            items: [
-                { 
-                    name: 'Trekking', 
-                    link: '/nepal/trekking',
-                    subItems: [
-                        { name: 'Everest Gokyo Trek via Bhasa', link: '/nepal/trekking/everest-gokyo-trek-via-bhasa' },
-                        { name: 'Annapurna Circuit Trek', link: '/nepal/trekking/annapurna-circuit-trek' },
-                        { name: 'Manaslu Circuit Trek', link: '/nepal/trekking/manaslu-circuit-trek' },
-                        { name: 'Langtang Valley Trek', link: '/nepal/trekking/langtang-valley-trek' },
-                        { name: 'Upper Mustang Treks', link: '/nepal/trekking/upper-mustang-treks' },
-                        // { name: 'Dolpo Region Trek', link: '/nepal/trekking/dolpo-region' },
-                        // { name: 'Budget Trekking', link: '/nepal/trekking/budget' },
+        {
+            // ── DESTINATIONS: Nepal + Tibet + Bhutan combined ──
+            name: 'Destinations',
+            link: '/destinations',
+            isMegaMenuDestinations: true,
+            countries: [
+                {
+                    name: 'Nepal',
+                    link: '/nepal',
+                    categories: [
+                        { 
+                            name: 'Trekking', 
+                            link: '/nepal/trekking',
+                            subItems: [
+                                { name: 'Everest Gokyo Trek via Bhasa', link: '/nepal/trekking/everest-gokyo-trek-via-bhasa' },
+                                { name: 'Annapurna Circuit Trek', link: '/nepal/trekking/annapurna-circuit-trek' },
+                                { name: 'Manaslu Circuit Trek', link: '/nepal/trekking/manaslu-circuit-trek' },
+                                { name: 'Langtang Valley Trek', link: '/nepal/trekking/langtang-valley-trek' },
+                                { name: 'Upper Mustang Treks', link: '/nepal/trekking/upper-mustang-treks' },
+                            ]
+                        },
+                        { 
+                            name: 'Tours', 
+                            link: '/nepal/tours',
+                            subItems: [
+                                { name: 'Kathmandu Valley Tour', link: '/nepal/tours/kathmandu-valley-tour' },
+                                { name: 'Kathmandu Pokhara Tour', link: '/nepal/tours/kathmandu-pokhara-tour' },
+                                { name: 'Himalayan View Tour', link: '/nepal/tours/himalayan-view-tour' },
+                                { name: 'Muktinath Tour', link: '/nepal/tours/muktinath-tour' },
+                            ]
+                        },
+                        { 
+                            name: 'Heli Tour', 
+                            link: '/nepal/heli-tour',
+                            subItems: [
+                                { name: 'Everest Helicopter Tour', link: '/nepal/heli-tour/everest-helicopter-tour' },
+                                { name: 'Helicopter Tour to Muktinath', link: '/nepal/heli-tour/helicopter-tour-to-muktinath' },
+                                { name: 'Langtang Heli Tour', link: '/nepal/heli-tour/langtang-heli-tour' },
+                            ]
+                        },
+                        { 
+                            name: 'Jungle Safari', 
+                            link: '/nepal/jungle-safari',
+                            subItems: [
+                                { name: 'Chitwan National Park Tour', link: '/nepal/jungle-safari/chitwan-national-park-tour' },
+                                { name: 'Koshi Tappu Wildlife Tour', link: '/nepal/jungle-safari/koshi-tappu-wildlife-tour' },
+                            ]
+                        },
+                        { 
+                            name: 'Rafting', 
+                            link: '/nepal/rafting',
+                            subItems: [
+                                { name: 'Trishuli River Rafting', link: '/nepal/rafting/trishuli' },
+                            ]
+                        },
                     ]
                 },
-                { 
-                    name: 'Tours', 
-                    link: '/nepal/tours',
-                    subItems: [
-                        { name: 'Kathmandu Valley Tour', link: '/nepal/tours/kathmandu-valley-tour' },
-                        { name: 'Kathmandu Pokhara Tour', link: '/nepal/tours/kathmandu-pokhara-tour' },
-                        { name: 'Himalayan View Tour', link: '/nepal/tours/himalayan-view-tour' },
-                        { name: 'Muktinath Tour', link: '/nepal/tours/muktinath-tour' },
+                {
+                    name: 'Tibet',
+                    link: '/tibet',
+                    categories: [
+                        { 
+                            name: 'Mount Kailash Tour', 
+                            link: '/tibet/kailash',
+                            subItems: [
+                                { name: 'Mount Kailash Tour', link: '/tibet/tours/mount-kailash-tour' },
+                                { name: 'Tibet Kailash Tour', link: '/tibet/tours/tibet-kailash-tour' },
+                            ]
+                        },
+                        { 
+                            name: 'Tibet Tours', 
+                            link: '/tibet/tours',
+                            subItems: [
+                                { name: 'Cultural Tibet Tour', link: '/tibet/tours/cultural-tibet-tour' },
+                                { name: 'Tibet Overland Tour', link: '/tibet/tours/tibet-overland-tour' },
+                                { name: 'Kunming Lhasa Tour', link: '/tibet/tours/kunming-lhasa-tour' },
+                                { name: 'Nepal Lhasa Tour', link: '/tibet/tours/nepal-lhasa-tour' },
+                            ]
+                        },
+                        { 
+                            name: 'Trekking', 
+                            link: '/tibet/trekking',
+                            subItems: [
+                                { name: 'Everest Tour Via Tibet', link: '/tibet/trekking/everest-tour-via-tibet' },
+                            ]
+                        },
                     ]
                 },
-                // { 
-                //     name: 'Peak Climbing', 
-                //     link: '/nepal/peak-climbing',
-                //     subItems: [
-                //         { name: 'Island Peak Climbing', link: '/nepal/peak-climbing/island-peak' },
-                //         { name: 'Lobuche Peak Climbing', link: '/nepal/peak-climbing/lobuche-peak' },
-                //         { name: 'Mera Peak Climbing', link: '/nepal/peak-climbing/mera-peak' },
-                //     ]
-                // },
-                { 
-                    name: 'Heli Tour', 
-                    link: '/nepal/heli-tour',
-                    subItems: [
-                        { name: 'Everest Helicopter Tour', link: '/nepal/heli-tour/everest-helicopter-tour' },
-                        { name: 'Helicopter Tour to Muktinath', link: '/nepal/heli-tour/helicopter-tour-to-muktinath' },
-                        { name: 'Langtang Heli Tour', link: '/nepal/heli-tour/langtang-heli-tour' },
+                {
+                    name: 'Bhutan',
+                    link: '/bhutan',
+                    categories: [
+                        { 
+                            name: 'Tours', 
+                            link: '/bhutan/tours',
+                            subItems: [
+                                { name: 'Bhutan Dragon Heart Tour', link: '/bhutan/tours/bhutan-dragon_heart-tour' },
+                                { name: 'Bhutan Short Tour', link: '/bhutan/tours/bhutan-short-tour' },
+                                { name: 'Bhutan Cultural Tour', link: '/bhutan/tours/bhutan-cultural-tour' },
+                                { name: 'Classic Bhutan Trek', link: '/bhutan/tours/classic-bhutan-trek' },
+                            ]
+                        },
                     ]
                 },
-                { 
-                    name: 'Jungle Safari', 
-                    link: '/nepal/jungle-safari',
-                    subItems: [
-                        { name: 'Chitwan National Park Tour', link: '/nepal/jungle-safari/chitwan-national-park-tour' },
-                        { name: 'Koshi Tappu Wildlife Tour', link: '/nepal/jungle-safari/koshi-tappu-wildlife-tour' },
-                    ]
-                },
-                { 
-                    name: 'Rafting', 
-                    link: '/nepal/rafting',
-                    subItems: [
-                        { name: 'Trishuli River Rafting', link: '/nepal/rafting/trishuli' },
-                    ]
-                },
-                // { 
-                //     name: 'Expedition', 
-                //     link: '/nepal/expedition',
-                //     subItems: [
-                //         { name: 'Everest Expedition', link: '/nepal/expedition/everest' },
-                //         { name: 'Manaslu Expedition', link: '/nepal/expedition/manaslu' },
-                //     ]
-                // },
             ]
         },
         { 
@@ -126,10 +162,6 @@ const NavBar = () => {
                         { name: 'Everest Gokyo Trek via Bhasa', link: '/nepal/trekking/everest-gokyo-trek-via-bhasa' },
                         { name: 'Everest Base Camp Trek', link: '/nepal/trekking/everest-base-camp-trek' },
                         { name: 'Everest Base Camp Yoga Trek', link: '/nepal/trekking/everest-base-camp-yoga-trek' },
-                        // { name: 'Gokyo Lake Trek', link: '/nepal/trekking/everest-region/gokyo-lake' },
-                        // { name: 'Jiri to EBC Trek', link: '/nepal/trekking/everest-region/jiri-to-ebc' },
-                        // { name: 'EBC Trek with Heli Return', link: '/nepal/trekking/everest-region/ebc-heli-return' },
-                        // { name: 'Everest View Trek', link: '/nepal/trekking/everest-region/everest-view' },
                     ]
                 },
                 { 
@@ -151,8 +183,6 @@ const NavBar = () => {
                     subItems: [
                         { name: 'Manaslu Circuit Trek', link: '/nepal/trekking/manaslu-circuit-trek' },
                         { name: 'Manaslu Tsum Valley Trek', link: '/nepal/trekking/manaslu-tsum-valley-trek' },
-                        // { name: 'Manaslu Tsum Valley Trek', link: '/nepal/trekking/manaslu-region/manaslu-tsum-valley' },
-                        // { name: 'Short Manaslu Circuit Trek', link: '/nepal/trekking/manaslu-region/short-circuit' },
                     ]
                 },
                 { 
@@ -173,15 +203,6 @@ const NavBar = () => {
                         { name: 'Upper Mustang Trek via Teri La', link: '/nepal/trekking/upper-mustang-trek-via-teri-la' },
                     ]
                 },
-                // { 
-                //     name: 'Other Regions', 
-                //     link: '/nepal/trekking/other-region',
-                //     subItems: [
-                //         { name: 'Dolpo Region Trek', link: '/nepal/trekking/dolpo-region' },
-                //         { name: 'Makalu Base Camp Trek', link: '/nepal/trekking/other-region/makalu-base-camp' },
-                //         { name: 'Budget Trekking in Nepal', link: '/nepal/trekking/budget' },
-                //     ]
-                // },
             ]
         },
         { 
@@ -231,64 +252,12 @@ const NavBar = () => {
             ]
         },
         { 
-            name: 'Tibet', 
-            link: '/tibet',
-            items: [
-                { 
-                    name: 'Mount Kailash Tour', 
-                    link: '/tibet/kailash',
-                    subItems: [
-                        { name: 'Mount Kailash Tour', link: '/tibet/tours/mount-kailash-tour' },
-                        { name: 'Tibet Kaliash Tour', link: '/tibet/tours/tibet-kailash-tour' },
-                        // { name: 'Kailash Yatra by Helicopter', link: '/tibet/kailash/helicopter' },
-                        // { name: 'Kailash Saga Dawa Festival', link: '/tibet/kailash/saga-dawa' },
-                        // { name: 'Inner Kora Tour', link: '/tibet/kailash/inner-kora' },
-                        // { name: 'Kailash with Muktinath', link: '/tibet/kailash/muktinath' },
-                    ]
-                },
-                { 
-                    name: 'Tibet Tours', 
-                    link: '/tibet/tours',
-                    subItems: [
-                        { name: 'Cultural Tibet Tour', link: '/tibet/tours/cultural-tibet-tour' },
-                        { name: 'Tibet Overland Tour', link: '/tibet/tours/tibet-overland-tour' },
-                        { name: 'Kunming Lhasa Tour', link: '/tibet/tours/kunming-lhasa-tour' },
-                        { name: 'Nepal Lhasa Tour', link: '/tibet/tours/nepal-lhasa-tour' },
-                    ]
-                },
-                { 
-                    name: 'Trekking', 
-                    link: '/tibet/trekking',
-                    subItems: [
-                        { name: 'Everest Tour Via Tibet', link: '/tibet/trekking/everest-tour-via-tibet' },
-                    ]
-                },
-            ]
-        },
-        { 
-            name: 'Bhutan', 
-            link: '/bhutan',
-            items: [
-                { 
-                    name: 'Tours', 
-                    link: '/bhutan/tours',
-                    subItems: [
-                        { name: 'Bhutan Dragon Heart Tour', link: '/bhutan/tours/bhutan-dragon_heart-tour' },
-                        { name: 'Bhutan Short Tour', link: '/bhutan/tours/bhutan-short-tour' },
-                        { name: 'Bhutan Cultural Tour', link: '/bhutan/tours/bhutan-cultural-tour' },
-                        { name: 'Classic Bhutan Trek', link: '/bhutan/tours/classic-bhutan-trek' },
-                    ]
-                },
-            ]
-        },
-        { 
             name: 'Travel Guides', 
             link: '/travel-guides',
             items: [
                 { name: 'Trekking Gear & Equipment', link: '/travel-guides/trekking-gear-and-equipment' },
                 { name: 'Protected Areas of Nepal', link: '/travel-guides/protected-areas-of-nepal' },
                 { name: 'Visa Information', link: '/travel-guides/visa-info' },
-                // { name: 'Child Sponsorship Program', link: '/travel-guides/child-sponsorship-program' },
             ]
         },
         { 
@@ -298,11 +267,6 @@ const NavBar = () => {
                 { name: 'About Us', link: '/about' },
                 { name: 'Our Team', link: '/about/our-team' },
                 { name: 'Blogs', link: '/blogs' },
-                // { name: 'Why Choose Us', link: '/about/why-choose-us' },
-                // { name: 'Legal Documents', link: '/about/legal-documents' },
-                // { name: 'Terms & Conditions', link: '/about/terms-conditions' },
-                // { name: 'Booking Policies', link: '/about/booking-policy' },
-                // { name: 'Privacy Policy', link: '/about/privacy-policy' },
             ]
         },
         { 
@@ -311,11 +275,14 @@ const NavBar = () => {
         }
     ];
 
-    // Helper: does this nav item use a mega-menu (categories with subItems)?
+    // Helper: regular mega-menu (items with subItems)
     const isMegaMenu = (item) =>
         item.items && item.items.some((i) => i.subItems && i.subItems.length > 0);
 
-    // Handle scroll effect for sticky navigation
+    // Country flag/emoji map
+    // const countryFlag = { Nepal: '🇳🇵', Tibet: '🏔️', Bhutan: '🇧🇹' };
+
+    // Handle scroll for sticky nav
     useEffect(() => {
         const handleScroll = () => {
             if (navBarRef.current && topHeaderRef.current) {
@@ -416,7 +383,6 @@ const NavBar = () => {
                     ref={topHeaderRef}
                     className="relative flex flex-col items-start justify-between w-full px-4 py-4 bg-white md:rounded-md lg:pb-6 lg:flex-row lg:items-center lg:px-5"
                 >
-                    {/* Logo and Mobile Menu Button */}
                     <div className="flex items-center justify-between w-full mb-0 lg:w-auto">
                         <div className="flex items-center justify-center gap-10">
                             <Link href="/" className="block">
@@ -430,7 +396,9 @@ const NavBar = () => {
                                 />
                             </Link>
                             <div>
-                                <p className="font-semibold text-accent-color uppercase underline">Lisence Number: <span className="text-secondary-color">3058</span></p>
+                                <p className="font-semibold text-accent-color uppercase underline">
+                                    Lisence Number: <span className="text-secondary-color">3058</span>
+                                </p>
                             </div>
                         </div>
                         <button
@@ -443,7 +411,6 @@ const NavBar = () => {
                         </button>
                     </div>
 
-                    {/* Contact Info and CTA */}
                     <div className="flex-col items-start hidden w-full gap-4 lg:flex lg:flex-row lg:items-center lg:gap-8 lg:w-auto">
                         <Link
                             href="https://www.tripadvisor.com/Attraction_Review-g293890-d17721412-Reviews-Global_Nepal_Treks-Kathmandu_Kathmandu_Valley_Bagmati_Zone_Central_Region.html"
@@ -451,22 +418,11 @@ const NavBar = () => {
                             rel="noopener noreferrer"
                             className="flex items-center gap-3 lg:block"
                         >
-                            <Image
-                                src={logos.tripadvisor_logo}
-                                className="h-auto w-30"
-                                width={120}
-                                height={40}
-                                alt="TripAdvisor Logo"
-                            />
+                            <Image src={logos.tripadvisor_logo} className="h-auto w-30" width={120} height={40} alt="TripAdvisor Logo" />
                             <p className="font-bold text-[#002B11] text-md lg:text-lg">Global Nepal Treks</p>
                         </Link>
 
-                        <Link
-                            href="https://wa.me/+9779744258519"
-                            className="flex items-center gap-2 lg:block"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
+                        <Link href="https://wa.me/+9779744258519" className="flex items-center gap-2 lg:block" target="_blank" rel="noopener noreferrer">
                             <p className="flex items-center gap-2 text-sm font-medium">
                                 <FontAwesomeIcon icon={faWhatsapp} className="text-green-500" size="lg" />
                                 Talk to an expert
@@ -474,64 +430,115 @@ const NavBar = () => {
                             <p className="text-sm font-semibold text-secondary-color lg:text-base">(+977) 9744258519</p>
                         </Link>
 
-                        <Link
-                            href="/book"
-                            className="w-full px-6 py-3 font-medium text-center text-white duration-200 rounded bg-accent-color hover:bg-secondary-color lg:w-auto"
-                        >
+                        <Link href="/book" className="w-full px-6 py-3 font-medium text-center text-white duration-200 rounded bg-accent-color hover:bg-secondary-color lg:w-auto">
                             Book Now
                         </Link>
                     </div>
                 </div>
 
-                {/* ───────────────────────────────────────────────
+                {/* ─────────────────────────────────────────────
                     DESKTOP NAVIGATION BAR
-                _______________________________________________ */}
+                _____________________________________________ */}
                 <div
                     ref={navBarRef}
-                    className={`left-0 hidden w-full lg:block transition-all duration-200 ${
-                        isNavSticky ? 'fixed top-0' : 'relative -mt-7'
-                    }`}
+                    className={`left-0 hidden w-full lg:block transition-all duration-200 ${isNavSticky ? 'fixed top-0' : 'relative -mt-7'}`}
                     style={{ zIndex: 60 }}
                 >
-                    <div ref={navInnerRef} className="relative flex flex-col items-center justify-between px-4 py-4 mx-2 font-semibold text-white rounded-md shadow-lg lg:flex-row lg:px-10 lg:mx-6 bg-accent-color">
+                    <div
+                        ref={navInnerRef}
+                        className="relative flex flex-col items-center justify-between px-4 py-4 mx-2 font-semibold text-white rounded-md shadow-lg lg:flex-row lg:px-10 lg:mx-6 bg-accent-color"
+                    >
                         <ul className="flex flex-wrap justify-center w-full gap-4 font-medium lg:justify-start lg:gap-6 lg:w-auto">
                             {navItems.map((item) => (
                                 <li
                                     key={item.name}
-                                    className={`${isMegaMenu(item) ? '' : 'relative'}`}
-                                    onMouseEnter={() => item.items && handleMouseEnter(item.name)}
+                                    className={`${item.isMegaMenuDestinations || isMegaMenu(item) ? '' : 'relative'}`}
+                                    onMouseEnter={() => (item.items || item.isMegaMenuDestinations) && handleMouseEnter(item.name)}
                                     onMouseLeave={handleMouseLeave}
                                 >
-                                    <div className="flex items-center gap-1 duration-200 cursor-pointer hover:opacity-80">
-                                        <Link
-                                            rel="canonical"
-                                            href={item.link}
-                                            className={`flex items-center gap-1 hover:animate-pulse text-sm lg:text-sm whitespace-nowrap ${
-                                                isActiveLink(item.link) ? 'font-bold underline underline-offset-4' : ''
-                                            }`}
-                                        >
-                                            {item.name}
-                                            {item.items && (
-                                                <FontAwesomeIcon icon={faChevronDown} className="w-2 h-2" />
-                                            )}
-                                        </Link>
-                                    </div>
+                                    <Link
+                                        rel="canonical"
+                                        href={item.link}
+                                        className={`flex items-center gap-1 text-sm whitespace-nowrap hover:opacity-80 transition-opacity ${
+                                            isActiveLink(item.link) ? 'font-bold underline underline-offset-4' : ''
+                                        }`}
+                                    >
+                                        {item.name}
+                                        {(item.items || item.isMegaMenuDestinations) && (
+                                            <FontAwesomeIcon icon={faChevronDown} className="w-2 h-2" />
+                                        )}
+                                    </Link>
 
                                     {/* ── DROPDOWN ── */}
-                                    {item.items && activeDropdown === item.name && (
-                                        isMegaMenu(item) ? (
-                                            /* ── NAVBAR-WIDTH MEGA MENU ── */
+                                    {activeDropdown === item.name && (
+
+                                        item.isMegaMenuDestinations ? (
+                                            /* ────────────────────────────────────────
+                                               DESTINATIONS MEGA MENU
+                                               3 country columns, divided by vertical
+                                               lines, each with flag + name header,
+                                               then category labels + sub-links below
+                                            ──────────────────────────────────────── */
+                                            <div
+                                                className="absolute left-0 right-0 top-full mt-2 bg-white shadow-xl rounded-b-md border-t-2 border-accent-color z-50 overflow-hidden"
+                                                onMouseEnter={() => handleDropdownMouseEnter(item.name)}
+                                                onMouseLeave={handleMouseLeave}
+                                            >
+                                                <div className="flex flex-col divide-x divide-gray-100">
+                                                    {item.countries.map((country) => (
+                                                        <div key={country.name} className="flex-1 px-6 py-5">
+                                                            {/* Country header */}
+                                                            <Link
+                                                                href={country.link}
+                                                                className="flex items-center gap-2 mb-4 pb-2.5 border-b-2 border-accent-color/25 group"
+                                                                onClick={() => setActiveDropdown(null)}
+                                                            >
+                                                                {/* <span className="text-lg leading-none">{countryFlag[country.name]}</span> */}
+                                                                <span className="text-sm font-extrabold uppercase tracking-widest text-accent-color group-hover:text-secondary-color transition-colors duration-150">
+                                                                    {country.name}
+                                                                </span>
+                                                            </Link>
+
+                                                            {/* Categories */}
+                                                            <div className="grid grid-cols-5 flex-row gap-4">
+                                                                {country.categories.map((category) => (
+                                                                    <div key={category.name}>
+                                                                        <Link
+                                                                            href={category.link}
+                                                                            className="block text-xs font-bold uppercase tracking-wider text-accent-color mb-1.5 hover:text-secondary-color transition-colors duration-150"
+                                                                            onClick={() => setActiveDropdown(null)}
+                                                                        >
+                                                                            {category.name}
+                                                                        </Link>
+                                                                        {category.subItems.map((subItem) => (
+                                                                            <Link
+                                                                                key={subItem.name}
+                                                                                href={subItem.link}
+                                                                                className="block py-0.5 text-sm text-gray-600 hover:text-secondary-color hover:translate-x-1 transition-all duration-150"
+                                                                                onClick={() => setActiveDropdown(null)}
+                                                                            >
+                                                                                {subItem.name}
+                                                                            </Link>
+                                                                        ))}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                        ) : item.items && isMegaMenu(item) ? (
+                                            /* ── REGULAR NAVBAR-WIDTH MEGA MENU ── */
                                             <div
                                                 className="absolute left-0 right-0 top-full mt-2 bg-white shadow-xl rounded-b-md border-t-2 border-accent-color z-50"
                                                 onMouseEnter={() => handleDropdownMouseEnter(item.name)}
                                                 onMouseLeave={handleMouseLeave}
                                             >
-                                                <div className="px-10 py-7 mx-6">
+                                                <div className="px-10 py-7">
                                                     <div
-                                                        className="grid gap-x-6 gap-y-1"
-                                                        style={{
-                                                            gridTemplateColumns: `repeat(${item.items.length}, 1fr)`,
-                                                        }}
+                                                        className="grid gap-x-8 gap-y-1"
+                                                        style={{ gridTemplateColumns: `repeat(${item.items.length}, 1fr)` }}
                                                     >
                                                         {item.items.map((category) => (
                                                             <div key={category.name} className="flex flex-col">
@@ -546,7 +553,7 @@ const NavBar = () => {
                                                                     <Link
                                                                         key={subItem.name}
                                                                         href={subItem.link}
-                                                                        className="block py-1 pr-2 text-sm text-gray-600 hover:text-secondary-color hover:translate-x-1 transition-all duration-150"
+                                                                        className="block py-1 text-sm text-gray-600 hover:text-secondary-color hover:translate-x-1 transition-all duration-150"
                                                                         onClick={() => setActiveDropdown(null)}
                                                                     >
                                                                         {subItem.name}
@@ -557,7 +564,8 @@ const NavBar = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                        ) : (
+
+                                        ) : item.items ? (
                                             /* ── SIMPLE DROPDOWN ── */
                                             <div
                                                 className="absolute top-full left-0 mt-2 bg-white shadow-xl rounded-sm z-50 border border-gray-100"
@@ -579,7 +587,7 @@ const NavBar = () => {
                                                     ))}
                                                 </div>
                                             </div>
-                                        )
+                                        ) : null
                                     )}
                                 </li>
                             ))}
@@ -598,28 +606,18 @@ const NavBar = () => {
                                 </button>
                             </div>
                             {isSearchOpen && (
-                                <FontAwesomeIcon
-                                    icon={faXmark}
-                                    className="w-4 h-4 ml-2 duration-200 cursor-pointer hover:opacity-80"
-                                    onClick={() => setIsSearchOpen(false)}
-                                    aria-label="Close search"
-                                />
+                                <FontAwesomeIcon icon={faXmark} className="w-4 h-4 ml-2 duration-200 cursor-pointer hover:opacity-80" onClick={() => setIsSearchOpen(false)} aria-label="Close search" />
                             )}
                             {!isSearchOpen && (
-                                <FontAwesomeIcon
-                                    icon={faMagnifyingGlass}
-                                    className="ml-2 duration-200 cursor-pointer hover:opacity-80"
-                                    onClick={() => setIsSearchOpen(true)}
-                                    aria-label="Open search"
-                                />
+                                <FontAwesomeIcon icon={faMagnifyingGlass} className="ml-2 duration-200 cursor-pointer hover:opacity-80" onClick={() => setIsSearchOpen(true)} aria-label="Open search" />
                             )}
                         </div>
                     </div>
                 </div>
 
-                {/* ───────────────────────────────────────────────
+                {/* ─────────────────────────────────────────────
                     MOBILE OVERLAY
-                _______________________________________________ */}
+                _____________________________________________ */}
                 {isMobileMenuOpen && (
                     <div
                         className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
@@ -629,9 +627,9 @@ const NavBar = () => {
                     />
                 )}
 
-                {/* ───────────────────────────────────────────────
+                {/* ─────────────────────────────────────────────
                     MOBILE NAVIGATION MENU
-                _______________________________________________ */}
+                _____________________________________________ */}
                 <div
                     ref={menuRef}
                     className={`fixed top-0 left-0 w-full h-screen bg-white transform transition-transform duration-300 ease-in-out z-50 lg:hidden ${
@@ -643,19 +641,9 @@ const NavBar = () => {
                         {/* Mobile header */}
                         <div className="flex items-center justify-between w-full p-5">
                             <Link href="/" onClick={closeAll}>
-                                <Image
-                                    src={logos.globalnepaltreks_logo}
-                                    className="h-auto w-[160px] lg:w-[200px]"
-                                    width={200}
-                                    height={60}
-                                    alt="Global Nepal Treks Logo"
-                                />
+                                <Image src={logos.globalnepaltreks_logo} className="h-auto w-[160px] lg:w-[200px]" width={200} height={60} alt="Global Nepal Treks Logo" />
                             </Link>
-                            <button
-                                className="p-2 text-gray-700 rounded-md hover:bg-gray-100"
-                                onClick={toggleMobileMenu}
-                                aria-label="Close menu"
-                            >
+                            <button className="p-2 text-gray-700 rounded-md hover:bg-gray-100" onClick={toggleMobileMenu} aria-label="Close menu">
                                 <FontAwesomeIcon icon={faTimes} className="w-6 h-6" />
                             </button>
                         </div>
@@ -663,11 +651,7 @@ const NavBar = () => {
                         {/* Mobile search */}
                         <div className="p-6 border-t border-gray-200">
                             <div className="relative">
-                                <input
-                                    type="text"
-                                    placeholder="Search treks, destinations..."
-                                    className="w-full px-4 py-3 pr-10 rounded-full border-2 border-gray-200 bg-white text-sm text-gray-800 focus:outline-none focus:border-primary-color-dark transition-colors"
-                                />
+                                <input type="text" placeholder="Search treks, destinations..." className="w-full px-4 py-3 pr-10 rounded-full border-2 border-gray-200 bg-white text-sm text-gray-800 focus:outline-none focus:border-primary-color-dark transition-colors" />
                                 <button className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-primary-color-dark cursor-pointer text-white p-2 rounded-full h-10 w-10 hover:bg-primary-color transition-colors">
                                     <FontAwesomeIcon icon={faRoute} className="w-3 h-3" />
                                 </button>
@@ -678,77 +662,127 @@ const NavBar = () => {
                         <ul className="py-4">
                             {navItems.map((item) => (
                                 <li key={item.name} className="border-b border-gray-100">
-                                    {!item.items ? (
-                                        /* ── Simple link ── */
+
+                                    {/* ── No dropdown: simple link ── */}
+                                    {!item.items && !item.isMegaMenuDestinations ? (
                                         <Link
                                             rel="canonical"
                                             href={item.link}
-                                            className={`flex items-center justify-between px-6 py-4 transition-colors duration-200 hover:bg-gray-50 ${
-                                                isActiveLink(item.link) ? 'text-secondary-color font-bold' : 'text-gray-700'
-                                            }`}
+                                            className={`flex items-center justify-between px-6 py-4 transition-colors duration-200 hover:bg-gray-50 ${isActiveLink(item.link) ? 'text-secondary-color font-bold' : 'text-gray-700'}`}
                                             onClick={closeAll}
                                         >
                                             {item.name}
                                         </Link>
-                                    ) : (
+
+                                    ) : item.isMegaMenuDestinations ? (
+                                        /* ── DESTINATIONS mobile: country → category → links ── */
                                         <>
-                                            {/* ── Top-level toggle ── */}
                                             <div
                                                 className="flex items-center justify-between px-6 py-4 text-gray-700 cursor-pointer hover:bg-gray-50 transition-colors duration-200"
                                                 onClick={() => toggleMobileDropdown(item.name)}
-                                                role="button"
-                                                tabIndex={0}
+                                                role="button" tabIndex={0}
                                                 onKeyPress={(e) => e.key === 'Enter' && toggleMobileDropdown(item.name)}
                                             >
                                                 <span className={isActiveLink(item.link) ? 'text-secondary-color font-bold' : ''}>{item.name}</span>
-                                                <FontAwesomeIcon
-                                                    icon={faChevronDown}
-                                                    className={`w-3 h-3 transition-transform duration-200 ${activeMobileDropdown === item.name ? 'rotate-180' : ''}`}
-                                                />
+                                                <FontAwesomeIcon icon={faChevronDown} className={`w-3 h-3 transition-transform duration-200 ${activeMobileDropdown === item.name ? 'rotate-180' : ''}`} />
                                             </div>
 
-                                            {/* ── Category / sub-item list ── */}
+                                            {activeMobileDropdown === item.name && (
+                                                <div className="bg-gray-50">
+                                                    {item.countries.map((country) => (
+                                                        <div key={country.name}>
+                                                            {/* Country toggle */}
+                                                            <div
+                                                                className="flex items-center justify-between px-8 py-3 cursor-pointer hover:bg-gray-100 transition-colors duration-200"
+                                                                onClick={() => toggleMobileSubDropdown(country.name)}
+                                                                role="button" tabIndex={0}
+                                                                onKeyPress={(e) => e.key === 'Enter' && toggleMobileSubDropdown(country.name)}
+                                                            >
+                                                                <span className="flex items-center gap-2 text-sm font-bold text-accent-color uppercase tracking-wide">
+                                                                    {/* <span>{countryFlag[country.name]}</span> */}
+                                                                    {country.name}
+                                                                </span>
+                                                                <FontAwesomeIcon
+                                                                    icon={faChevronDown}
+                                                                    className={`w-2.5 h-2.5 text-gray-400 transition-transform duration-200 ${activeMobileSubDropdown === country.name ? 'rotate-180' : ''}`}
+                                                                />
+                                                            </div>
+
+                                                            {activeMobileSubDropdown === country.name && (
+                                                                <div className="bg-white border-l-2 border-accent-color ml-8">
+                                                                    <Link
+                                                                        href={country.link}
+                                                                        className="block px-4 py-2 text-xs font-medium text-accent-color hover:bg-secondary-color hover:text-white transition-colors duration-200"
+                                                                        onClick={closeAll}
+                                                                    >
+                                                                        View All {country.name} →
+                                                                    </Link>
+                                                                    {country.categories.map((category) => (
+                                                                        <div key={category.name}>
+                                                                            <p className="px-4 pt-3 pb-1 text-xs font-bold text-accent-color uppercase tracking-wider">
+                                                                                {category.name}
+                                                                            </p>
+                                                                            {category.subItems.map((subItem) => (
+                                                                                <Link
+                                                                                    key={subItem.name}
+                                                                                    href={subItem.link}
+                                                                                    className={`block px-4 py-1.5 text-sm transition-colors duration-200 hover:bg-secondary-color hover:text-white ${isActiveLink(subItem.link) ? 'text-secondary-color font-semibold' : 'text-gray-600'}`}
+                                                                                    onClick={closeAll}
+                                                                                >
+                                                                                    {subItem.name}
+                                                                                </Link>
+                                                                            ))}
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </>
+
+                                    ) : (
+                                        /* ── Regular items with dropdown ── */
+                                        <>
+                                            <div
+                                                className="flex items-center justify-between px-6 py-4 text-gray-700 cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+                                                onClick={() => toggleMobileDropdown(item.name)}
+                                                role="button" tabIndex={0}
+                                                onKeyPress={(e) => e.key === 'Enter' && toggleMobileDropdown(item.name)}
+                                            >
+                                                <span className={isActiveLink(item.link) ? 'text-secondary-color font-bold' : ''}>{item.name}</span>
+                                                <FontAwesomeIcon icon={faChevronDown} className={`w-3 h-3 transition-transform duration-200 ${activeMobileDropdown === item.name ? 'rotate-180' : ''}`} />
+                                            </div>
+
                                             {activeMobileDropdown === item.name && (
                                                 <div className="bg-gray-50">
                                                     {item.items.map((category) => (
                                                         <div key={category.name}>
                                                             {category.subItems && category.subItems.length > 0 ? (
-                                                                /* ── Category with sub-items: collapsible ── */
                                                                 <>
                                                                     <div
                                                                         className="flex items-center justify-between px-8 py-3 cursor-pointer hover:bg-gray-100 transition-colors duration-200"
                                                                         onClick={() => toggleMobileSubDropdown(category.name)}
-                                                                        role="button"
-                                                                        tabIndex={0}
+                                                                        role="button" tabIndex={0}
                                                                         onKeyPress={(e) => e.key === 'Enter' && toggleMobileSubDropdown(category.name)}
                                                                     >
-                                                                        <span className="text-sm font-semibold text-accent-color uppercase tracking-wide">
-                                                                            {category.name}
-                                                                        </span>
+                                                                        <span className="text-sm font-semibold text-accent-color uppercase tracking-wide">{category.name}</span>
                                                                         <FontAwesomeIcon
                                                                             icon={faChevronDown}
-                                                                            className={`w-2.5 h-2.5 text-gray-400 transition-transform duration-200 ${
-                                                                                activeMobileSubDropdown === category.name ? 'rotate-180' : ''
-                                                                            }`}
+                                                                            className={`w-2.5 h-2.5 text-gray-400 transition-transform duration-200 ${activeMobileSubDropdown === category.name ? 'rotate-180' : ''}`}
                                                                         />
                                                                     </div>
                                                                     {activeMobileSubDropdown === category.name && (
                                                                         <div className="bg-white border-l-2 border-accent-color ml-8">
-                                                                            {/* Category page link */}
-                                                                            <Link
-                                                                                href={category.link}
-                                                                                className="block px-4 py-2 text-xs font-medium text-accent-color hover:bg-secondary-color hover:text-white transition-colors duration-200"
-                                                                                onClick={closeAll}
-                                                                            >
+                                                                            <Link href={category.link} className="block px-4 py-2 text-xs font-medium text-accent-color hover:bg-secondary-color hover:text-white transition-colors duration-200" onClick={closeAll}>
                                                                                 View All {category.name} →
                                                                             </Link>
                                                                             {category.subItems.map((subItem) => (
                                                                                 <Link
                                                                                     key={subItem.name}
                                                                                     href={subItem.link}
-                                                                                    className={`block px-4 py-2 text-sm transition-colors duration-200 hover:bg-secondary-color hover:text-white ${
-                                                                                        isActiveLink(subItem.link) ? 'text-secondary-color font-semibold' : 'text-gray-600'
-                                                                                    }`}
+                                                                                    className={`block px-4 py-2 text-sm transition-colors duration-200 hover:bg-secondary-color hover:text-white ${isActiveLink(subItem.link) ? 'text-secondary-color font-semibold' : 'text-gray-600'}`}
                                                                                     onClick={closeAll}
                                                                                 >
                                                                                     {subItem.name}
@@ -758,13 +792,10 @@ const NavBar = () => {
                                                                     )}
                                                                 </>
                                                             ) : (
-                                                                /* ── Simple category link (no sub-items) ── */
                                                                 <Link
                                                                     rel="canonical"
                                                                     href={category.link}
-                                                                    className={`block px-10 py-3 transition-colors duration-200 hover:bg-secondary-color hover:text-white ${
-                                                                        isActiveLink(category.link) ? 'text-secondary-color font-bold' : 'text-gray-600'
-                                                                    }`}
+                                                                    className={`block px-10 py-3 transition-colors duration-200 hover:bg-secondary-color hover:text-white ${isActiveLink(category.link) ? 'text-secondary-color font-bold' : 'text-gray-600'}`}
                                                                     onClick={closeAll}
                                                                 >
                                                                     {category.name}
@@ -782,28 +813,12 @@ const NavBar = () => {
 
                         {/* Mobile footer info */}
                         <div className="flex flex-col gap-5 p-5">
-                            <Link
-                                href="https://www.tripadvisor.com/Attraction_Review-g293890-d17721412-Reviews-Global_Nepal_Treks-Kathmandu_Kathmandu_Valley_Bagmati_Zone_Central_Region.html"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-3"
-                            >
-                                <Image
-                                    src={logos.tripadvisor_logo}
-                                    className="h-auto w-30"
-                                    width={120}
-                                    height={40}
-                                    alt="TripAdvisor Logo"
-                                />
+                            <Link href="https://www.tripadvisor.com/Attraction_Review-g293890-d17721412-Reviews-Global_Nepal_Treks-Kathmandu_Kathmandu_Valley_Bagmati_Zone_Central_Region.html" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3">
+                                <Image src={logos.tripadvisor_logo} className="h-auto w-30" width={120} height={40} alt="TripAdvisor Logo" />
                                 <p className="font-bold text-[#002B11] text-md">Global Nepal Treks</p>
                             </Link>
 
-                            <Link
-                                href="https://wa.me/+9779744258519"
-                                className="flex items-center gap-2"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
+                            <Link href="https://wa.me/+9779744258519" className="flex items-center gap-2" target="_blank" rel="noopener noreferrer">
                                 <p className="flex items-center gap-2 text-sm font-medium">
                                     <FontAwesomeIcon icon={faWhatsapp} className="text-green-500" size="lg" />
                                     Talk to an expert
@@ -811,56 +826,28 @@ const NavBar = () => {
                                 <p className="text-sm font-semibold text-secondary-color">(+977) 9744258519</p>
                             </Link>
 
-                            <Link
-                                href="/book-now"
-                                className="w-full px-6 py-3 mt-4 font-medium text-center text-white duration-200 rounded bg-accent-color hover:bg-secondary-color"
-                                onClick={closeAll}
-                            >
+                            <Link href="/book-now" className="w-full px-6 py-3 mt-4 font-medium text-center text-white duration-200 rounded bg-accent-color hover:bg-secondary-color" onClick={closeAll}>
                                 Book Now
                             </Link>
                         </div>
                     </div>
                 </div>
 
-                {/* ───────────────────────────────────────────────
+                {/* ─────────────────────────────────────────────
                     MOBILE BOTTOM BAR
-                _______________________________________________ */}
+                _____________________________________________ */}
                 <div className="fixed bottom-0 left-0 right-0 z-40 px-3 py-2 font-semibold text-white shadow-lg bg-secondary-color/95 backdrop-blur-sm lg:hidden">
                     <div className="flex items-center justify-between gap-2">
-                        {/* Social icons */}
                         <div className="flex items-center gap-1">
-                            <Link href="#" className="p-1.5 rounded-lg hover:bg-white/10" aria-label="Facebook">
-                                <FontAwesomeIcon icon={faFacebookF} className="w-4 h-3.5" />
-                            </Link>
-                            <Link href="#" className="p-1.5 rounded-lg hover:bg-white/10" aria-label="Instagram">
-                                <FontAwesomeIcon icon={faInstagram} className="w-3.5 h-3.5" />
-                            </Link>
-                            <Link href="#" className="p-1.5 rounded-lg hover:bg-white/10" aria-label="LinkedIn">
-                                <FontAwesomeIcon icon={faLinkedinIn} className="w-3.5 h-3.5" />
-                            </Link>
-                            <Link href="#" className="p-1.5 rounded-lg hover:bg-white/10" aria-label="WeChat">
-                                <FontAwesomeIcon icon={faWeixin} className="w-3.5 h-3.5" />
-                            </Link>
-                            <Link href="#" className="p-1.5 rounded-lg hover:bg-white/10" aria-label="YouTube">
-                                <FontAwesomeIcon icon={faYoutube} className="w-3.5 h-3.5" />
-                            </Link>
-                            <Link href="#" className="p-1.5 rounded-lg hover:bg-white/10" aria-label="WhatsApp">
-                                <FontAwesomeIcon icon={faWhatsapp} className="w-3.5 h-3.5 text-green-300" />
-                            </Link>
+                            <Link href="#" className="p-1.5 rounded-lg hover:bg-white/10" aria-label="Facebook"><FontAwesomeIcon icon={faFacebookF} className="w-4 h-3.5" /></Link>
+                            <Link href="#" className="p-1.5 rounded-lg hover:bg-white/10" aria-label="Instagram"><FontAwesomeIcon icon={faInstagram} className="w-3.5 h-3.5" /></Link>
+                            <Link href="#" className="p-1.5 rounded-lg hover:bg-white/10" aria-label="LinkedIn"><FontAwesomeIcon icon={faLinkedinIn} className="w-3.5 h-3.5" /></Link>
+                            <Link href="#" className="p-1.5 rounded-lg hover:bg-white/10" aria-label="WeChat"><FontAwesomeIcon icon={faWeixin} className="w-3.5 h-3.5" /></Link>
+                            <Link href="#" className="p-1.5 rounded-lg hover:bg-white/10" aria-label="YouTube"><FontAwesomeIcon icon={faYoutube} className="w-3.5 h-3.5" /></Link>
+                            <Link href="#" className="p-1.5 rounded-lg hover:bg-white/10" aria-label="WhatsApp"><FontAwesomeIcon icon={faWhatsapp} className="w-3.5 h-3.5 text-green-300" /></Link>
                         </div>
-
-                        {/* TripAdvisor */}
-                        <Link
-                            href="https://www.tripadvisor.com/Attraction_Review-g293890-d17721412-Reviews-Global_Nepal_Treks-Kathmandu_Kathmandu_Valley_Bagmati_Zone_Central_Region.html"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center px-2 py-1 transition-colors duration-200 rounded-lg hover:bg-white/10"
-                        >
-                            <Image
-                                src={logos.tripadvisor_logo_white}
-                                className="w-auto h-full"
-                                alt="TripAdvisor"
-                            />
+                        <Link href="https://www.tripadvisor.com/Attraction_Review-g293890-d17721412-Reviews-Global_Nepal_Treks-Kathmandu_Kathmandu_Valley_Bagmati_Zone_Central_Region.html" target="_blank" rel="noopener noreferrer" className="flex items-center px-2 py-1 transition-colors duration-200 rounded-lg hover:bg-white/10">
+                            <Image src={logos.tripadvisor_logo_white} className="w-auto h-full" alt="TripAdvisor" />
                         </Link>
                     </div>
                 </div>
