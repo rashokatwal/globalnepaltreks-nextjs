@@ -397,7 +397,7 @@ const NavBar = () => {
                             </Link>
                             <div>
                                 <p className="font-semibold text-accent-color uppercase underline">
-                                    Lisence Number: <span className="text-secondary-color">3058</span>
+                                    License Number: <span className="text-secondary-color">3058</span>
                                 </p>
                             </div>
                         </div>
