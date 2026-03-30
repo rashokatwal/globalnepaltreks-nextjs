@@ -74,27 +74,30 @@ export const metadata = {
 export default function RootLayout({ children }) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "TravelAgency", // Changed to TravelAgency for better SEO for trekking
     "name": "Global Nepal Treks",
     "alternateName": "GNT",
     "url": "https://globalnepaltreks.com",
-    "logo": logos.globalnepaltreks_logo.src,
+    "logo": "https://globalnepaltreks.com", // Ensure this is a full URL string
     "sameAs": [
       "https://www.facebook.com/GlobalNepalTreks",
       "https://x.com/Sakarsarthak147?t=zcbv2PDB2ZXwAW9-CC3c-w&s=07",
       "https://www.instagram.com/globalnepaltreks",
       "https://www.youtube.com/@GlobalnepalTreks5",
       "https://www.linkedin.com/company/global-nepal-treks-your-travel-partner-in-nepal/",
-      "https://pin.it/3izih3qq5",
-      "https://globalnepaltreks.com/"
+      "https://pin.it/3izih3qq5"
     ]
-  }
+  };
 
   return (
     <html lang="en">
-      <body
-        className={`${montserrat.variable} antialiased`}
-      >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body className={`${montserrat.variable} antialiased`}>
         <NavBar />
         {children}
         <Footer />
@@ -102,3 +105,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
