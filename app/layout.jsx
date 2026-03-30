@@ -72,6 +72,24 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Global Nepal Treks",
+    "alternateName": "GNT",
+    "url": "https://globalnepaltreks.com",
+    "logo": logos.globalnepaltreks_logo.src,
+    "sameAs": [
+      "https://www.facebook.com/GlobalNepalTreks",
+      "https://x.com/Sakarsarthak147?t=zcbv2PDB2ZXwAW9-CC3c-w&s=07",
+      "https://www.instagram.com/globalnepaltreks",
+      "https://www.youtube.com/@GlobalnepalTreks5",
+      "https://www.linkedin.com/company/global-nepal-treks-your-travel-partner-in-nepal/",
+      "https://pin.it/3izih3qq5",
+      "https://globalnepaltreks.com/"
+    ]
+  }
+
   return (
     <html lang="en">
       <body
