@@ -3,6 +3,7 @@ import "./globals.css";
 import NavBar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import { homeAssets, logos } from "./assets/assets";
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { icon } from "@fortawesome/fontawesome-svg-core";
 
 const montserrat = Montserrat({
@@ -102,6 +103,7 @@ export default function RootLayout({ children }) {
         {children}
         <Footer />
       </body>
+      <GoogleAnalytics gaId="G-3K0DX4GGLT" />
     </html>
   );
 }
