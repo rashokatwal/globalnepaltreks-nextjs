@@ -8,7 +8,7 @@ const PackageCard = ({ packageDetails }) => {
             <div className="relative h-48 overflow-hidden sm:h-56 md:h-60">
                 <img
                     src={packageDetails.image}
-                    alt="Mount Kailash Tour"
+                    alt={packageDetails.title}
                     className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                     loading="lazy"
                 />
