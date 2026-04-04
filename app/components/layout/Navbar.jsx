@@ -96,7 +96,28 @@ const NavBar = () => {
                             name: 'Rafting', 
                             link: '/nepal/rafting',
                             subItems: [
-                                { name: 'Trishuli River Rafting', link: '/nepal/rafting/trishuli' },
+                                { name: 'Trishuli River Rafting', link: '/nepal/rafting/trishuli-river-rafting-in-nepal' },
+                            ]
+                        },
+                        { 
+                            name: 'Paragliding', 
+                            link: '/nepal/paragliding',
+                            subItems: [
+                                { name: 'Paragliding in Nepal', link: '/nepal/paragliding/paragliding-in-nepal' },
+                            ]
+                        },
+                        { 
+                            name: 'Zip Flying', 
+                            link: '/nepal/zip-flyer',
+                            subItems: [
+                                { name: 'Zip Flying in Pokhara', link: '/nepal/zip-flyer/zip-flyer-in-pokhara' },
+                            ]
+                        },
+                        { 
+                            name: 'Ultra Light Flight', 
+                            link: '/nepal/ultra-light-flight',
+                            subItems: [
+                                { name: 'Ultra Light Flight in Pokhara', link: '/nepal/ultra-light-flight/ultra-light-flight-in-pokhara' },
                             ]
                         },
                     ]

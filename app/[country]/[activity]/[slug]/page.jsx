@@ -20,7 +20,9 @@ import {
   faHouseChimney,
   faUtensils,
   faTimesCircle,
-  faArrowLeft
+  faArrowLeft,
+  faCheck,
+  faXmark
 } from '@fortawesome/free-solid-svg-icons';
 import PackageDetails from '@/app/components/sections/PackageDetails';
 import BookingSidebar from '@/app/components/sections/BookingSidebar';
@@ -308,7 +310,7 @@ export default async function PackagePage({ params }) {
                           .filter(f => f.feature_type === 'included')
                           .map((feature) => (
                             <li key={feature.id} className="flex items-start gap-2">
-                              <FontAwesomeIcon icon={faCheckCircle} className="w-4 h-4 mt-1 text-green-700 shrink-0" />
+                              <FontAwesomeIcon icon={faCheck} className="w-4 h-4 mt-1 text-green-700 shrink-0" />
                               <span className="text-sm">{feature.description}</span>
                             </li>
                           ))}
@@ -323,7 +325,7 @@ export default async function PackagePage({ params }) {
                           .filter(f => f.feature_type === 'excluded')
                           .map((feature) => (
                             <li key={feature.id} className="flex items-start gap-2">
-                              <FontAwesomeIcon icon={faTimesCircle} className="w-4 h-4 mt-1 text-red-800 shrink-0" />
+                              <FontAwesomeIcon icon={faXmark} className="w-4 h-4 mt-1 text-red-800 shrink-0" />
                               <span className="text-sm">{feature.description}</span>
                             </li>
                           ))}
