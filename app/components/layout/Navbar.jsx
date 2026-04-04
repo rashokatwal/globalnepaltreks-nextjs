@@ -246,10 +246,10 @@ const NavBar = () => {
                     subItems: [
                         { name: 'Kathmandu Valley Tour', link: '/nepal/tours/kathmandu-valley-tour' },
                         { name: 'Kathmandu Pokhara Tour', link: '/nepal/tours/kathmandu-pokhara-tour' },
-                        { name: "Nepal's 3 Best City Tour", link: '/nepal/tours/nepal-3-best-city-tour' },
                         { name: 'Himalayan View Tour', link: '/nepal/tours/himalayan-view-tour' },
-                        { name: 'Muktinath Tour', link: '/nepal/tours/muktinath-tour' },
-                        { name: 'Bandipur Tour', link: '/nepal/tours/bandipur-tour' },
+                        { name: 'Traditional Hindu Wedding Ceremonies', link: '/nepal/tours/traditional-hindu-wedding-ceremonies' },
+                        { name: 'Buddhist Pilgrimage Tours', link: '/nepal/tours/buddhist-pilgrimage-tour-in-nepal' },
+                        { name: 'Upper Mustang 4WD Jeep Tour', link: '/nepal/tours/upper-mustang-4wd-jeep-tour' },
                     ]
                 },
                 { 
@@ -264,10 +264,11 @@ const NavBar = () => {
                     name: 'Adventure Packages', 
                     link: '',
                     subItems: [
-                        { name: 'Manaslu Tsum Valley Trek', link: '/nepal/trekking/manaslu-tsum-valley-trek' },
-                        { name: 'Annapurna Circuit Trek', link: '/nepal/trekking/annapurna-circuit-trek' },
-                        { name: 'Gokyo Kalapathar Trek', link: '/nepal/trekking/gokyo-kalapathar-trek' },
-                        { name: 'Langtang Ganja-La Pass Trek', link: '/nepal/trekking/langtang-ganja-la-pass-trek' },
+                        { name: 'Paragliding in Nepal', link: '/nepal/paragliding/paragliding-in-nepal' },
+                        { name: 'Trishuli River Rafting', link: '/nepal/rafting/trishuli-river-rafting-in-nepal' },
+                        { name: 'Bhote Koshi Rafting', link: '/nepal/rafting/bhote-koshi-rafting-with-bungee-jumping' },
+                        { name: 'Zip Flying in Pokhara', link: '/nepal/zip-flyer/zip-flyer-in-pokhara' },
+                        { name: 'Ultra Light Flight in Pokhara', link: '/nepal/ultra-light-flight/ultra-light-flight-in-pokhara' },
                     ]
                 },
             ]
