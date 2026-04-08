@@ -15,66 +15,34 @@ import {
 import { blogsAssets } from '@/app/assets/assets';
 import BlogCard from '@/app/components/cards/BlogCard';
 import Heading from '@/app/components/ui/Heading';
-import { FacebookIcon, FacebookShareButton, LinkedinIcon, LinkedinShareButton } from 'next-share';
 import ShareButtons from '@/app/components/ui/ShareButtons';
 
-// Generate metadata for SEO
-export async function generateMetadata({ params }) {
-  const { slug } = params;
-  const post = await getBlogPost(slug);
-
-  if (!post) {
-    return {
-      title: "Blog Post Not Found",
-      description: "The requested blog post could not be found.",
-    };
+// ✅ FIX: Use a reliable base URL that works in all environments
+function getBaseUrl() {
+  // In production (server-side), prefer NEXT_PUBLIC_APP_URL, fall back to production domain
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    return process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, ''); // strip trailing slash
   }
-
-  return {
-    title: post.meta_title || `${post.title} | Global Nepal Treks Blog`,
-    description: post.meta_description || post.excerpt,
-    keywords: post.keywords || "",
-
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      url: `https://globalnepaltreks.com/blogs/${post.slug}`,
-      siteName: "Global Nepal Treks",
-      images: [
-        {
-          url: post.featured_image,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
-      type: "article",
-      publishedTime: post.published_at,
-      authors: [post.author],
-    },
-
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
-      images: [post.featured_image],
-    },
-  };
+  // ✅ FIX: Never fall back to localhost in production — use your actual domain
+  return 'https://globalnepaltreks.com';
 }
 
 // Fetch blog post data
 async function getBlogPost(slug) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const baseUrl = getBaseUrl();
     const res = await fetch(`${baseUrl}/api/blogs/${slug}`, {
-      next: { revalidate: 0 } // Revalidate every hour
+      // ✅ FIX: Use cache: 'no-store' to prevent stale data for crawlers/OG scrapers
+      // Or use revalidate: 3600 if you want hourly caching (your original comment said "every hour")
+      next: { revalidate: 3600 },
     });
-    
+
     if (!res.ok) return null;
-    
+
     const data = await res.json();
     return data.data;
   } catch (error) {
+    console.error(`[getBlogPost] Failed to fetch blog post "${slug}":`, error);
     return null;
   }
 }
@@ -86,55 +54,119 @@ function formatDate(dateString) {
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   });
 }
 
 // Calculate reading time if not provided
 function getReadingTime(content, providedTime) {
   if (providedTime) return providedTime;
-  
+
   const wordsPerMinute = 200;
   const wordCount = content?.trim().split(/\s+/).length || 0;
   return Math.ceil(wordCount / wordsPerMinute);
 }
 
-export default async function BlogPostPage({ params }) {
+// ✅ FIX: generateMetadata must also use a reliable URL — same fix applied here
+export async function generateMetadata({ params }) {
+  // ✅ FIX: await params (required in Next.js 15+)
   const { slug } = await params;
   const post = await getBlogPost(slug);
-  
-  // If post not found, show 404
+
+  if (!post) {
+    return {
+      title: 'Blog Post Not Found',
+      description: 'The requested blog post could not be found.',
+    };
+  }
+
+  // ✅ FIX: Build a clean canonical URL
+  const canonicalUrl = `https://globalnepaltreks.com/blogs/${post.slug}`;
+
+  return {
+    title: post.meta_title || `${post.title} | Global Nepal Treks Blog`,
+    description: post.meta_description || post.excerpt,
+    keywords: post.keywords || '',
+
+    // ✅ FIX: Add canonical URL — this is what LinkedIn uses to resolve the correct page
+    alternates: {
+      canonical: canonicalUrl,
+    },
+
+    openGraph: {
+      title: post.meta_title || post.title,
+      description: post.meta_description || post.excerpt,
+      // ✅ FIX: og:url must exactly match the canonical URL — LinkedIn uses this to fetch OG data
+      url: canonicalUrl,
+      siteName: 'Global Nepal Treks',
+      images: [
+        {
+          // ✅ FIX: Ensure image URL is absolute — relative paths break OG scrapers
+          url: post.featured_image?.startsWith('http')
+            ? post.featured_image
+            : `https://globalnepaltreks.com${post.featured_image}`,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+      type: 'article',
+      publishedTime: post.published_at,
+      authors: [post.author],
+    },
+
+    twitter: {
+      card: 'summary_large_image',
+      title: post.meta_title || post.title,
+      description: post.meta_description || post.excerpt,
+      images: [
+        post.featured_image?.startsWith('http')
+          ? post.featured_image
+          : `https://globalnepaltreks.com${post.featured_image}`,
+      ],
+    },
+  };
+}
+
+export default async function BlogPostPage({ params }) {
+  // ✅ FIX: await params (required in Next.js 15+)
+  const { slug } = await params;
+  const post = await getBlogPost(slug);
+
   if (!post) {
     notFound();
   }
-  
+
   const readingTime = getReadingTime(post.content, post.reading_time);
   const formattedDate = formatDate(post.published_at);
 
+  // ✅ FIX: Always use absolute URL for sharing
   const shareUrl = `https://globalnepaltreks.com/blogs/${post.slug}`;
-  
+
   return (
     <main className="bg-white">
       {/* Hero Section */}
       <section className="relative min-h-[80vh] bg-gray-900">
-        <div className="absolute inset-0 overflow-hidden bg-center bg-fixed bg-cover" style={{backgroundImage: `url(${post.featured_image})`}}>
-        </div>
-        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent"></div>
-        
+        <div
+          className="absolute inset-0 overflow-hidden bg-center bg-fixed bg-cover"
+          style={{ backgroundImage: `url(${post.featured_image})` }}
+        />
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent" />
+
         <div className="absolute bottom-0 left-0 right-0 max-w-5xl mx-auto px-4 pb-16 text-white">
           <div className="flex flex-wrap gap-3 mb-4">
             <span className="bg-accent-color px-3 py-1 rounded-full text-xs font-semibold">
-              {post.category || (post.categories?.[0]) || 'Trekking'}
+              {post.category || post.categories?.[0] || 'Trekking'}
             </span>
             <span className="bg-primary-color-dark px-3 py-1 rounded-full text-xs font-semibold">
               {post.country_name || 'Nepal'}
             </span>
           </div>
-          
+
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-montserrat mb-4">
             {post.title}
           </h1>
-          
+
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-200">
             <span className="flex items-center gap-2">
               <FontAwesomeIcon icon={faUser} className="w-3 h-3" />
@@ -168,9 +200,7 @@ export default async function BlogPostPage({ params }) {
               Blog
             </Link>
             <span className="text-gray-400">/</span>
-            <span className="text-gray-900 font-medium truncate">
-              {post.title}
-            </span>
+            <span className="text-gray-900 font-medium truncate">{post.title}</span>
           </div>
         </div>
       </section>
@@ -181,18 +211,16 @@ export default async function BlogPostPage({ params }) {
           {/* Excerpt */}
           {post.excerpt && (
             <div className="mb-8 p-6 bg-gray-50 border-l-4 border-primary-color-dark rounded-r-lg">
-              <p className="text-lg text-gray-700 italic">
-                "{post.excerpt}"
-              </p>
+              <p className="text-lg text-gray-700 italic">"{post.excerpt}"</p>
             </div>
           )}
 
-          {/* Main Content - Using regular prose styling */}
+          {/* Main Content */}
           <article className="text-gray-800 leading-relaxed space-y-6">
             {post.content ? (
-              <div 
+              <div
                 className="blog-content"
-                dangerouslySetInnerHTML={{ __html: post.content }} 
+                dangerouslySetInnerHTML={{ __html: post.content }}
               />
             ) : (
               <p className="text-gray-600">No content available.</p>
@@ -223,7 +251,8 @@ export default async function BlogPostPage({ params }) {
           {/* Share Buttons */}
           <div className="mt-8 pt-8 border-t border-gray-200">
             <h3 className="font-semibold mb-4">Share this article:</h3>
-            <ShareButtons shareUrl={shareUrl} />
+            {/* ✅ FIX: Pass both shareUrl and title so ShareButtons can use them correctly */}
+            <ShareButtons shareUrl={shareUrl} title={post.title} />
           </div>
         </div>
       </section>
@@ -232,23 +261,20 @@ export default async function BlogPostPage({ params }) {
       {post.related && post.related.length > 0 && (
         <section className="py-16 bg-gray-50">
           <div className="max-w-6xl mx-auto px-4">
-            <Heading 
-              title="Related Articles" 
-              titleClass="text-center mb-10" 
-            />
-            
+            <Heading title="Related Articles" titleClass="text-center mb-10" />
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {post.related.map((relatedPost) => (
-                <BlogCard 
-                  key={relatedPost.id} 
+                <BlogCard
+                  key={relatedPost.id}
                   blog={{
                     id: relatedPost.id,
                     title: relatedPost.title,
                     slug: relatedPost.slug,
                     image: relatedPost.featured_image || blogsAssets.everest_blog,
                     postedDate: formatDate(relatedPost.published_at),
-                    category: relatedPost.category || 'Trekking'
-                  }} 
+                    category: relatedPost.category || 'Trekking',
+                  }}
                 />
               ))}
             </div>
@@ -266,13 +292,18 @@ export default async function BlogPostPage({ params }) {
                   href={`/blogs/${post.navigation.previous.slug}`}
                   className="group flex items-center gap-2 text-gray-600 hover:text-primary-color-dark transition max-w-[45%]"
                 >
-                  <FontAwesomeIcon icon={faArrowLeft} className="w-4 h-4 group-hover:-translate-x-1 transition" />
+                  <FontAwesomeIcon
+                    icon={faArrowLeft}
+                    className="w-4 h-4 group-hover:-translate-x-1 transition"
+                  />
                   <div>
                     <div className="text-xs text-gray-400 mb-1">Previous Article</div>
                     <div className="font-medium line-clamp-1">{post.navigation.previous.title}</div>
                   </div>
                 </Link>
-              ) : <div></div>}
+              ) : (
+                <div />
+              )}
 
               {post.navigation?.next ? (
                 <Link
@@ -283,9 +314,14 @@ export default async function BlogPostPage({ params }) {
                     <div className="text-xs text-gray-400 mb-1">Next Article</div>
                     <div className="font-medium line-clamp-1">{post.navigation.next.title}</div>
                   </div>
-                  <FontAwesomeIcon icon={faArrowRight} className="w-4 h-4 group-hover:translate-x-1 transition" />
+                  <FontAwesomeIcon
+                    icon={faArrowRight}
+                    className="w-4 h-4 group-hover:translate-x-1 transition"
+                  />
                 </Link>
-              ) : <div></div>}
+              ) : (
+                <div />
+              )}
             </div>
           </div>
         </section>
