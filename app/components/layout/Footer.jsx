@@ -2,7 +2,7 @@
 
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { logos } from "../../assets/assets";
-import { faFacebookF, faInstagram, faLinkedin, faPinterest, faTiktok, faWeixin, faWhatsapp, faYoutube } from "@fortawesome/free-brands-svg-icons";
+import { faFacebookF, faInstagram, faLinkedin, faPinterest, faReddit, faTiktok, faWeixin, faWhatsapp, faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
@@ -35,6 +35,9 @@ const Footer = () => {
         },
         {
             icon: faPinterest, url: "https://pin.it/3izih3qq5", label: "Pinterest"
+        },
+        {
+            icon: faReddit, url: "https://www.reddit.com/u/Fresh-Yak8289", label: "Reddit"
         }
     ]
 
