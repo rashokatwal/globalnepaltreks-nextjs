@@ -1,6 +1,6 @@
 'use client';
 
-import { FacebookShareButton, FacebookIcon, LinkedinShareButton, LinkedinIcon, TwitterShareButton, TwitterIcon, WhatsappShareButton, WhatsappIcon, InstapaperShareButton, EmailShareButton, EmailIcon, RedditShareButton, RedditIcon, TelegramShareButton, TelegramIcon, PinterestShareButton, PinterestIcon, PinterestShareCount, FacebookShareCount } from 'next-share';
+import { FacebookShareButton, FacebookIcon, LinkedinShareButton, LinkedinIcon, TwitterShareButton, TwitterIcon, WhatsappShareButton, WhatsappIcon, InstapaperShareButton, EmailShareButton, EmailIcon, RedditShareButton, RedditIcon, TelegramShareButton, TelegramIcon, PinterestShareButton, PinterestIcon, PinterestShareCount, FacebookShareCount, FacebookMessengerShareButton, FacebookMessengerIcon } from 'next-share';
 
 const ShareButtons = ({ shareUrl }) => {
     return (
@@ -9,6 +9,10 @@ const ShareButtons = ({ shareUrl }) => {
                 url={shareUrl} >
                 <FacebookIcon size={32} round />
               </FacebookShareButton>
+              <FacebookMessengerShareButton
+                url={shareUrl} >
+                <FacebookMessengerIcon size={32} round />
+              </FacebookMessengerShareButton>
               <TwitterShareButton
                 url={shareUrl} >
                 <TwitterIcon size={32} round />
