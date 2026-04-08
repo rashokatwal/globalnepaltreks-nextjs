@@ -132,6 +132,7 @@ const Home = () => {
             image: homeAssets.trekking,
             type: "Adventure",
             color: "#098B63",
+            link: "/nepal/trekking",
             description: "Customizable routes, difficulty levels, and schedules tailored to your preferences and fitness level."
         },
         {
@@ -139,6 +140,7 @@ const Home = () => {
             image: homeAssets.tours,
             type: "Culture",
             color: "#255DD8",
+            link: "/nepal/tours",
             description: "Immersive cultural experiences with expert guides and authentic local encounters."
         },
         {
@@ -146,6 +148,7 @@ const Home = () => {
             image: homeAssets.rafting,
             type: "Extreme",
             color: "#0C87A5",
+            link: "/nepal/rafting",
             description: "Thrilling white water adventures with professional safety equipment and guides."
         },
         {
@@ -153,6 +156,7 @@ const Home = () => {
             image: homeAssets.peak_climbing,
             type: "Expert",
             color: "#C86F08",
+            link: "/nepal/peak-climbing",
             description: "Professional guided ascents with specialized equipment and experienced Sherpa teams."
         },
         {
@@ -160,6 +164,7 @@ const Home = () => {
             image: homeAssets.heli_tours,
             type: "Luxury",
             color: "#852ED3",
+            link: "/nepal/heli-tour",
             description: "Breathtaking aerial views of the Himalayas with luxury accommodations and services."
         }
     ];
@@ -665,7 +670,7 @@ const Home = () => {
                     <Heading title={"Adventure Awaits"} subtitle={"Different Activities we offer"} subtitleClass={"text-white"} />
                     <div className="grid grid-cols-1 gap-6 px-4 mx-auto mt-12 md:px-6 lg:px-8 max-w-8xl sm:grid-cols-2 lg:grid-cols-5">
                         {differentActivitiesWeOffer.map((activity, index) => (
-                            <div key={index} className="relative overflow-hidden transition-all duration-300 bg-white rounded-md shadow-lg group hover:shadow-2xl hover:-translate-y-1">
+                            <Link key={index} href={activity.link} className="relative overflow-hidden transition-all duration-300 bg-white rounded-md shadow-lg group hover:shadow-2xl hover:-translate-y-1">
                                 <div className="relative h-48 overflow-hidden">
                                     <Image 
                                         src={activity.image} 
@@ -690,7 +695,7 @@ const Home = () => {
                                     </div>
                                     <p className="text-sm leading-relaxed text-gray-600">{activity.description}</p>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 </div>
