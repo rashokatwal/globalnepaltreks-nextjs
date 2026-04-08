@@ -23,6 +23,7 @@
     "lottie-react": "^2.4.1",
     "mysql2": "^3.17.4",
     "next": "16.1.6",
+    "next-share": "^0.27.0",
     "nodemailer": "^8.0.1",
     "react": "19.2.3",
     "react-countup": "^6.5.3",

@@ -15,61 +15,25 @@ const montserrat = Montserrat({
 
 // app/page.js
 export const metadata = {
+  metadataBase: new URL("https://globalnepaltreks.com"),
+
   title: {
-    default: 'Trekking and Tour Agency in Nepal | Global Nepal Treks',
-    template: '%s | Global Nepal Treks'
+    default: "Trekking and Tour Agency in Nepal | Global Nepal Treks",
+    template: "%s | Global Nepal Treks",
   },
-  description: 'Locally based trekking company in Nepal offering Everest Base Camp, Annapurna Circuit, and cultural tours with expert local guides.',
-  keywords: 'trekking in nepal, nepal trekking agency, everest base camp trek, annapurna circuit trek, nepal tour operator, himalayan trekking, local guides nepal, nepal travel company, upper mustang trek, poon hill trek',
+
+  description:
+    "Locally based trekking company in Nepal offering Everest Base Camp, Annapurna Circuit, and cultural tours with expert local guides.",
 
   openGraph: {
-    title: 'Trekking and Tour Agency in Nepal | Global Nepal Treks',
-    description: 'Experience Nepal as our home. Authentic Himalayan treks with local experts since 2008.',
-    url: 'https://globalnepaltreks.com',
-    siteName: 'Global Nepal Treks',
-    images: [
-      {
-        url: logos.globalnepaltreks_logo.src,
-        width: 1200,
-        height: 630,
-        alt: 'Himalayan mountain landscape with trekking route',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
+    siteName: "Global Nepal Treks",
+    locale: "en_US",
+    type: "website",
   },
-  
+
   twitter: {
-    card: 'summary_large_image',
-    title: 'Trekking and Tour Agency in Nepal | Global Nepal Treks',
-    description: 'Authentic Himalayan treks with local experts. Everest, Annapurna & more.',
-    images: [homeAssets.home_cover.src],
+    card: "summary_large_image",
   },
-  
-  alternates: {
-    canonical: 'https://globalnepaltreks.com',
-  },
-  
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  // icons: {
-  //   icon: '/favicon.png',
-  //   shortcut: '/favicon.png',
-  //   apple: '/apple-touch-icon.png',
-  //   other: {
-  //     rel: 'apple-touch-icon',
-  //     url: '/apple-touch-icon.png',
-  //   }
-  // }
 };
 
 export default function RootLayout({ children }) {
