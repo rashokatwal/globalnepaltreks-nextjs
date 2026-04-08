@@ -22,12 +22,14 @@ import {
   faTimesCircle,
   faArrowLeft,
   faCheck,
-  faXmark
+  faXmark,
+  faShareNodes
 } from '@fortawesome/free-solid-svg-icons';
 import PackageDetails from '@/app/components/sections/PackageDetails';
 import BookingSidebar from '@/app/components/sections/BookingSidebar';
 import PageNavigation from '@/app/components/sections/PageNavigation';
 import Image from 'next/image';
+import ShareButtons from '@/app/components/ui/ShareButtons';
 
 export async function generateMetadata({ params }) {
   const { country, activity, slug } = await params;
@@ -210,6 +212,9 @@ export default async function PackagePage({ params }) {
                 <span>({reviewCount} reviews)</span>
               </div>
             )}
+          </div>
+          <div className='mt-5 flex items-center gap-4'>
+            <FontAwesomeIcon icon={faShareNodes} />Share <ShareButtons shareUrl={`${process.env.NEXT_PUBLIC_APP_URL}/${country}/${activity}/${slug}`} />
           </div>
         </div>
       </section>

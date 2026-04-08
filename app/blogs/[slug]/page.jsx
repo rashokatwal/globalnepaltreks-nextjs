@@ -28,21 +28,19 @@ function getBaseUrl() {
 }
 
 // Fetch blog post data
+// ✅ Match this exact pattern from your working packages code
 async function getBlogPost(slug) {
   try {
-    const baseUrl = getBaseUrl();
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     const res = await fetch(`${baseUrl}/api/blogs/${slug}`, {
-      // ✅ FIX: Use cache: 'no-store' to prevent stale data for crawlers/OG scrapers
-      // Or use revalidate: 3600 if you want hourly caching (your original comment said "every hour")
-      next: { revalidate: 3600 },
+      next: { revalidate: 3600 }
     });
 
     if (!res.ok) return null;
-
     const data = await res.json();
     return data.data;
   } catch (error) {
-    console.error(`[getBlogPost] Failed to fetch blog post "${slug}":`, error);
+    console.error(`[getBlogPost] Failed for slug "${slug}":`, error);
     return null;
   }
 }
@@ -69,18 +67,13 @@ function getReadingTime(content, providedTime) {
 
 // ✅ FIX: generateMetadata must also use a reliable URL — same fix applied here
 export async function generateMetadata({ params }) {
-  // ✅ FIX: await params (required in Next.js 15+)
   const { slug } = await params;
   const post = await getBlogPost(slug);
 
   if (!post) {
-    return {
-      title: 'Blog Post Not Found',
-      description: 'The requested blog post could not be found.',
-    };
+    return { title: 'Blog Post Not Found | Global Nepal Treks' };
   }
 
-  // ✅ FIX: Build a clean canonical URL
   const canonicalUrl = `https://globalnepaltreks.com/blogs/${post.slug}`;
 
   return {
@@ -88,7 +81,7 @@ export async function generateMetadata({ params }) {
     description: post.meta_description || post.excerpt,
     keywords: post.keywords || '',
 
-    // ✅ FIX: Add canonical URL — this is what LinkedIn uses to resolve the correct page
+    // ✅ These were missing — needed for LinkedIn/Facebook sharing
     alternates: {
       canonical: canonicalUrl,
     },
@@ -96,12 +89,10 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: post.meta_title || post.title,
       description: post.meta_description || post.excerpt,
-      // ✅ FIX: og:url must exactly match the canonical URL — LinkedIn uses this to fetch OG data
-      url: canonicalUrl,
+      url: canonicalUrl,                          // ✅ LinkedIn reads this
       siteName: 'Global Nepal Treks',
       images: [
         {
-          // ✅ FIX: Ensure image URL is absolute — relative paths break OG scrapers
           url: post.featured_image?.startsWith('http')
             ? post.featured_image
             : `https://globalnepaltreks.com${post.featured_image}`,
