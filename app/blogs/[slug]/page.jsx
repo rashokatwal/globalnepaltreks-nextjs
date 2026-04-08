@@ -23,12 +23,12 @@ export async function generateMetadata({ params }) {
   const { slug } = params;
   const post = await getBlogPost(slug);
 
-  if (!post) {
-    return {
-      title: "Blog Post Not Found",
-      description: "The requested blog post could not be found.",
-    };
-  }
+  // if (!post) {
+  //   return {
+  //     title: "Blog Post Not Found",
+  //     description: "The requested blog post could not be found.",
+  //   };
+  // }
 
   return {
     title: post.meta_title || `${post.title} | Global Nepal Treks Blog`,
