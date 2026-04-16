@@ -1,8 +1,7 @@
 "use client";
 
-import { faX } from "@fortawesome/free-solid-svg-icons";
 import { logos } from "../../assets/assets";
-import { faFacebookF, faInstagram, faLinkedin, faPinterest, faReddit, faTiktok, faWeixin, faWhatsapp, faYoutube } from "@fortawesome/free-brands-svg-icons";
+import { faFacebookF, faInstagram, faLinkedin, faPinterest, faReddit, faTiktok, faWeixin, faWhatsapp, faXTwitter, faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,7 +27,7 @@ const Footer = () => {
             icon: faTiktok, url: "https://www.tiktok.com/@globalnepaltreks", label: "TikTok"
         },
         {
-            icon: faX, url: "https://x.com/Globalnepaltrek", label: "X"
+            icon: faXTwitter, url: "https://x.com/Globalnepaltrek", label: "X"
         },
         {
             icon: faYoutube, url: "https://www.youtube.com/@GlobalnepalTreks5", label: "Youtube"
