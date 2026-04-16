@@ -28,7 +28,7 @@ const Footer = () => {
             icon: faTiktok, url: "https://www.tiktok.com/@globalnepaltreks", label: "TikTok"
         },
         {
-            icon: faX, url: "https://x.com/Sakarsarthak147?t=zcbv2PDB2ZXwAW9-CC3c-w&s=07", label: "TikTok"
+            icon: faX, url: "https://x.com/Globalnepaltrek", label: "X"
         },
         {
             icon: faYoutube, url: "https://www.youtube.com/@GlobalnepalTreks5", label: "Youtube"
