@@ -8,13 +8,11 @@ import {
   faCircleCheck, 
   faClipboardList,
   faLeaf, 
-  faMagnifyingGlass, 
   faMountain, 
   faPersonHiking, 
   faQuoteLeft, 
   faRoute, 
   faSeedling, 
-  faShield, 
   faShieldAlt, 
   faStar, 
   faStarHalfStroke 
@@ -23,7 +21,7 @@ import CountUp from "react-countup";
 import Link from "next/link";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Autoplay, Navigation } from "swiper/modules";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -33,93 +31,76 @@ import { useRef, useState, useEffect } from "react";
 import BlogCard from "./components/cards/BlogCard";
 import { homeAssets, logos } from "./assets/assets";
 import Heading from "./components/ui/Heading";
+import Loading from "./loading";   // global loading component (same as loading.js)
 
 const Home = () => {
     const swiperRef = useRef(null);
     
-    // States for dynamic data
+    // State for dynamic data (initial empty arrays)
     const [reviews, setReviews] = useState([]);
-    // const [packages, setPackages] = useState([]);
     const [bestSellingPackages, setBestSellingPackages] = useState([]);
     const [featuredPackages, setFeaturedPackages] = useState([]);
     const [adventurePackages, setAdventurePackages] = useState([]);
     const [luxuryPackages, setLuxuryPackages] = useState([]);
     const [blogs, setBlogs] = useState([]);
-    const [loading, setLoading] = useState({
-        reviews: true,
-        packages: true,
-        blogs: true
-    });
+    
+    // Global loading flag
+    const [initialLoading, setInitialLoading] = useState(true);
 
     // Fetch all data on mount
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch reviews
-                const reviewsRes = await fetch('/api/reviews?limit=10', {
-                    next: { revalidate: 1000 }
-                });
+                // Run all API calls in parallel
+                const [
+                    reviewsRes,
+                    bestSellingRes,
+                    featuredRes,
+                    adventureRes,
+                    luxuryRes,
+                    blogsRes
+                ] = await Promise.all([
+                    fetch('/api/reviews?limit=10'),
+                    fetch('/api/packages?limit=4&best_selling=true'),
+                    fetch('/api/packages?limit=4&featured=true'),
+                    fetch('/api/packages?limit=4&adventure=true'),
+                    fetch('/api/packages?limit=4&luxury=true'),
+                    fetch('/api/blogs?limit=4')
+                ]);
+
                 const reviewsData = await reviewsRes.json();
-                if (reviewsData.success) {
-                    setReviews(reviewsData.data || []);
-                }
-                
-                // Fetch packages
-                const bestSellingPackagesRes = await fetch('/api/packages?limit=4&best_selling=true', {
-                    next: { revalidate: 1000 }
-                });
-                const bestSellingPackagesData = await bestSellingPackagesRes.json();
-                if (bestSellingPackagesData.success) {
-                    setBestSellingPackages(bestSellingPackagesData.data || []);
-                }
+                if (reviewsData.success) setReviews(reviewsData.data || []);
 
-                // Fetch featured packages
-                const featuredPackagesRes = await fetch('/api/packages?limit=4&featured=true', {
-                    next: { revalidate: 1000 }
-                });
-                const featuredPackagesData = await featuredPackagesRes.json();
-                if (featuredPackagesData.success) {
-                    setFeaturedPackages(featuredPackagesData.data || []);
-                }
+                const bestSellingData = await bestSellingRes.json();
+                if (bestSellingData.success) setBestSellingPackages(bestSellingData.data || []);
 
-                // Fetch adventure packages
-                const adventurePackagesRes = await fetch('/api/packages?limit=4&adventure=true', {
-                    next: { revalidate: 1000 }
-                });
-                const adventurePackagesData = await adventurePackagesRes.json();
-                if (adventurePackagesData.success) {
-                    setAdventurePackages(adventurePackagesData.data || []);
-                }
+                const featuredData = await featuredRes.json();
+                if (featuredData.success) setFeaturedPackages(featuredData.data || []);
 
-                // Fetch luxury packages
-                const luxuryPackagesRes = await fetch('/api/packages?limit=4&luxury=true', {
-                    next: { revalidate: 1000 }
-                });
-                const luxuryPackagesData = await luxuryPackagesRes.json();
-                if (luxuryPackagesData.success) {
-                    setLuxuryPackages(luxuryPackagesData.data || []);
-                }
+                const adventureData = await adventureRes.json();
+                if (adventureData.success) setAdventurePackages(adventureData.data || []);
 
-                // Fetch blogs
-                const blogsRes = await fetch('/api/blogs?limit=4', {
-                    next: { revalidate: 1000 }
-                });
+                const luxuryData = await luxuryRes.json();
+                if (luxuryData.success) setLuxuryPackages(luxuryData.data || []);
+
                 const blogsData = await blogsRes.json();
-                if (blogsData.success) {
-                    setBlogs(blogsData.data.data || []);
-                }
+                if (blogsData.success) setBlogs(blogsData.data.data || []);
+
             } catch (error) {
+                console.error("Failed to fetch homepage data:", error);
             } finally {
-                setLoading({
-                    reviews: false,
-                    packages: false,
-                    blogs: false
-                });
+                setInitialLoading(false);
             }
         };
         fetchData();
     }, []);
 
+    // Show global loader while data is being fetched
+    if (initialLoading) {
+        return <Loading />;
+    }
+
+    // Static data definitions (unchanged)
     const stats = [
         { number: 15, symbol: "+", label: "Years of Experience" },
         { number: 1000, symbol: "+", label: "Successful Treks" },
@@ -206,7 +187,7 @@ const Home = () => {
         1: { name: "Nepal", slug: "nepal" },
         2: { name: "Tibet", slug: "tibet" },
         3: { name: "Bhutan", slug: "bhutan" },
-    }
+    };
 
     const activities = {
         1: { name: "Trekking", slug: "trekking" },
@@ -217,7 +198,7 @@ const Home = () => {
         6: { name: "Jungle Safari", slug: "jungle-safari" },
     };
 
-    // Helper to format package data for PackageCard
+    // Helper functions
     const formatPackageForCard = (pkg) => ({
         id: pkg.id,
         image: pkg.featured_image || "/images/placeholder.jpg",
@@ -230,7 +211,6 @@ const Home = () => {
         description: pkg.short_description || "Experience the Himalayas with our expert guides."
     });
 
-    // Helper to format blog data for BlogCard
     const formatBlogForCard = (blog) => ({
         id: blog.id,
         image: blog.featured_image || "/images/placeholder.jpg",
@@ -245,7 +225,7 @@ const Home = () => {
 
     return (
         <main>
-            {/* Hero Section (unchanged) */}
+            {/* Hero Section */}
             <section className="relative">
                 <div 
                     className="flex items-center justify-center w-full h-[80vh] bg-fixed bg-top bg-no-repeat bg-cover" 
@@ -283,19 +263,9 @@ const Home = () => {
                         </Link>
                     </div>
                 </div>
-
-                {/* <div className="absolute bottom-0 min-w-full">
-                    <Image 
-                        src={homeAssets.hero_mountains.src} 
-                        alt="Mountain silhouette" 
-                        className="w-full"
-                        width={1920}
-                        height={200}
-                        priority={false}
-                    />
-                </div> */}
             </section>
 
+            {/* Feature boxes */}
             <section className="py-5 bg-white">
                 <div className="grid px-4 md:px-0 mx-auto mt-5 lg:grid-cols-4 md:grid-cols-2 max-w-7xl gap-x-10 gap-y-5">
                     <div className="p-0 flex items-center gap-5">
@@ -327,57 +297,43 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                <div className="px-4 py-10 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
-                    <div className="relative z-10 py-10">
-                        <Heading title={"Best Selling Packages"} subtitle={'"Experience the pinnacle of the Himalayas with our top-rated, expert-led trekking adventures."'} titleClass={"text-center"} subtitleClass={"text-center"} />
-                    </div>
+            </section>
 
-                    {loading.packages ? (
-                        <div className="flex justify-center py-12">
-                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                            {bestSellingPackages.slice(0, 4).map((pkg) => (
-                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
-                            ))}
-                        </div>
-                    )}
-                    
-                    <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
-                        <Link 
-                            href="/nepal/trekking" 
-                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
-                        >
-                            Explore More Packages
-                            <FontAwesomeIcon 
-                                icon={faArrowRight} 
-                                className="transition-transform duration-200 group-hover:translate-x-1" 
-                            />
-                        </Link>
-                    </div>
+            {/* Best Selling Packages */}
+            <section className="px-4 py-10 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
+                <div className="relative z-10 py-10">
+                    <Heading title={"Best Selling Packages"} subtitle={'"Experience the pinnacle of the Himalayas with our top-rated, expert-led trekking adventures."'} titleClass={"text-center"} subtitleClass={"text-center"} />
+                </div>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    {bestSellingPackages.slice(0, 4).map((pkg) => (
+                        <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
+                    ))}
+                </div>
+                <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
+                    <Link 
+                        href="/nepal/trekking" 
+                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
+                    >
+                        Explore More Packages
+                        <FontAwesomeIcon 
+                            icon={faArrowRight} 
+                            className="transition-transform duration-200 group-hover:translate-x-1" 
+                        />
+                    </Link>
                 </div>
             </section>
 
-            {/* Nepal Treks Section (Top Destinations for Trekking in Nepal) */}
+            {/* Featured Packages */}
             <section className="py-10 bg-dark-section">
                 <div className="px-4 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
                     <div className="relative z-10 px-10 py-10">
                         <Heading title={"Featured Packages"} subtitle={'"Peak performance meets total peace of mind - everything you need for the ultimate ascent."'} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
-                    
-                    {loading.packages ? (
-                        <div className="flex justify-center py-12">
-                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                            {featuredPackages.slice(0, 4).map((pkg) => (
-                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
-                            ))}
-                        </div>
-                    )}
-                    
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        {featuredPackages.slice(0, 4).map((pkg) => (
+                            <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
+                        ))}
+                    </div>
                     <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
                         <Link 
                             href="/nepal/tours" 
@@ -393,25 +349,17 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Nepal Treks Section (Top Destinations for Trekking in Nepal) */}
+            {/* Luxury Packages */}
             <section className="py-10 bg-white">
                 <div className="px-4 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
                     <div className="relative z-10 px-10 py-10">
                         <Heading title={"Luxury Packages"} subtitle={'"Savor the grandeur of Nepal from the comfort of a curated, premier experience."'} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
-                    
-                    {loading.packages ? (
-                        <div className="flex justify-center py-12">
-                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                            {luxuryPackages.slice(0, 4).map((pkg) => (
-                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
-                            ))}
-                        </div>
-                    )}
-                    
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        {luxuryPackages.slice(0, 4).map((pkg) => (
+                            <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
+                        ))}
+                    </div>
                     <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
                         <Link 
                             href="/nepal/tours" 
@@ -427,24 +375,17 @@ const Home = () => {
                 </div>
             </section>
 
+            {/* Adventure Packages */}
             <section className="py-10 bg-dark-section">
                 <div className="px-4 mx-auto md:max-w-7xl sm:px-4 lg:px-0">
                     <div className="relative z-10 px-10 py-10">
                         <Heading title={"Adventure Packages"} subtitle={'"Transform every step into a story of courage and discovery"'} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
-                    
-                    {loading.packages ? (
-                        <div className="flex justify-center py-12">
-                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                            {adventurePackages.slice(0, 4).map((pkg) => (
-                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
-                            ))}
-                        </div>
-                    )}
-                    
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        {adventurePackages.slice(0, 4).map((pkg) => (
+                            <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
+                        ))}
+                    </div>
                     <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
                         <Link 
                             href="/nepal/tours" 
@@ -460,9 +401,8 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* About Section (unchanged) */}
+            {/* About Section */}
             <section className="py-0 bg-white">
-                
                 <div className="flex flex-col-reverse md:flex-col items-center gap-10 justify-center px-5 mx-auto lg:p-10 lg:flex-row max-w-7xl">
                     <div className="flex-1">
                         <Heading title={"Who We Are?"} subtitle={"Trekking and Tour Agency in Nepal"} titleClass={"md:text-left text-center"} subtitleClass={"md:text-left text-center"} />
@@ -519,13 +459,12 @@ const Home = () => {
                         />
                     </div>
                 </div>
-                
             </section>
-             {/* Testimonials Section */}
+
+            {/* Testimonials Section */}
             <section className="py-10 bg-white sm:py-12 md:py-16">
                 <div className="relative flex flex-col items-center px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 md:flex-row">
                     
-                    {/* Left Section - Header */}
                     <div className="w-full py-6 my-auto text-center md:w-1/3 md:text-left md:py-10">
                         <Heading title={"Testimonial"} subtitle={"Feedbacks & Reviews"} />
                         <div className="flex justify-center gap-1 md:justify-start text-primary-color">
@@ -537,7 +476,6 @@ const Home = () => {
                         </div>
                     </div>
 
-                    {/* Vertical Divider with Quote Icon */}
                     <div className="relative flex items-center justify-center w-full my-4 md:w-auto md:my-0 md:mx-8 lg:mx-10">
                         <div className="absolute z-10 flex items-center justify-center w-10 h-10 rounded-full sm:w-12 sm:h-12 md:w-14 md:h-14 bg-accent-color">
                             <FontAwesomeIcon icon={faQuoteLeft} className="text-sm text-white sm:text-base md:text-xl lg:text-2xl" />
@@ -545,13 +483,8 @@ const Home = () => {
                         <div className="w-full h-0.5 md:w-0.5 md:h-32 lg:h-40 bg-gray-400"></div>
                     </div>
 
-                    {/* Right Section - Swiper with Dynamic Reviews */}
                     <div className="w-full md:w-2/3">
-                        {loading.reviews ? (
-                            <div className="flex justify-center py-12">
-                                <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
-                            </div>
-                        ) : reviews.length > 0 ? (
+                        {reviews.length > 0 ? (
                             <Swiper
                                 modules={[Autoplay]}
                                 slidesPerView={1}
@@ -604,12 +537,10 @@ const Home = () => {
                     </div>
                 </div>
                 
-                {/* Review Platforms (unchanged) */}
                 <div className="flex flex-col items-center gap-4 mx-auto my-10 sm:my-12 md:my-16 lg:my-20 sm:flex-row sm:gap-3 md:gap-4 lg:gap-5 w-fit">
                     <p className="text-sm text-center sm:text-base md:text-lg">
                         Read reviews on
                     </p>
-                    
                     <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-3 md:gap-4 lg:gap-5">
                         <div>
                             <Link 
@@ -626,7 +557,6 @@ const Home = () => {
                                 />
                             </Link>
                         </div>
-                        
                         <div>
                             <Link 
                                 href="https://www.trustpilot.com/review/globalnepaltreks.com" 
@@ -642,7 +572,6 @@ const Home = () => {
                                 />
                             </Link>
                         </div>
-                        
                         <div>
                             <Link 
                                 href="https://share.google/HMk7ORFTwYiAe55zj" 
@@ -662,10 +591,9 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Activities Section (unchanged) */}
+            {/* Activities Section */}
             <section className="relative bg-fixed bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${homeAssets.annapurna_background.src})` }}>
                 <div className="absolute w-full h-full bg-black/50"></div>
-                
                 <div className="relative z-10 px-10 py-20">
                     <Heading title={"Adventure Awaits"} subtitle={"Different Activities we offer"} subtitleClass={"text-white"} />
                     <div className="grid grid-cols-1 gap-6 px-4 mx-auto mt-12 md:px-6 lg:px-8 max-w-8xl sm:grid-cols-2 lg:grid-cols-5">
@@ -701,47 +629,12 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Packages Section (Awesome Packages For You) */}
-            {/* <section className="py-10 bg-white">
-                <div className="px-4 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
-                    <div className="relative z-10 px-10 py-10">
-                        <Heading title={"Explore your Adventure"} subtitle={"Awesome Packages For You"} titleClass={"text-center"} subtitleClass={"text-center"} />
-                    </div>
-
-                    {loading.packages ? (
-                        <div className="flex justify-center py-12">
-                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                            {packages.slice(0, 6).map((pkg) => (
-                                <PackageCard key={pkg.id} packageDetails={formatPackageForCard(pkg)} />
-                            ))}
-                        </div>
-                    )}
-                    
-                    <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
-                        <Link 
-                            href="/nepal/trekking" 
-                            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold tracking-wide transition duration-200 rounded-md group sm:text-base text-primary-color-dark hover:text-secondary-color"
-                        >
-                            Explore More Packages
-                            <FontAwesomeIcon 
-                                icon={faArrowRight} 
-                                className="transition-transform duration-200 group-hover:translate-x-1" 
-                            />
-                        </Link>
-                    </div>
-                </div>
-            </section> */}
-
-            {/* Why Choose Us Section (unchanged) */}
+            {/* Why Choose Us Section */}
             <section className="pb-24 pt-14 bg-white">
                 <div className="mx-auto max-w-7xl">
                     <div className="relative z-10 px-10 py-10">
                         <Heading title={"Why Choose Us?"} subtitle={"Expert Guidance with Thrilling Adventures"} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
-
                     <div className="grid gap-6 mx-5 md:grid-cols-2 lg:grid-cols-3">
                         {whyChooseUs.map((point, index) => (
                             <div key={index} className="flex items-center gap-5 p-5 border rounded-md border-accent-color">
@@ -758,7 +651,7 @@ const Home = () => {
                 </div>
             </section>  
 
-            {/* CTA Section (unchanged) */}
+            {/* CTA Section */}
             <section className="relative bg-fixed bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${homeAssets.guides_background.src})` }}>
                 <div className="absolute w-full h-full bg-black/60"></div>
                 <div className="px-4 py-40 mx-auto md:max-w-7xl sm:px-6 lg:px-8">
@@ -785,12 +678,7 @@ const Home = () => {
                     <div className="relative z-10 px-4 py-6 text-center sm:px-6 lg:px-8">
                         <Heading title={"From the blogs"} subtitle={"Stories, Tips and Trekking Insights"} titleClass={"text-center"} subtitleClass={"text-center"} />
                     </div>
-                    
-                    {loading.blogs ? (
-                        <div className="flex justify-center py-12">
-                            <div className="w-8 h-8 border-4 border-t-4 border-gray-200 rounded-full border-t-primary-color-dark animate-spin"></div>
-                        </div>
-                    ) : (
+                    {blogs.length > 0 && (
                         <div>
                             <Swiper
                                 modules={[Navigation, Autoplay]}
@@ -841,18 +729,15 @@ const Home = () => {
                                         <BlogCard blog={formatBlogForCard(blog)} />
                                     </SwiperSlide>
                                 ))}
-                                
                                 <div className="swipe-button-prev bg-secondary-color absolute top-1/2 transform-[translateY(-50%)] left-0 z-10 h-[50px] w-[50px] ml-2.5 text-white rounded-full flex items-center justify-center cursor-pointer duration-200 hover:bg-primary-color-dark">
                                     <FontAwesomeIcon icon={faChevronLeft} />
                                 </div>
-
                                 <div className="swipe-button-next bg-secondary-color absolute top-1/2 transform-[translateY(-50%)] right-0 z-10 h-[50px] w-[50px] mr-2.5 text-white rounded-full flex items-center justify-center cursor-pointer duration-200 hover:bg-primary-color-dark">
                                     <FontAwesomeIcon icon={faChevronRight} />
                                 </div>
                             </Swiper>
                         </div>
                     )}
-                    
                     <div className="flex justify-center mt-8 sm:mt-12 md:mt-16">
                         <Link 
                             href="/blogs" 
@@ -868,12 +753,12 @@ const Home = () => {
                 </div>
             </section>
 
-           <section className="pb-10 pt-10 bg-dark-section">
+            {/* Partners Section */}
+            <section className="pb-10 pt-10 bg-dark-section">
                 <div className="mx-auto max-w-6xl">
                     <div className="relative z-10 px-10 py-10">
                         <Heading title={"Partners"} titleClass={"text-center text-secondary-color"} />
                     </div>
-
                     <div className="w-fit mx-auto grid gap-12 md:gap-10 md:grid-cols-2 lg:grid-cols-4">
                         <Link href={"https://www.cooperatingvolunteers.com/"} target="_blank" className="block transition-transform w-fit hover:scale-105">
                             <Image 
