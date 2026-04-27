@@ -140,7 +140,7 @@ export async function POST(request) {
             excerpt: body.excerpt || null,
             content: body.content,
             featured_image: body.featured_image || null,
-            author: auth.user.name, // Use authenticated user's name
+            author: auth.user.name,
             reading_time: readingTime,
             meta_title: body.meta_title || body.title,
             meta_description: body.meta_description || body.excerpt || `Read about ${body.title}`,

@@ -52,7 +52,7 @@ const travelGuides = [
     slug: 'trekking-gear-and-equipment',
     excerpt: 'Trekking in Nepal varies from easy to hard depending on factors like the trekking region, trekking weather, group or solo, with a guide and assistant, or without them. Trekking in Nepal is a multi-day walk in the mountainous region of Nepal. Since Nepal is a mountainous country with 8 of the world’s highest peaks, proper gear is essential for a safe and comfortable journey.',
     image: travelGuidesAssets.travel_gear_and_equipment_cover,
-    publishedAt: '2025-03-01',
+    publishedAt: '2026-04-08',
     readTime: 8,
   },
   {
@@ -61,7 +61,7 @@ const travelGuides = [
     slug: 'protected-areas-of-nepal',
     excerpt: 'Protected areas (PAs) have been established for a level of protection of ecosystems, biological processes and species. According to IUCN and UN Environment\'s World Conservation Monitoring Centre, there are 238,563 designated protected areas as of July 2018. Most areas are on land, and collectively they protect a wide range of habitats from the lowland Terai to the high Himalayas.',
     image: travelGuidesAssets.protected_areas_of_nepal_cover,
-    publishedAt: '2025-02-15',
+    publishedAt: '2026-04-15',
     readTime: 6,
   },
   {
@@ -70,7 +70,7 @@ const travelGuides = [
     slug: 'visa-info',
     excerpt: 'Nepal Visa Details: A single-entry visa valid for 15/30/90 days costs US$25/40/100. SAARC countries can get a 30-day visa for free on arrival. Indian passport holders do not need a visa to enter Nepal. Multiple-entry visas are useful if you are planning a side trip to Tibet, Bhutan or India and cost US$20 extra.',
     image: travelGuidesAssets.visa_information_cover,
-    publishedAt: '2025-02-01',
+    publishedAt: '2025-04-16',
     readTime: 4,
   },
 ];
