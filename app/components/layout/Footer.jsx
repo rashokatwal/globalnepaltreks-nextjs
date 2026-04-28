@@ -223,7 +223,7 @@ const Footer = () => {
                     <div>
                         <p className="mb-4 text-sm font-bold text-gray-700 sm:text-base">Support & Info</p>
                         <ul className="space-y-2 text-sm">
-                            {['FAQs', 'Terms & Conditions', 'Privacy Policy', 'Travel Guides', 'Sitemap'].map((item, index) => (
+                            {['FAQs', 'Terms and Conditions', 'Privacy Policy', 'Travel Guides', 'Sitemap'].map((item, index) => (
                                 <li key={index}>
                                     <Link 
                                         href={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
