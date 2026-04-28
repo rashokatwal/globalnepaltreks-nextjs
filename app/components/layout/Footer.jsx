@@ -83,6 +83,22 @@ const Footer = () => {
         {
             name: "Bhutan Cultural Tour",
             link: "/bhutan/tours/bhutan-cultural-tour"
+        },
+        {
+            name: "Nepal Luxury Tour",
+            link: "/nepal/tours/nepal-luxury-tour"
+        },
+        {
+            name: "Helicopter Tour to Muktinath",
+            link: "/nepal/heli-tour/helicopter-tour-to-muktinath"
+        },
+        {
+            name: "Everest Helicopter Tour",
+            link: "/nepal/heli-tour/everest-helicopter-tour"
+        },
+        {
+            name: "Nepal Best Package Tour",
+            link: "/nepal/tours/nepal-best-package-tour"
         }
     ]
 
@@ -102,6 +118,22 @@ const Footer = () => {
         {
             name: "Everest Base Camp Trek",
             link: "/nepal/trekking/everest-base-camp-trek"
+        },
+        {
+            name: "Langtang Ganja-La Pass Trek",
+            link: "/nepal/trekking/langtang-ganja-la-pass-trek"
+        },
+        {
+            name: "Gokyo Kalapathar Trek",
+            link: "/nepal/trekking/gokyo-kalapathar-trek"
+        },
+        {
+            name: "Annapurna Circuit Trek",
+            link: "/nepal/trekking/annapurna-circuit-trek"
+        },
+        {
+            name: "Manaslu Tsum Valley Trek",
+            link: "/nepal/trekking/manaslu-tsum-valley-trek"
         }
     ]
 
