@@ -138,7 +138,7 @@ const Footer = () => {
     ]
 
     return (
-        <footer className="px-4 py-10 w-[97%] mx-auto bg-secondary-color sm:px-6 md:px-10 lg:px-16 xl:px-20">
+        <footer className="px-4 py-10 w-full bg-secondary-color sm:px-6 md:px-10 lg:px-16 xl:px-20">
             <div className="p-4 bg-white rounded-lg shadow-lg sm:p-6 md:p-8 lg:p-10">
                 {/* Main Content Grid */}
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5 xl:gap-12">

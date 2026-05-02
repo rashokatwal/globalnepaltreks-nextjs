@@ -1,12 +1,11 @@
 // app/sitemap.js
 import db from '@/lib/db';
 
-export const dynamic = 'force-dynamic'; // 👈 Add this line
+export const dynamic = 'force-dynamic';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://globalnepaltreks.com';
 
 export default async function sitemap() {
-  console.log('🚀 Generating sitemap...');
 
   // --- Static pages ---
   const staticPages = [
