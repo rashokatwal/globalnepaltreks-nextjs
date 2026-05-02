@@ -12,7 +12,7 @@ export default async function SitemapPage() {
   try {
     const [rows] = await db.execute(`
       SELECT 
-        p.id, p.slug, p.updated_at, p.created_at, p.name,
+        p.id, p.slug, p.updated_at, p.created_at, p.title,
         c.slug as country_slug,
         a.slug as activity_slug
       FROM packages p
