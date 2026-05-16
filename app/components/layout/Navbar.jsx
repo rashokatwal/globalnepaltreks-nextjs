@@ -506,22 +506,19 @@ const NavBar = () => {
                                                 onMouseEnter={() => handleDropdownMouseEnter(item.name)}
                                                 onMouseLeave={handleMouseLeave}
                                             >
-                                                <div className="flex flex-col divide-x divide-gray-100">
-                                                    {item.countries.map((country) => (
-                                                        <div key={country.name} className="flex-1 px-6 py-5">
-                                                            {/* Country header */}
+                                                <div className="flex flex-col divide-y divide-gray-100">
+                                                    {/* Nepal full-width row */}
+                                                    {item.countries.slice(0, 1).map((country) => (
+                                                        <div key={country.name} className="px-6 py-5">
                                                             <Link
                                                                 href={country.link}
                                                                 className="flex items-center gap-2 mb-4 pb-2.5 border-b-2 border-accent-color/25 group"
                                                                 onClick={() => setActiveDropdown(null)}
                                                             >
-                                                                {/* <span className="text-lg leading-none">{countryFlag[country.name]}</span> */}
                                                                 <span className="text-sm font-extrabold uppercase tracking-widest text-accent-color group-hover:text-secondary-color transition-colors duration-150">
                                                                     {country.name}
                                                                 </span>
                                                             </Link>
-
-                                                            {/* Categories */}
                                                             <div className="grid grid-cols-5 flex-row gap-4">
                                                                 {country.categories.map((category) => (
                                                                     <div key={category.name}>
@@ -547,6 +544,46 @@ const NavBar = () => {
                                                             </div>
                                                         </div>
                                                     ))}
+
+                                                    {/* Tibet + Bhutan side by side */}
+                                                    <div className="flex divide-x divide-gray-100">
+                                                        {item.countries.slice(1).map((country) => (
+                                                            <div key={country.name} className="flex-1 px-6 py-5">
+                                                                <Link
+                                                                    href={country.link}
+                                                                    className="flex items-center gap-2 mb-4 pb-2.5 border-b-2 border-accent-color/25 group"
+                                                                    onClick={() => setActiveDropdown(null)}
+                                                                >
+                                                                    <span className="text-sm font-extrabold uppercase tracking-widest text-accent-color group-hover:text-secondary-color transition-colors duration-150">
+                                                                        {country.name}
+                                                                    </span>
+                                                                </Link>
+                                                                <div className="grid grid-cols-3 gap-4">
+                                                                    {country.categories.map((category) => (
+                                                                        <div key={category.name}>
+                                                                            <Link
+                                                                                href={category.link}
+                                                                                className="block text-xs font-bold uppercase tracking-wider text-accent-color mb-1.5 hover:text-secondary-color transition-colors duration-150"
+                                                                                onClick={() => setActiveDropdown(null)}
+                                                                            >
+                                                                                {category.name}
+                                                                            </Link>
+                                                                            {category.subItems.map((subItem) => (
+                                                                                <Link
+                                                                                    key={subItem.name}
+                                                                                    href={subItem.link}
+                                                                                    className="block py-0.5 text-sm text-gray-600 hover:text-secondary-color hover:translate-x-1 transition-all duration-150"
+                                                                                    onClick={() => setActiveDropdown(null)}
+                                                                                >
+                                                                                    {subItem.name}
+                                                                                </Link>
+                                                                            ))}
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
                                                 </div>
                                             </div>
 
