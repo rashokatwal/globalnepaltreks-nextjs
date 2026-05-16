@@ -494,7 +494,7 @@ export default function ContactClient() {
           />
           <div className="rounded-xl overflow-hidden shadow-sm h-96">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.9120000000003!2d85.312!3d27.717!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb190000000001%3A0x5b5c5e5e5e5e5e5e!2sThamel%2C%20Kathmandu%2044600%2C%20Nepal!5e0!3m2!1sen!2snp!4v1620000000000!5m2!1sen!2snp"
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7192.92105633039!2d85.3071212!3d27.7150086!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb18fd438eab57%3A0xb58c66d9b105b7bf!2sGlobal%20Nepal%20Treks!5e1!3m2!1sen!2snp!4v1778918889301!5m2!1sen!2snp"
               width="100%"
               height="100%"
               style={{ border: 0 }}
