@@ -348,7 +348,7 @@ export default function ContactClient() {
                     <div>
                       <p className="font-medium text-gray-900">Address</p>
                       <p className="text-gray-600">Bikramshila Mahavihar (Bhagawan Bahal) Tham Bahee Road, Kathmandu, Nepal</p>
-                      <Link href="https://maps.google.com/?q=Thamel+Kathmandu+Nepal" target="_blank" rel="noopener noreferrer" className="text-sm text-primary-color-dark hover:underline">
+                      <Link href="https://maps.app.goo.gl/P4kqys6M7FnCGwkX8" target="_blank" rel="noopener noreferrer" className="text-sm text-primary-color-dark hover:underline">
                         View on Google Maps →
                       </Link>
                     </div>
