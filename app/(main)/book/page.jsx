@@ -1,5 +1,5 @@
 // app/book/page.js
-import GoogleCaptchaWrapper from "../components/wrappers/GoogleCaptchaWrapper";
+import GoogleCaptchaWrapper from "@/app/components/wrappers/GoogleCaptchaWrapper";
 import BookClient from "./BookClient";
 
 export const metadata = {

@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { aboutAssets } from "../assets/assets";
-import HeroSection from "../components/sections/HeroSection";
-import Heading from "../components/ui/Heading";
-import CountUpSection from "../components/sections/CountUpSection";
+import { aboutAssets } from "@/app/assets/assets";
+import HeroSection from "@/app/components/sections/HeroSection";
+import Heading from "@/app/components/ui/Heading";
+import CountUpSection from "@/app/components/sections/CountUpSection";
 
 export const metadata = {
   title: 'About Us | Local Himalayan Trekking Experts Since 2008',

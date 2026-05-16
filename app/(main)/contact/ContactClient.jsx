@@ -25,7 +25,7 @@ import HeroSection from "@/app/components/sections/HeroSection";
 import Heading from "@/app/components/ui/Heading";
 import { useState, useCallback, useEffect } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { contactAssets } from "../assets/assets";
+import { contactAssets } from "@/app/assets/assets";
 
 export default function ContactClient() {
   const [formData, setFormData] = useState({

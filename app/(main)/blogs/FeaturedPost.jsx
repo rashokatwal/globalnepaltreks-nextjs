@@ -1,6 +1,6 @@
 // app/blogs/FeaturedPost.js
 import Link from 'next/link';
-import { blogsAssets } from "../assets/assets";
+import { blogsAssets } from "../../assets/assets";
 
 function formatDate(dateString) {
   if (!dateString) return 'Recent';

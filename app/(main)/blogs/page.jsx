@@ -1,6 +1,6 @@
 // app/blogs/page.js
 import { Suspense } from 'react';
-import { blogsAssets } from "../assets/assets";
+import { blogsAssets } from "../../assets/assets";
 import HeroSection from "@/app/components/sections/HeroSection";
 import Heading from "@/app/components/ui/Heading";
 import NewsletterSection from "@/app/components/sections/NewsletterSection";

@@ -26,12 +26,13 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
-import PackageCard from "./components/cards/PackageCard";
+import PackageCard from "../components/cards/PackageCard";
 import { useRef, useState, useEffect } from "react";
-import BlogCard from "./components/cards/BlogCard";
-import { homeAssets, logos } from "./assets/assets";
-import Heading from "./components/ui/Heading";
-import Loading from "./loading";   // global loading component (same as loading.js)
+import BlogCard from "../components/cards/BlogCard";
+// import { homeAssets, logos } from "../../assets/assets";
+import Heading from "../components/ui/Heading";
+import Loading from "../loading";   // global loading component (same as loading.js)
+import { homeAssets, logos } from "../assets/assets";
 
 const Home = () => {
     const swiperRef = useRef(null);

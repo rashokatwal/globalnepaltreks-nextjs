@@ -31,8 +31,8 @@ import HeroSection from "@/app/components/sections/HeroSection";
 import Heading from "@/app/components/ui/Heading";
 import { useState, useEffect, useCallback } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import PackageCard from "../components/cards/PackageCard";
-import { bookAssets } from "../assets/assets";
+import PackageCard from "@/app/components/cards/PackageCard";
+import { bookAssets } from "@/app/assets/assets";
 
 export default function BookClient() {
   const [step, setStep] = useState(1);

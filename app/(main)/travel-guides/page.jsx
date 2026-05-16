@@ -15,7 +15,7 @@ import {
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import HeroSection from '@/app/components/sections/HeroSection';
 import Heading from '@/app/components/ui/Heading';
-import { travelGuidesAssets } from '../assets/assets';
+import { travelGuidesAssets } from '@/app/assets/assets';
 
 // Metadata for SEO
 export const metadata = {

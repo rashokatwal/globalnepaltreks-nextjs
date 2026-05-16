@@ -1,6 +1,6 @@
 // app/contact/page.js
-import { contactAssets } from "../assets/assets";
-import GoogleCaptchaWrapper from "../components/wrappers/GoogleCaptchaWrapper";
+import { contactAssets } from "@/app/assets/assets";
+import GoogleCaptchaWrapper from "@/app/components/wrappers/GoogleCaptchaWrapper";
 import ContactClient from "./ContactClient";
 
 export const metadata = {

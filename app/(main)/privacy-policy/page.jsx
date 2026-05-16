@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import HeroSection from "../components/sections/HeroSection";
+import HeroSection from "@/app/components/sections/HeroSection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faCompass, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
 

@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Heading from "@/app/components/ui/Heading";
 import BlogCard from "@/app/components/cards/BlogCard";
-import { blogsAssets } from "../assets/assets";
+import { blogsAssets } from "../../assets/assets";
 
 function formatDate(dateString) {
   if (!dateString) return 'Recent';
