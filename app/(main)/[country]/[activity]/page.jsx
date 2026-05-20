@@ -2,6 +2,23 @@
 import { notFound } from 'next/navigation';
 import ActivityClient from './ActivityClient';
 
+export async function generateMetadata({ params }) {
+  const { country, activity } = await params;
+
+  const activityName = activity?.split('-').map(w => 
+    w.charAt(0).toUpperCase() + w.slice(1)
+  ).join(' ');
+  const countryName = country?.charAt(0).toUpperCase() + country?.slice(1);
+
+  return {
+    title: `${activityName} in ${countryName} | Global Nepal Treks`,
+    description: `Discover the best ${activityName} packages in ${countryName}.`,
+    alternates: {
+      canonical: `https://globalnepaltreks.com/${country}/${activity}`,
+    },
+  };
+}
+
 export default async function ActivityPage({ params, searchParams }) {
   const { country, activity } = await params;
   const filters = await searchParams;
