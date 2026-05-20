@@ -34,6 +34,15 @@ const nextConfig = {
       // Add other domains you use
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/blog/:slug*',
+        destination: '/blogs',
+        permanent: true,
+      },
+    ];
+  }
 };
 
 export default nextConfig;

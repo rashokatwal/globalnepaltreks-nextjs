@@ -17,18 +17,6 @@ import BlogCard from '@/app/components/cards/BlogCard';
 import Heading from '@/app/components/ui/Heading';
 import ShareButtons from '@/app/components/ui/ShareButtons';
 
-// ✅ FIX: Use a reliable base URL that works in all environments
-function getBaseUrl() {
-  // In production (server-side), prefer NEXT_PUBLIC_APP_URL, fall back to production domain
-  if (process.env.NEXT_PUBLIC_APP_URL) {
-    return process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, ''); // strip trailing slash
-  }
-  // ✅ FIX: Never fall back to localhost in production — use your actual domain
-  return 'https://globalnepaltreks.com';
-}
-
-// Fetch blog post data
-// ✅ Match this exact pattern from your working packages code
 async function getBlogPost(slug) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
