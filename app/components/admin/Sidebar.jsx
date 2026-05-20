@@ -72,12 +72,12 @@ const Sidebar = () => {
 
       {/* Sidebar itself */}
       <aside
-        className={`fixed top-0 left-0 z-50 w-64 bg-secondary-color text-white flex flex-col shadow-xl transition-transform duration-300 h-screen ease-in-out transform lg:relative lg:translate-x-0 ${
+        className={`fixed top-0 left-0 z-50 w-64 bg-white flex flex-col shadow-sm transition-transform duration-300 h-screen ease-in-out transform lg:relative lg:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         {/* Brand / Logo */}
-        <div className="p-6 border-b border-gray-700">
+        <div className="p-6 border-b border-gray-300">
           <Image
             src={logos.globalnepaltreks_logo}
             alt="Global Nepal Treks Logo"
@@ -88,7 +88,7 @@ const Sidebar = () => {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-4 py-6 space-y-1">
+        <nav className="flex-1 text-sm px-4 py-6 space-y-3">
           {navItems.map((item) => {
             const isActive = pathname === item.href || 
                              (item.href !== '/admin' && pathname?.startsWith(item.href));
@@ -100,8 +100,8 @@ const Sidebar = () => {
                 onClick={closeSidebar} // close sidebar on link click (mobile)
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 ${
                   isActive
-                    ? 'bg-accent-color text-white shadow-md'
-                    : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
+                    ? 'bg-gray-200'
+                    : 'text-black/70 hover:bg-gray-300'
                 }`}
               >
                 <FontAwesomeIcon icon={item.icon} className="w-5 h-5" />
@@ -112,13 +112,13 @@ const Sidebar = () => {
         </nav>
 
         {/* Logout Button */}
-        <div className="p-4 border-t border-gray-700">
+        <div className="p-4 border-t border-gray-300">
           <button
             onClick={() => {
               handleLogout();
               closeSidebar();
             }}
-            className="flex items-center gap-3 cursor-pointer w-full px-4 py-2.5 rounded-lg text-gray-300 hover:bg-red-600/20 hover:text-red-400 transition-all duration-200"
+            className="flex items-center gap-3 cursor-pointer w-full px-4 py-2.5 rounded-lg hover:bg-red-600/20 hover:text-red-600 transition-all duration-200"
           >
             <FontAwesomeIcon icon={faSignOutAlt} className="w-5 h-5" />
             <span className="font-medium">Logout</span>

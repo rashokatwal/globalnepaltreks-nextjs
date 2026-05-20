@@ -16,9 +16,9 @@ export default function AdminLayout({ children }) {
   // For all other /admin routes, protect with AuthGuard
   return (
     <AdminAuthGuard>
-      <div className="flex min-h-screen bg-gray-100">
+      <div className="flex relative min-h-screen bg-gray-100">
         <Sidebar />
-        <main className="flex-1 p-6 overflow-y-auto">
+        <main className="flex-1 h-screen p-6 overflow-y-scroll">
           {children}
         </main>
       </div>
