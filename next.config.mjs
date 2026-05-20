@@ -41,6 +41,11 @@ const nextConfig = {
         destination: '/blogs',
         permanent: true,
       },
+      {
+        source: '/public/:path*',
+        destination: '/:path*',
+        permanent: true,
+      },
     ];
   }
 };
