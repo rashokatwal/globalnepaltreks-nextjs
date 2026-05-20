@@ -1,6 +1,7 @@
 import { Montserrat } from "next/font/google";
 import "@/app/globals.css";
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
+import { logos } from "./assets/assets";
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -35,11 +36,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "TravelAgency", // Changed to TravelAgency for better SEO for trekking
+    "@type": "TravelAgency",
     "name": "Global Nepal Treks",
     "alternateName": "GNT",
     "url": "https://globalnepaltreks.com",
-    "logo": "https://globalnepaltreks.com", // Ensure this is a full URL string
+    "logo": logos.globalnepaltreks_logo,
     "sameAs": [
       "https://www.facebook.com/GlobalNepalTreks",
       "https://x.com/Sakarsarthak147?t=zcbv2PDB2ZXwAW9-CC3c-w&s=07",

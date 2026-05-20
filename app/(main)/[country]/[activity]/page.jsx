@@ -6,7 +6,7 @@ export default async function ActivityPage({ params, searchParams }) {
   const { country, activity } = await params;
   const filters = await searchParams;
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
   // Validate country
   const countryRes = await fetch(`${baseUrl}/api/countries/${country}`, {
