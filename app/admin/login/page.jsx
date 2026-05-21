@@ -64,7 +64,6 @@ const Login = () => {
     }
   };
 
-  // Show loading spinner while checking authentication
   if (isCheckingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-dark-section">
