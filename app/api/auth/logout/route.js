@@ -1,7 +1,6 @@
 // src/app/api/auth/logout/route.js
 import { NextResponse } from 'next/server';
 import { SessionQueries } from '@/lib/db/queries/sessions.js';
-import { CookieUtils } from '@/lib/auth/cookies.js';
 
 export async function POST(request) {
     try {
@@ -9,9 +8,13 @@ export async function POST(request) {
         const refreshToken = request.cookies.get('refresh_token')?.value;
         
         if (refreshToken) {
-            // Delete session
+            // Delete session from database
             await SessionQueries.deleteByRefreshToken(refreshToken);
         }
+        
+        // Detect if we are on HTTPS (same logic as login)
+        const forwardedProto = request.headers.get('x-forwarded-proto');
+        const isHttps = forwardedProto === 'https' || request.nextUrl.protocol === 'https:';
         
         // Create response
         const response = NextResponse.json({
@@ -19,8 +22,17 @@ export async function POST(request) {
             message: 'Logout successful'
         });
         
-        // Clear cookies
-        CookieUtils.clearAuthCookies(response);
+        // Clear cookies with identical options to ensure deletion
+        const cookieOptions = {
+            httpOnly: true,
+            secure: isHttps,
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 0,               // Immediately expire
+        };
+        
+        response.cookies.set('access_token', '', cookieOptions);
+        response.cookies.set('refresh_token', '', cookieOptions);
         
         return response;
         

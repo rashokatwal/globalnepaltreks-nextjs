@@ -215,7 +215,7 @@ export default function PackagesPage() {
                   </td>
                   <td className="px-5 py-4 text-sm text-gray-600">
                     <span className="flex items-center gap-1.5">
-                      <FontAwesomeIcon icon={faCalendarAlt} className="w-3.5 h-3.5 text-gray-400" />
+                      <FontAwesomeIcon icon={faCalendarAlt} className="w-3.5 h-3.5 text-primary-color-dark" />
                       {pkg.duration_days}d
                     </span>
                   </td>
@@ -255,7 +255,7 @@ export default function PackagesPage() {
                         <FontAwesomeIcon icon={faEdit} className="w-4 h-4" />
                       </Link>
                       <Link
-                        href={`/packages/${pkg.slug}`}
+                        href={`/${pkg.country_name.toLowerCase()}/${pkg.activity_name.toLowerCase()}/${pkg.slug}`}
                         target="_blank"
                         className="p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition"
                         title="Preview"
@@ -326,7 +326,7 @@ export default function PackagesPage() {
                   className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-gray-900 text-white text-xs font-medium rounded-lg hover:bg-gray-700 transition">
                   <FontAwesomeIcon icon={faEdit} className="w-3.5 h-3.5" /> Edit
                 </Link>
-                <Link href={`/packages/${pkg.slug}`} target="_blank"
+                <Link href={`/${pkg.country_name.toLowerCase()}/${pkg.activity_name.toLowerCase()}/${pkg.slug}`} target="_blank"
                   className="px-3 py-2 border border-gray-200 text-gray-600 text-xs font-medium rounded-lg hover:bg-gray-50 transition">
                   <FontAwesomeIcon icon={faEye} className="w-3.5 h-3.5" />
                 </Link>
