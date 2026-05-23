@@ -16,7 +16,7 @@ export const metadata = {
 
   title: {
     default: "Trekking and Tour Agency in Nepal | Global Nepal Treks",
-    template: "%s | Global Nepal Treks",
+    template: "%s",
   },
 
   description:

@@ -45,6 +45,8 @@ export async function generateMetadata({ params }) {
   const activityName = activity.split('-').map(word => 
     word.charAt(0).toUpperCase() + word.slice(1)
   ).join(' ');
+
+  const canonicalUrl = `https://globalnepaltreks.com/${country}/${activity}/${pkg.slug}`;
   
   return {
     title: pkg.meta_title || `${pkg.title} | ${activityName} in ${countryName}`,
@@ -54,6 +56,9 @@ export async function generateMetadata({ params }) {
       description: pkg.short_description,
       images: [pkg.featured_image],
       type: 'website',
+    },
+    alternates: {
+      canonical: canonicalUrl,
     },
   };
 }
