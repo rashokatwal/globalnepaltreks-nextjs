@@ -16,6 +16,9 @@ export const metadata = {
     description: 'Expert guides and adventure stories from the heart of the Himalayas.',
     images: [blogsAssets.blogs_cover?.src || '/images/blog-cover.jpg'],
   },
+  alternatives: {
+    canonical: 'https://globalnepaltreks.com/blogs',
+  },
 };
 
 export default function BlogsPage() {
