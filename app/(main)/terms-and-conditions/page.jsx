@@ -1,10 +1,21 @@
 // app/terms-and-conditions/page.js (or pages/terms-and-conditions.js)
-"use client";
-
-import Link from "next/link";
+    import Link from "next/link";
 import HeroSection from "@/app/components/sections/HeroSection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faCompass, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
+
+export const metadata = {
+  title: 'Terms & Conditions | Global Nepal Treks – Nepal Trekking Agency',
+  description: 'Please read the terms and conditions of Global Nepal Treks. Understand our booking policies, cancellations, refunds, and responsibilities for Himalayan treks.',
+//   keywords: 'nepal trekking guides, saroj ghimire founder, keshar sherpa guide, deepak lamichane trekking, nabaraj gurung tour operator, himalayan guides nepal',
+  openGraph: {
+    title: 'Terms & Conditions | Global Nepal Treks – Nepal Trekking Agency',
+    description: 'Please read the terms and conditions of Global Nepal Treks. Understand our booking policies, cancellations, refunds, and responsibilities for Himalayan treks.',
+  },
+  alternates: {
+      canonical: "https://globalnepaltreks.com/terms-and-conditions",
+  },
+};
 
 export default function TermsAndConditions() {
     return (

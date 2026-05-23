@@ -1,10 +1,21 @@
 // app/privacy-policy/page.js (or pages/privacy-policy.js)
-"use client";
-
 import Link from "next/link";
 import HeroSection from "@/app/components/sections/HeroSection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faCompass, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
+
+export const metadata = {
+  title: 'Privacy Policy | Global Nepal Treks – Nepal Trekking Agency',
+  description: 'Global Nepal Treks\' privacy policy explains how your personal data is collected, stored, and protected. Your privacy and trust matter to us.',
+//   keywords: 'nepal trekking guides, saroj ghimire founder, keshar sherpa guide, deepak lamichane trekking, nabaraj gurung tour operator, himalayan guides nepal',
+  openGraph: {
+    title: 'Privacy Policy | Global Nepal Treks – Nepal Trekking Agency',
+    description: 'Global Nepal Treks\' privacy policy explains how your personal data is collected, stored, and protected. Your privacy and trust matter to us.',
+  },
+  alternates: {
+      canonical: "https://globalnepaltreks.com/privacy-policy",
+  },
+};
 
 export default function PrivacyPolicy() {
     return (

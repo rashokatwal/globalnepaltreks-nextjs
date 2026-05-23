@@ -1,6 +1,19 @@
 // app/sitemap/page.js
 import db from '@/lib/db';
 
+export const metadata = {
+  title: 'Sitemap | Global Nepal Treks – Nepal Trekking Agency',
+  description: 'Explore the full sitemap of Global Nepal Treks. Find all pages for trek itineraries, destinations, booking & travel guides for Nepal, Tibet & Bhutan.',
+//   keywords: 'nepal trekking guides, saroj ghimire founder, keshar sherpa guide, deepak lamichane trekking, nabaraj gurung tour operator, himalayan guides nepal',
+  openGraph: {
+    title: 'Sitemap | Global Nepal Treks – Nepal Trekking Agency',
+    description: 'Explore the full sitemap of Global Nepal Treks. Find all pages for trek itineraries, destinations, booking & travel guides for Nepal, Tibet & Bhutan.',
+  },
+  alternates: {
+      canonical: "https://globalnepaltreks.com/sitemap",
+  },
+};
+
 export const dynamic = 'force-dynamic';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://globalnepaltreks.com';
