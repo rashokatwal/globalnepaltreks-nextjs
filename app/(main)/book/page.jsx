@@ -4,8 +4,8 @@ import BookClient from "./BookClient";
 
 export const metadata = {
   title: 'Book Your Trek | Himalayan Adventure Booking - Global Nepal Treks',
-  description: 'Book your dream Himalayan trek with Global Nepal Treks. Secure online booking for Everest Base Camp, Annapurna Circuit, Langtang Valley, and more. Best prices, expert guides, guaranteed departures.',
-  keywords: 'book nepal trek, everest base camp booking, annapurna circuit reservation, himalayan trek booking, nepal trekking packages, book trek online, trekking agency booking, himalayan adventure booking',
+  description: 'Book your Himalayan trek online with Global Nepal Treks. Everest Base Camp, Annapurna Circuit, Langtang & more — best prices & guaranteed departures.',
+  // keywords: 'book nepal trek, everest base camp booking, annapurna circuit reservation, himalayan trek booking, nepal trekking packages, book trek online, trekking agency booking, himalayan adventure booking',
   openGraph: {
     title: 'Book Your Himalayan Adventure | Global Nepal Treks',
     description: 'Secure your spot on Nepal\'s most popular treks. Easy online booking, instant confirmation, and expert local guides.',

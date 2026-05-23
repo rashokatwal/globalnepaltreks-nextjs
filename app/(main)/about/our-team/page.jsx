@@ -5,8 +5,8 @@ import { teamAssets } from "@/app/assets/assets";
 
 export const metadata = {
   title: 'Our Team | Expert Himalayan Guides & Local Trekking Staff',
-  description: 'Meet the experienced team behind Global Nepal Treks. Government-licensed guides, tour operators, and international coordinators dedicated to your authentic Himalayan adventure.',
-  keywords: 'nepal trekking guides, saroj ghimire founder, keshar sherpa guide, deepak lamichane trekking, nabaraj gurung tour operator, himalayan guides nepal',
+  description: 'Meet the expert team behind Global Nepal Treks — government-licensed guides, tour operators & international coordinators for your Himalayan adventure.',
+//   keywords: 'nepal trekking guides, saroj ghimire founder, keshar sherpa guide, deepak lamichane trekking, nabaraj gurung tour operator, himalayan guides nepal',
   openGraph: {
     title: 'Our Team | Global Nepal Treks',
     description: 'Meet our government-licensed guides and international representatives who make your Himalayan journey unforgettable.',

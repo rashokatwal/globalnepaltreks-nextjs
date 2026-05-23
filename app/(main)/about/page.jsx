@@ -6,8 +6,8 @@ import CountUpSection from "@/app/components/sections/CountUpSection";
 
 export const metadata = {
   title: 'About Us | Local Himalayan Trekking Experts Since 2008',
-  description: 'Global Nepal Treks: Locally owned trekking company with 15+ years of experience. Meet our expert government-licensed guides and discover authentic Himalayan adventures in Nepal, Tibet & Bhutan.',
-  keywords: 'nepal trekking company, himalayan trekking experts, local guides nepal, government licensed trekking guides, everest base camp specialists, responsible tourism nepal',
+  description: 'Discover authentic Himalayan adventures with Global Nepal Treks — locally owned, 15+ years of experience, and certified guides across Nepal, Tibet & Bhutan.',
+//   keywords: 'nepal trekking company, himalayan trekking experts, local guides nepal, government licensed trekking guides, everest base camp specialists, responsible tourism nepal',
   openGraph: {
     title: 'About Us | Local Himalayan Trekking Experts Since 2008',
     description: 'Meet our expert local guides and discover why Global Nepal Treks is the trusted choice for authentic Himalayan adventures.',
