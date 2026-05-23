@@ -42,7 +42,7 @@ export default function ActivityClient({ country, activity, countryId, activityI
         if (filters.duration) params.append('max_duration', filters.duration);
         if (filters.sort) params.append('sort', filters.sort);
 
-        const packagesRes = await fetch(`/api/packages?${params.toString()}`, {next: { revalidate: 0 }});
+        const packagesRes = await fetch(`/api/packages?${params.toString()}`, {next: { revalidate: 3600 }});
         const packagesData = await packagesRes.json();
 
         let fetchedPackages = [];

@@ -61,12 +61,12 @@ const Home = () => {
                     luxuryRes,
                     blogsRes
                 ] = await Promise.all([
-                    fetch('/api/reviews?limit=10'),
-                    fetch('/api/packages?limit=4&best_selling=true'),
-                    fetch('/api/packages?limit=4&featured=true'),
-                    fetch('/api/packages?limit=4&adventure=true'),
-                    fetch('/api/packages?limit=4&luxury=true'),
-                    fetch('/api/blogs?limit=4')
+                    fetch('/api/reviews?limit=10', { next: { revalidate: 3600 } }),
+                    fetch('/api/packages?limit=4&best_selling=true', { next: { revalidate: 3600 } }),
+                    fetch('/api/packages?limit=4&featured=true', { next: { revalidate: 3600 } }),
+                    fetch('/api/packages?limit=4&adventure=true', { next: { revalidate: 3600 } }),
+                    fetch('/api/packages?limit=4&luxury=true', { next: { revalidate: 3600 } }),
+                    fetch('/api/blogs?limit=4', { next: { revalidate: 3600 } })
                 ]);
 
                 const reviewsData = await reviewsRes.json();

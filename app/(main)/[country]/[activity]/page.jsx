@@ -27,7 +27,7 @@ export default async function ActivityPage({ params, searchParams }) {
 
   // Validate country
   const countryRes = await fetch(`${baseUrl}/api/countries/${country}`, {
-    next: { revalidate: 1000 },
+    next: { revalidate: 3600 },
     cache: 'no-store'
   });
 
@@ -40,7 +40,7 @@ export default async function ActivityPage({ params, searchParams }) {
 
   // Validate activity
   const activityRes = await fetch(`${baseUrl}/api/activities`, {
-    next: { revalidate: 0 },
+    next: { revalidate: 3600 },
     cache: 'no-store'
   });
 

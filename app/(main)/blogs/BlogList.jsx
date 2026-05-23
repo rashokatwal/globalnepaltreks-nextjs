@@ -43,8 +43,10 @@ export default function BlogList({ initialBlogs = [] }) {
           ? `${baseUrl}/api/blogs/categories/${encodeURIComponent(category)}/posts?limit=50`
           : `${baseUrl}/api/blogs?limit=50`;
         
-        const res = await fetch(url, { next: { revalidate: 0 } });
+        const res = await fetch(url, { next: { revalidate: 3600 } });
         const response = await res.json();
+
+        console.log(response);
         
         // Handle different response structures
         let blogsArray = [];
