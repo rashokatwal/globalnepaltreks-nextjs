@@ -11,6 +11,9 @@ export const metadata = {
     title: 'Our Team | Global Nepal Treks',
     description: 'Meet our government-licensed guides and international representatives who make your Himalayan journey unforgettable.',
   },
+  alternates: {
+      canonical: "https://globalnepaltreks.com/about/our-team",
+  },
 };
 
 const Team = () => {

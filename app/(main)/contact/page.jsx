@@ -12,6 +12,9 @@ export const metadata = {
     description: 'Contact our trekking experts to plan your perfect Himalayan adventure.',
     images: [contactAssets.contact_cover?.src],
   },
+  alternates: {
+      canonical: "https://globalnepaltreks.com/contact",
+  },
 };
 
 export default function ContactPage() {

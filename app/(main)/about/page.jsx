@@ -13,6 +13,9 @@ export const metadata = {
     description: 'Meet our expert local guides and discover why Global Nepal Treks is the trusted choice for authentic Himalayan adventures.',
     images: [aboutAssets.about_us_cover.src],
   },
+  alternates: {
+      canonical: "https://globalnepaltreks.com/about",
+  },
 };
 
 const About = () => {
