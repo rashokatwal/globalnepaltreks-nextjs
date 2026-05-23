@@ -40,7 +40,7 @@ export default async function ActivityPage({ params, searchParams }) {
 
   // Validate activity
   const activityRes = await fetch(`${baseUrl}/api/activities`, {
-    next: { revalidate: 1000 },
+    next: { revalidate: 0 },
     cache: 'no-store'
   });
 
