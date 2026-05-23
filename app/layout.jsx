@@ -30,11 +30,7 @@ export const metadata = {
 
   twitter: {
     card: "summary_large_image",
-  },
-
-  alternates: {
-      canonical: "https://www.globalnepaltreks.com/",
-  },
+  }
 };
 
 export default function RootLayout({ children }) {
