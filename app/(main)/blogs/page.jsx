@@ -10,14 +10,14 @@ import Loading from './loading';
 export const metadata = {
   title: 'Himalayan Trekking Blog | Tips, Guides & Adventure Stories',
   description: 'Expert trekking guides, packing tips, destination insights, and adventure stories from the Himalayas.',
-  keywords: 'nepal trekking blog, himalayan trekking tips, everest base camp guide',
+  // keywords: 'nepal trekking blog, himalayan trekking tips, everest base camp guide',
   openGraph: {
     title: 'Himalayan Trekking Blog | Global Nepal Treks',
     description: 'Expert guides and adventure stories from the heart of the Himalayas.',
     images: [blogsAssets.blogs_cover?.src || '/images/blog-cover.jpg'],
   },
-  alternatives: {
-    canonical: 'https://globalnepaltreks.com/blogs',
+  alternates: {
+      canonical: "https://globalnepaltreks.com/blogs",
   },
 };
 
