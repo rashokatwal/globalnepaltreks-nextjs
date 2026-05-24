@@ -554,7 +554,7 @@ export default function EditPackagePage() {
             <Field label="Meta Description"><textarea name="meta_description" rows={2} value={formData.meta_description} onChange={handleChange} placeholder="Max 160 characters" className={inputCls()} /></Field>
             <Field label="Keywords"><input name="keywords" value={formData.keywords} onChange={handleChange} placeholder="everest base camp, nepal trekking, himalaya" className={inputCls()} /></Field>
             <Field label="Featured Image URL"><input name="featured_image" value={formData.featured_image} onChange={handleChange} placeholder="https://…" className={inputCls()} /></Field>
-            <Field label="Map Image URL"><input name="map_image" value={formData.map_image} onChange={handleChange} placeholder="https://…" className={inputCls()} /></Field>
+            <Field label="Map Image URL"><input name="map_image" value={formData.map_image || ''} onChange={handleChange} placeholder="https://…" className={inputCls()} /></Field>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
               {[
                 { name: 'is_active', label: 'Active', color: 'emerald' },

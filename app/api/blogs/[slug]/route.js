@@ -11,8 +11,12 @@ import { slugify } from '@/lib/utils/slugify.js';
 export async function GET(request, { params }) {
     try {
         const { slug } = await params;
-        
-        const blog = await BlogQueries.findBySlug(slug);
+
+        let blog = await BlogQueries.findBySlug(slug);
+
+        if (!blog && !isNaN(parseInt(slug))) {
+            blog = await BlogQueries.findById(parseInt(slug));
+        }
         
         if (!blog) {
             return ApiResponse.notFound('Blog not found');
@@ -51,7 +55,11 @@ export async function PUT(request, { params }) {
         const body = await request.json();
         
         // Find existing blog
-        const existingBlog = await BlogQueries.findBySlug(slug);
+        let existingBlog = await BlogQueries.findBySlug(slug);
+
+        if (!existingBlog && !isNaN(parseInt(slug))) {
+            existingBlog = await BlogQueries.findById(parseInt(slug));
+        }
         
         if (!existingBlog) {
             return ApiResponse.notFound('Blog not found');
