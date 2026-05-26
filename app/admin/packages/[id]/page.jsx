@@ -143,7 +143,7 @@ export default function EditPackagePage() {
   useEffect(() => {
     async function fetchPackage() {
       try {
-        const res = await fetch(`/api/packages/${id}`);
+        const res = await fetch(`/api/packages/${id}?details=true`);
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Failed to load package');
         const pkg = data.data || data;
@@ -415,14 +415,14 @@ export default function EditPackagePage() {
                 <RemoveBtn onClick={() => removeItineraryItem(idx)} />
               </div>
               <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-                <input placeholder="Day title" value={item.title} onChange={(e) => updateItineraryItem(idx, 'title', e.target.value)} className={`${inputCls()} md:col-span-2`} />
-                <textarea placeholder="Description" rows={2} value={item.description} onChange={(e) => updateItineraryItem(idx, 'description', e.target.value)} className={`${inputCls()} md:col-span-2`} />
-                <input type="number" placeholder="Altitude (m)" value={item.altitude} onChange={(e) => updateItineraryItem(idx, 'altitude', e.target.value)} className={inputCls()} />
-                <input placeholder="Trekking hours (e.g. 5–6)" value={item.trekking_hours} onChange={(e) => updateItineraryItem(idx, 'trekking_hours', e.target.value)} className={inputCls()} />
-                <input placeholder="Distance (km)" value={item.distance_km} onChange={(e) => updateItineraryItem(idx, 'distance_km', e.target.value)} className={inputCls()} />
-                <input placeholder="Accommodation" value={item.accommodation} onChange={(e) => updateItineraryItem(idx, 'accommodation', e.target.value)} className={inputCls()} />
-                <input placeholder="Meal info (e.g. B/L/D)" value={item.meal_info} onChange={(e) => updateItineraryItem(idx, 'meal_info', e.target.value)} className={inputCls()} />
-                <input placeholder="Day image URL" value={item.day_image} onChange={(e) => updateItineraryItem(idx, 'day_image', e.target.value)} className={inputCls()} />
+                <input placeholder="Day title" value={item.title || ''} onChange={(e) => updateItineraryItem(idx, 'title', e.target.value)} className={`${inputCls()} md:col-span-2`} />
+                <textarea placeholder="Description" rows={2} value={item.description || ''} onChange={(e) => updateItineraryItem(idx, 'description', e.target.value)} className={`${inputCls()} md:col-span-2`} />
+                <input type="number" placeholder="Altitude (m)" value={item.altitude || ''} onChange={(e) => updateItineraryItem(idx, 'altitude', e.target.value)} className={inputCls()} />
+                <input placeholder="Trekking hours (e.g. 5–6)" value={item.trekking_hours | ''} onChange={(e) => updateItineraryItem(idx, 'trekking_hours', e.target.value)} className={inputCls()} />
+                <input placeholder="Distance (km)" value={item.distance_km || ''} onChange={(e) => updateItineraryItem(idx, 'distance_km', e.target.value)} className={inputCls()} />
+                <input placeholder="Accommodation" value={item.accommodation || ''} onChange={(e) => updateItineraryItem(idx, 'accommodation', e.target.value)} className={inputCls()} />
+                <input placeholder="Meal info (e.g. B/L/D)" value={item.meal_info || ''} onChange={(e) => updateItineraryItem(idx, 'meal_info', e.target.value)} className={inputCls()} />
+                <input placeholder="Day image URL" value={item.day_image || ''} onChange={(e) => updateItineraryItem(idx, 'day_image', e.target.value)} className={inputCls()} />
               </div>
             </div>
           ))}
@@ -495,8 +495,8 @@ export default function EditPackagePage() {
         <FormSection icon={faImage} title="Gallery" subtitle={`${formData.gallery_images.length} image${formData.gallery_images.length !== 1 ? 's' : ''}`} action={<AddBtn onClick={addGalleryImage} label="Add Image" />}>
           {formData.gallery_images.length === 0 ? <EmptyState text="No gallery images added yet." /> : formData.gallery_images.map((img, idx) => (
             <div key={idx} className="flex gap-2 mb-2">
-              <input placeholder="Image URL (https://…)" value={img.image_url} onChange={(e) => updateGalleryImage(idx, 'image_url', e.target.value)} className={`flex-1 ${inputCls()}`} />
-              <input placeholder="Alt text" value={img.title} onChange={(e) => updateGalleryImage(idx, 'title', e.target.value)} className={`w-40 ${inputCls()}`} />
+              <input placeholder="Image URL (https://…)" value={img.image_url || ''} onChange={(e) => updateGalleryImage(idx, 'image_url', e.target.value)} className={`flex-1 ${inputCls()}`} />
+              <input placeholder="Alt text" value={img.title || ''} onChange={(e) => updateGalleryImage(idx, 'title', e.target.value)} className={`w-40 ${inputCls()}`} />
               <RemoveBtn onClick={() => removeGalleryImage(idx)} />
             </div>
           ))}
