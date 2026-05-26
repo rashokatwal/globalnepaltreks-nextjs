@@ -41,7 +41,7 @@ export default function BlogList({ initialBlogs = [] }) {
         const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
         const url = category 
           ? `${baseUrl}/api/blogs/categories/${encodeURIComponent(category)}/posts?limit=50`
-          : `${baseUrl}/api/blogs?limit=50`;
+          : `${baseUrl}/api/blogs?limit=100`;
         
         const res = await fetch(url, { next: { revalidate: 3600 } });
         const response = await res.json();
