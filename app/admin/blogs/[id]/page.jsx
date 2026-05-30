@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
@@ -8,10 +8,113 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowLeft, faSave, faSpinner, faSync, faPlus, faTrash,
   faImage, faFileAlt, faSearch, faTag, faEye,
-  faCalendarAlt, faUser, faClock, faGlobe, faMountain
+  faCalendarAlt, faUser, faClock, faGlobe, faMountain,
+  faUpload, faTimes
 } from '@fortawesome/free-solid-svg-icons';
 
 const TipTapEditor = dynamic(() => import('../../../components/admin/TipTapEditor'), { ssr: false });
+
+// Image Upload Component for Featured Image
+const ImageUpload = ({ currentImage, onImageUpload, onRemove, label, uploadType = 'blogs' }) => {
+  const [uploading, setUploading] = useState(false);
+  const [preview, setPreview] = useState(currentImage);
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    setPreview(currentImage);
+  }, [currentImage]);
+
+  const handleFileSelect = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image must be less than 5MB');
+      return;
+    }
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('type', uploadType);
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setPreview(data.url);
+        onImageUpload(data.url);
+      } else {
+        alert(data.error || 'Upload failed');
+      }
+    } catch (err) {
+      alert('Upload failed. Please try again.');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handleRemove = () => {
+    setPreview(null);
+    onRemove();
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  return (
+    <div className="space-y-2">
+      <label className="block text-sm font-medium text-gray-700 mb-1.5">{label}</label>
+      <div className="flex items-start gap-4">
+        {preview ? (
+          <div className="relative w-32 h-32 rounded-lg overflow-hidden border border-gray-200">
+            <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+            <button
+              type="button"
+              onClick={handleRemove}
+              className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition"
+            >
+              <FontAwesomeIcon icon={faTimes} className="w-3 h-3" />
+            </button>
+          </div>
+        ) : (
+          <div className="w-32 h-32 bg-gray-100 rounded-lg border border-dashed border-gray-300 flex items-center justify-center">
+            <FontAwesomeIcon icon={faImage} className="w-8 h-8 text-gray-400" />
+          </div>
+        )}
+        <div className="flex-1">
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            accept="image/*"
+            className="hidden"
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium text-gray-700 transition flex items-center gap-2"
+          >
+            {uploading ? (
+              <><FontAwesomeIcon icon={faSpinner} className="w-4 h-4 animate-spin" /> Uploading...</>
+            ) : (
+              <><FontAwesomeIcon icon={faUpload} className="w-4 h-4" /> {preview ? 'Change Image' : 'Upload Image'}</>
+            )}
+          </button>
+          <p className="text-xs text-gray-400 mt-2">Recommended: JPG, PNG (max 5MB)</p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // ─── Helper Components ────────────────────────────────────────────────────────
 
@@ -191,12 +294,10 @@ export default function EditBlogPage() {
         [name]: type === 'checkbox' ? checked : value,
       };
 
-      // Auto-populate published_at with today when first publishing
       if (name === 'is_published' && checked && !prev.published_at) {
         updated.published_at = new Date().toISOString().split('T')[0];
       }
 
-      // Clear published_at when unpublishing
       if (name === 'is_published' && !checked) {
         updated.published_at = '';
       }
@@ -214,6 +315,15 @@ export default function EditBlogPage() {
         ? prev.category_ids.filter(id => id !== categoryId)
         : [...prev.category_ids, categoryId],
     }));
+  };
+
+  // Image handlers
+  const handleFeaturedImageUpload = (url) => {
+    setFormData(prev => ({ ...prev, featured_image: url }));
+  };
+
+  const handleFeaturedImageRemove = () => {
+    setFormData(prev => ({ ...prev, featured_image: '' }));
   };
 
   // ── Validation ──────────────────────────────────────────────────────────────
@@ -247,13 +357,9 @@ export default function EditBlogPage() {
         meta_title: formData.meta_title.trim() || formData.title.trim(),
         meta_description: formData.meta_description.trim() || formData.excerpt.trim() || null,
         keywords: formData.keywords.trim() || null,
-        // Send integers to match how the API stores them
         is_published: formData.is_published ? 1 : 0,
         is_featured: formData.is_featured ? 1 : 0,
-        // Only send published_at when published; otherwise explicitly null
-        published_at: formData.is_published && formData.published_at
-          ? formData.published_at
-          : null,
+        published_at: formData.is_published && formData.published_at ? formData.published_at : null,
         category_ids: formData.category_ids,
         country_id: formData.country_id ? parseInt(formData.country_id) : null,
         activity_id: formData.activity_id ? parseInt(formData.activity_id) : null,
@@ -268,7 +374,6 @@ export default function EditBlogPage() {
       if (res.ok && data.success) {
         router.push('/admin/blogs');
       } else {
-        // Surface field-level errors from API if present
         if (data.errors) {
           setErrors(data.errors);
           window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -399,18 +504,14 @@ export default function EditBlogPage() {
               </Field>
             </div>
 
-            <Field label="Featured Image URL">
-              <div className="relative">
-                <FontAwesomeIcon icon={faImage} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <input
-                  name="featured_image"
-                  value={formData.featured_image}
-                  onChange={handleChange}
-                  placeholder="https://example.com/image.jpg"
-                  className={`${inputCls()} pl-10`}
-                />
-              </div>
-            </Field>
+            {/* Featured Image Upload */}
+            <ImageUpload
+              currentImage={formData.featured_image}
+              onImageUpload={handleFeaturedImageUpload}
+              onRemove={handleFeaturedImageRemove}
+              label="Featured Image"
+              uploadType="blogs"
+            />
           </div>
         </FormSection>
 
@@ -481,7 +582,7 @@ export default function EditBlogPage() {
         )}
 
         {/* ── CONTENT ── */}
-        <FormSection icon={faFileAlt} title="Content" subtitle="Main blog body" >
+        <FormSection icon={faFileAlt} title="Content" subtitle="Main blog body">
           <div className="flex gap-2 mb-4">
             {['richtext', 'html'].map(mode => (
               <button
@@ -501,6 +602,7 @@ export default function EditBlogPage() {
               value={formData.content}
               onChange={handleContentChange}
               placeholder="Write your blog content here..."
+              uploadType="blogs"
             />
           ) : (
             <textarea
