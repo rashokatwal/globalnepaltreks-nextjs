@@ -1,72 +1,44 @@
+// app/api/upload/route.js
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
+import { put } from '@vercel/blob';
 
 export async function POST(request) {
   try {
     const formData = await request.formData();
     const file = formData.get('file');
-    const type = formData.get('type') || 'general'; // 'packages', 'blogs', or 'general'
-    const category = formData.get('category') || 'image'; // 'image', 'gallery', 'document'
+    const type = formData.get('type') || 'general';
+    const category = formData.get('category') || 'image';
 
     if (!file) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
-    // Validate file type
-    const isImage = file.type.startsWith('image/');
-    const isDocument = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/plain', 'application/zip'].includes(file.type);
-    
-    if (!isImage && !isDocument) {
-      return NextResponse.json({ error: 'Invalid file type' }, { status: 400 });
-    }
-
-    // Validate file size (20MB for documents, 5MB for images)
-    const maxSize = category === 'document' ? 20 * 1024 * 1024 : 5 * 1024 * 1024;
-    if (file.size > maxSize) {
-      return NextResponse.json({ 
-        error: `File must be less than ${maxSize / (1024 * 1024)}MB` 
-      }, { status: 400 });
-    }
-
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    
     // Generate unique filename
     const timestamp = Date.now();
     const randomStr = Math.random().toString(36).substring(2, 8);
-    const originalExt = path.extname(file.name);
     const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '').replace(/\s+/g, '-');
     const filename = `${timestamp}-${randomStr}-${safeName}`;
     
-    // Determine upload directory
-    let uploadSubDir = 'general';
-    if (type === 'packages') uploadSubDir = 'Packages';
-    if (type === 'blogs') uploadSubDir = 'Blogs';
+    // Determine folder
+    let folder = 'general';
+    if (type === 'packages') folder = 'Packages';
+    if (type === 'blogs') folder = 'Blogs';
     
-    // Subfolder for documents vs images
-    const categoryFolder = category === 'document' ? 'documents' : 'images';
-    
-    // Use absolute path for production
-    const uploadDir = path.join(process.cwd(), 'public', 'assets', uploadSubDir, categoryFolder);
-    
-    // Create directory recursively
-    await mkdir(uploadDir, { recursive: true });
-    
-    // Save file
-    const filePath = path.join(uploadDir, filename);
-    await writeFile(filePath, buffer);
-    
-    // Return the public URL
-    const url = `/assets/${uploadSubDir}/${categoryFolder}/${filename}`;
-    
+    const subfolder = category === 'document' ? 'documents' : 'images';
+    const blobPath = `assets/${folder}/${subfolder}/${filename}`;
+
+    // ✅ CHANGE: Use 'private' instead of 'public'
+    const blob = await put(blobPath, file, {
+      access: 'public',  // ← Changed from 'public' to 'private'
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    });
+
     return NextResponse.json({ 
       success: true, 
-      url,
-      filename,
-      type: uploadSubDir,
-      category: categoryFolder,
-      size: file.size,
+      url: blob.url,
+      filename: blob.pathname,
+      type: folder,
+      category: subfolder,
     });
     
   } catch (error) {
