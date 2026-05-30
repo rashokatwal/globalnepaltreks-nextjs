@@ -1,8 +1,6 @@
 // app/api/packages/[slug]/route.js
 import { NextResponse } from 'next/server';
 import { PackageQueries } from '@/lib/db/queries/packages.js';
-import { PackageFeatureQueries } from '@/lib/db/queries/packageFeatures.js';
-import { PackageDocumentQueries } from '@/lib/db/queries/packageDocuments.js';
 import { AuthMiddleware } from '@/lib/auth/middleware.js';
 import { Permissions } from '@/lib/auth/permissions.js';
 import { ApiResponse } from '@/lib/utils/response.js';
@@ -25,7 +23,6 @@ export async function GET(request, { params }) {
             return ApiResponse.notFound('Package not found');
         }
         
-        // Increment view count
         await PackageQueries.incrementViews(pkg.id);
         
         if (includeDetails) {
@@ -60,18 +57,10 @@ export async function PUT(request, { params }) {
             return ApiResponse.notFound('Package not found');
         }
         
-        // Check permission
         if (!Permissions.canModify(auth.user, pkg)) {
             return ApiResponse.forbidden('You do not have permission to modify this package');
         }
         
-        // Validate (partial update allowed)
-        const validation = validatePackage(body, true);
-        if (!validation.isValid) {
-            return ApiResponse.validationError(validation.errors);
-        }
-        
-        // Check slug uniqueness if changing
         if (body.slug && body.slug !== pkg.slug) {
             const existing = await PackageQueries.findBySlug(body.slug);
             if (existing && existing.id !== pkg.id) {
@@ -79,10 +68,21 @@ export async function PUT(request, { params }) {
             }
         }
         
-        // Update package
-        const updated = await PackageQueries.update(pkg.id, body);
+        // Update main package
+        if (Object.keys(body).length > 0) {
+            await PackageQueries.update(pkg.id, body);
+        }
         
-        return ApiResponse.success(updated, 'Package updated successfully');
+        // ✅ Handle gallery images separately using the new updateGallery method
+        if (body.gallery_images !== undefined) {
+            console.log('Updating gallery images. Count:', body.gallery_images.length);
+            await PackageQueries.updateGallery(pkg.id, body.gallery_images);
+        }
+        
+        // Return the updated full package
+        const fullDetails = await PackageQueries.getFullDetails(pkg.id);
+        
+        return ApiResponse.success(fullDetails, 'Package updated successfully');
         
     } catch (error) {
         console.error('Error in PUT /api/packages/[slug]:', error);
@@ -109,7 +109,6 @@ export async function PATCH(request, { params }) {
             return ApiResponse.notFound('Package not found');
         }
         
-        // Handle toggle featured
         if (body.action === 'toggle_featured') {
             const updated = await PackageQueries.update(pkg.id, {
                 is_featured: !pkg.is_featured
@@ -117,7 +116,6 @@ export async function PATCH(request, { params }) {
             return ApiResponse.success(updated, `Package ${updated.is_featured ? 'featured' : 'unfeatured'} successfully`);
         }
         
-        // Handle toggle active
         if (body.action === 'toggle_active') {
             const updated = await PackageQueries.update(pkg.id, {
                 is_active: !pkg.is_active
@@ -151,7 +149,6 @@ export async function DELETE(request, { params }) {
             return ApiResponse.notFound('Package not found');
         }
         
-        // Check permission
         if (!Permissions.canDelete(auth.user, pkg)) {
             return ApiResponse.forbidden('You do not have permission to delete this package');
         }

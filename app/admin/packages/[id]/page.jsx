@@ -756,6 +756,13 @@ export default function EditPackagePage() {
       
       const safeValue = (value) => value === undefined ? null : value;
       
+      // Prepare gallery images properly - ensure they have the correct structure
+      const galleryImages = formData.gallery_images.map((img, index) => ({
+        image_url: img.image_url,
+        title: img.title || '',
+        sort_order: index + 1
+      }));
+      
       const payload = { 
         ...formData, 
         essential_info: essentialInfoFilled ? formData.essential_info : null,
@@ -766,9 +773,13 @@ export default function EditPackagePage() {
         max_altitude: safeValue(formData.max_altitude ? parseInt(formData.max_altitude) : null),
         group_size_min: safeValue(formData.group_size_min ? parseInt(formData.group_size_min) : 2),
         group_size_max: safeValue(formData.group_size_max ? parseInt(formData.group_size_max) : null),
+        // Send gallery_images explicitly with the correct structure
+        gallery_images: galleryImages,
         // Don't send documents array in the main payload - they're managed separately
         documents: undefined
       };
+      
+      console.log('Saving gallery images:', galleryImages); // Debug log
       
       const res = await fetch(`/api/packages/${id}`, {
         method: 'PUT',
