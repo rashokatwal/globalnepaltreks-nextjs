@@ -13,6 +13,14 @@ export async function POST(request) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
+    // Validate file type
+    const isImage = file.type.startsWith('image/');
+    const isDocument = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/plain', 'application/zip'].includes(file.type);
+    
+    if (!isImage && !isDocument) {
+      return NextResponse.json({ error: 'Invalid file type' }, { status: 400 });
+    }
+
     // Validate file size (20MB for documents, 5MB for images)
     const maxSize = category === 'document' ? 20 * 1024 * 1024 : 5 * 1024 * 1024;
     if (file.size > maxSize) {
@@ -38,7 +46,11 @@ export async function POST(request) {
     
     // Subfolder for documents vs images
     const categoryFolder = category === 'document' ? 'documents' : 'images';
+    
+    // Use absolute path for production
     const uploadDir = path.join(process.cwd(), 'public', 'assets', uploadSubDir, categoryFolder);
+    
+    // Create directory recursively
     await mkdir(uploadDir, { recursive: true });
     
     // Save file
@@ -59,6 +71,6 @@ export async function POST(request) {
     
   } catch (error) {
     console.error('Upload error:', error);
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+    return NextResponse.json({ error: 'Upload failed: ' + error.message }, { status: 500 });
   }
 }
