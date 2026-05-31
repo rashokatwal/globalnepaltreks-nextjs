@@ -41,7 +41,9 @@ import PackageDetails from '@/app/components/sections/PackageDetails';
 import BookingSidebar from '@/app/components/sections/BookingSidebar';
 import PageNavigation from '@/app/components/sections/PageNavigation';
 import Image from 'next/image';
-import ShareButtons from '@/app/components/ui/ShareButtons';
+// import ShareButtons from '@/app/components/ui/ShareButtons';
+import Script from 'next/script';
+import ShareButtonsWrapper from '@/app/components/wrappers/ShareButtonsWrapper';
 
 export async function generateMetadata({ params }) {
   const { country, activity, slug } = await params;
@@ -60,17 +62,52 @@ export async function generateMetadata({ params }) {
 
   const canonicalUrl = `https://globalnepaltreks.com/${country}/${activity}/${pkg.slug}`;
   
+  // Generate keywords from package data
+  const keywords = [
+    pkg.title,
+    `${activityName} in ${countryName}`,
+    pkg.country_name,
+    pkg.activity_name,
+    pkg.difficulty,
+    `${pkg.duration_days} day tour`,
+    ...(pkg.keywords ? pkg.keywords.split(',') : [])
+  ].filter(Boolean).join(', ');
+  
   return {
-    title: pkg.meta_title || `${pkg.title} | ${activityName} in ${countryName}`,
-    description: pkg.meta_description || pkg.short_description || `Book your ${activityName.toLowerCase()} package in ${countryName} with expert guides.`,
+    title: pkg.meta_title || `${pkg.title} | ${activityName} in ${countryName} | Global Nepal Treks`,
+    description: pkg.meta_description || pkg.short_description || `Book your ${activityName.toLowerCase()} package in ${countryName} with expert guides. Best price guaranteed.`,
+    // keywords: keywords,
     openGraph: {
       title: pkg.title,
       description: pkg.short_description,
       images: [pkg.featured_image],
       type: 'website',
+      locale: 'en_US',
+      siteName: 'Global Nepal Treks',
+      url: canonicalUrl,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: pkg.title,
+      description: pkg.short_description,
+      images: [pkg.featured_image],
     },
     alternates: {
       canonical: canonicalUrl,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    verification: {
+      google: 'your-google-verification-code',
     },
   };
 }
@@ -79,13 +116,14 @@ async function getPackage(slug) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     const res = await fetch(`${baseUrl}/api/packages/${slug}?details=true`, {
-      next: { revalidate: 0 }
+      next: { revalidate: 3600 } // Cache for 1 hour
     });
     
     if (!res.ok) return null;
     const data = await res.json();
     return data.data;
   } catch (error) {
+    console.error('Error fetching package:', error);
     return null;
   }
 }
@@ -159,6 +197,181 @@ const getAvailableSections = (pkg) => {
   return sections.filter(section => section.condition);
 };
 
+// Generate JSON-LD structured data
+function generateJsonLd(pkg, countryName, activityName) {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://globalnepaltreks.com';
+  const currentUrl = `${baseUrl}/${countryName.toLowerCase()}/${activityName.toLowerCase().replace(/ /g, '-')}/${pkg.slug}`;
+  
+  // Calculate aggregate rating if reviews exist
+  const aggregateRating = pkg.reviews && pkg.reviews.length > 0 ? {
+    "@type": "AggregateRating",
+    "ratingValue": getAverageRating(pkg.reviews),
+    "reviewCount": pkg.reviews.length,
+    "bestRating": "5",
+    "worstRating": "1"
+  } : undefined;
+  
+  // Build offers (pricing)
+  const offers = {
+    "@type": "Offer",
+    "price": parseFloat(pkg.price),
+    "priceCurrency": "USD",
+    "availability": pkg.is_active ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+    "validFrom": new Date().toISOString().split('T')[0],
+    "url": currentUrl
+  };
+  
+  // Add price valid until (1 year from now)
+  const validUntil = new Date();
+  validUntil.setFullYear(validUntil.getFullYear() + 1);
+  offers.priceValidUntil = validUntil.toISOString().split('T')[0];
+  
+  // Build image list
+  const images = [pkg.featured_image];
+  if (pkg.gallery && pkg.gallery.length > 0) {
+    images.push(...pkg.gallery.slice(0, 5).map(img => img.image_url || img));
+  }
+  
+  // Build itinerary as item list
+  const itemListElement = pkg.itinerary?.map((day, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": `Day ${day.day_number}: ${day.title}`,
+    "description": day.description
+  })) || [];
+  
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": pkg.title,
+    "description": pkg.short_description || pkg.meta_description,
+    "image": images,
+    "sku": pkg.id.toString(),
+    "mpn": pkg.id.toString(),
+    "brand": {
+      "@type": "Brand",
+      "name": "Global Nepal Treks"
+    },
+    "offers": offers,
+    "review": pkg.reviews?.slice(0, 5).map(review => ({
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": review.author_name || "Verified Traveler"
+      },
+      "datePublished": review.created_at?.split('T')[0],
+      "reviewBody": review.comment,
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": review.rating,
+        "bestRating": "5",
+        "worstRating": "1"
+      }
+    })),
+    ...(aggregateRating && { aggregateRating }),
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "Duration",
+        "value": `${pkg.duration_days} days`
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Difficulty",
+        "value": pkg.difficulty?.charAt(0).toUpperCase() + pkg.difficulty?.slice(1)
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Max Altitude",
+        "value": pkg.max_altitude ? `${pkg.max_altitude}m` : "N/A"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Group Size",
+        "value": `${pkg.group_size_min}-${pkg.group_size_max || 'Unlimited'} persons`
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Best Season",
+        "value": pkg.best_season || "Spring & Autumn"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Activity Type",
+        "value": activityName
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Country",
+        "value": countryName
+      }
+    ]
+  };
+  
+  // Add tour/package specific schema if it's a tour
+  if (activityName.toLowerCase().includes('tour') || activityName.toLowerCase().includes('trek')) {
+    jsonLd["@type"] = "TouristTrip";
+    jsonLd.touristType = activityName;
+    if (pkg.itinerary && pkg.itinerary.length > 0) {
+      jsonLd.itinerary = {
+        "@type": "ItemList",
+        "itemListElement": itemListElement,
+        "numberOfItems": pkg.itinerary.length
+      };
+    }
+  }
+  
+  return jsonLd;
+}
+
+// Generate FAQ Schema from package FAQs
+function generateFaqSchema(faqs) {
+  if (!faqs || faqs.length === 0) return null;
+  
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+}
+
+// Generate BreadcrumbList Schema
+function generateBreadcrumbSchema(pkg, countryName, activityName) {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://globalnepaltreks.com';
+  
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": baseUrl
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": activityName,
+        "item": `${baseUrl}/${countryName.toLowerCase()}/${activityName.toLowerCase().replace(/ /g, '-')}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": pkg.title,
+        "item": `${baseUrl}/${countryName.toLowerCase()}/${activityName.toLowerCase().replace(/ /g, '-')}/${pkg.slug}`
+      }
+    ]
+  };
+}
+
 export default async function PackagePage({ params }) {
   const { country, activity, slug } = await params;
   const pkg = await getPackage(slug);
@@ -180,9 +393,33 @@ export default async function PackagePage({ params }) {
   
   // Get essential info if it exists
   const essentialInfo = pkg.essential_info || {};
+  
+  // Generate structured data
+  const mainJsonLd = generateJsonLd(pkg, countryName, activityName);
+  const faqJsonLd = generateFaqSchema(pkg.faqs);
+  const breadcrumbJsonLd = generateBreadcrumbSchema(pkg, countryName, activityName);
 
   return (
     <main className="bg-white">
+      {/* JSON-LD Structured Data */}
+      <Script
+        id="main-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(mainJsonLd) }}
+      />
+      {faqJsonLd && (
+        <Script
+          id="faq-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
       {/* Hero Section with Package Image */}
       <section className="relative min-h-[80vh] bg-gray-900">
         <div className="absolute inset-0 overflow-hidden bg-fixed bg-cover bg-top" style={{backgroundImage: `url(${pkg.featured_image})`}}>
@@ -237,8 +474,10 @@ export default async function PackagePage({ params }) {
               </div>
             )}
           </div>
-          <div className='mt-5 flex items-center gap-4'>
-            <FontAwesomeIcon icon={faShareNodes} />Share <ShareButtons shareUrl={`${process.env.NEXT_PUBLIC_APP_URL}/${country}/${activity}/${slug}`} />
+          <div className='mt-5 flex flex-wrap items-center gap-4'>
+            <FontAwesomeIcon icon={faShareNodes} className="hidden sm:block" />
+            <span className="text-sm sm:text-base">Share</span>
+            <ShareButtonsWrapper shareUrl={`${process.env.NEXT_PUBLIC_APP_URL}/${country}/${activity}/${slug}`} />
           </div>
         </div>
       </section>
@@ -357,11 +596,14 @@ export default async function PackagePage({ params }) {
                 <section id="features" className="mb-12 scroll-mt-24">
                   <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                     <FontAwesomeIcon icon={faBoxOpen} className="text-primary-color-dark w-6 h-6" />
-                    Inclusions
+                    Inclusions & Exclusions
                   </h2>
-                  <div className="gap-6">
-                    <div className="p-6 rounded-lg">
-                      <h3 className="font-semibold text-lg text-green-800 mb-3">Included</h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="p-6 rounded-lg bg-green-50">
+                      <h3 className="font-semibold text-lg text-green-800 mb-3 flex items-center gap-2">
+                        {/* <FontAwesomeIcon icon={faCheck} className="w-5 h-5" /> */}
+                        Included
+                      </h3>
                       <ul className="space-y-2">
                         {pkg.features.filter(f => f.feature_type === 'included').map((feature) => (
                           <li key={feature.id} className="flex items-start gap-2">
@@ -371,8 +613,11 @@ export default async function PackagePage({ params }) {
                         ))}
                       </ul>
                     </div>
-                    <div className="p-6 rounded-lg">
-                      <h3 className="font-semibold text-lg text-red-800 mb-3">Excluded</h3>
+                    <div className="p-6 rounded-lg bg-red-50">
+                      <h3 className="font-semibold text-lg text-red-800 mb-3 flex items-center gap-2">
+                        {/* <FontAwesomeIcon icon={faXmark} className="w-5 h-5" /> */}
+                        Excluded
+                      </h3>
                       <ul className="space-y-2">
                         {pkg.features.filter(f => f.feature_type === 'excluded').map((feature) => (
                           <li key={feature.id} className="flex items-start gap-2">
@@ -559,6 +804,7 @@ export default async function PackagePage({ params }) {
                       src={pkg.map_image}
                       alt={`${pkg.title} route map`}
                       className="w-full h-auto"
+                      loading="lazy"
                     />
                   </div>
                 </section>
@@ -572,16 +818,22 @@ export default async function PackagePage({ params }) {
                     Gallery
                   </h2>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {pkg.gallery.slice(0, 6).map((image, index) => (
-                      <div key={index} className="relative h-40 rounded-lg overflow-hidden">
+                    {pkg.gallery.slice(0, 9).map((image, index) => (
+                      <div key={index} className="relative aspect-square rounded-lg overflow-hidden">
                         <img
                           src={image.image_url || image}
                           alt={`${pkg.title} gallery ${index + 1}`}
                           className="w-full h-full object-cover hover:scale-105 transition duration-300"
+                          loading="lazy"
                         />
                       </div>
                     ))}
                   </div>
+                  {pkg.gallery.length > 9 && (
+                    <div className="text-center mt-4">
+                      <button className="text-accent-color hover:underline">View All {pkg.gallery.length} Photos →</button>
+                    </div>
+                  )}
                 </section>
               )}
 

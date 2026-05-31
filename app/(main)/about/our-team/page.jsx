@@ -2,19 +2,152 @@ import Image from "next/image";
 import HeroSection from "@/app/components/sections/HeroSection";
 import Heading from "@/app/components/ui/Heading";
 import { teamAssets } from "@/app/assets/assets";
+import Script from "next/script";
 
 export const metadata = {
   title: 'Our Team | Expert Himalayan Guides & Local Trekking Staff',
   description: 'Meet the expert team behind Global Nepal Treks — government-licensed guides, tour operators & international coordinators for your Himalayan adventure.',
-//   keywords: 'nepal trekking guides, saroj ghimire founder, keshar sherpa guide, deepak lamichane trekking, nabaraj gurung tour operator, himalayan guides nepal',
+//   keywords: 'nepal trekking guides, saroj ghimire founder, keshar sherpa guide, deepak lamichane trekking, nabaraj gurung tour operator, himalayan guides nepal, global nepal treks team, licensed trekking guides nepal',
   openGraph: {
     title: 'Our Team | Global Nepal Treks',
     description: 'Meet our government-licensed guides and international representatives who make your Himalayan journey unforgettable.',
+    images: [teamAssets.team_cover.src],
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Global Nepal Treks',
+    url: 'https://globalnepaltreks.com/about/our-team',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Our Team | Expert Himalayan Guides & Local Trekking Staff',
+    description: 'Meet the expert team behind Global Nepal Treks — government-licensed guides and international coordinators.',
+    images: [teamAssets.team_cover.src],
   },
   alternates: {
-      canonical: "https://globalnepaltreks.com/about/our-team",
+    canonical: "https://globalnepaltreks.com/about/our-team",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
+
+// Generate Organization Schema for the Team
+function generateOrganizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Global Nepal Treks",
+    "url": "https://globalnepaltreks.com",
+    "logo": "https://globalnepaltreks.com/logo.png",
+    "employee": [
+      {
+        "@type": "Person",
+        "name": "Saroj Ghimire",
+        "jobTitle": "Founder & Director",
+        "worksFor": "Global Nepal Treks",
+        "sameAs": ["https://globalnepaltreks.com/about/our-team"]
+      },
+      {
+        "@type": "Person",
+        "name": "Keshar Sherpa",
+        "jobTitle": "Senior Mountain Guide",
+        "worksFor": "Global Nepal Treks"
+      },
+      {
+        "@type": "Person",
+        "name": "Deepak Lamichane",
+        "jobTitle": "Senior Trekking Guide",
+        "worksFor": "Global Nepal Treks"
+      },
+      {
+        "@type": "Person",
+        "name": "Nabaraj Gurung",
+        "jobTitle": "Tour Operator",
+        "worksFor": "Global Nepal Treks"
+      }
+    ]
+  };
+}
+
+// Generate Person Schema for each team member
+function generatePersonSchema(member, position, type = "guide") {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": member.name,
+    "jobTitle": member.position,
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Global Nepal Treks"
+    },
+    "knowsLanguage": member.languages ? member.languages.split(", ") : ["English", "Nepali"],
+    "hasOccupation": {
+      "@type": "Occupation",
+      "name": position,
+      "occupationLocation": {
+        "@type": "Country",
+        "name": "Nepal"
+      }
+    },
+    "description": member.description?.substring(0, 200),
+    "image": member.image?.src || "",
+    "sameAs": [
+      "https://globalnepaltreks.com/about/our-team"
+    ]
+  };
+}
+
+// Generate BreadcrumbList Schema
+function generateBreadcrumbSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://globalnepaltreks.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "About",
+        "item": "https://globalnepaltreks.com/about"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Our Team",
+        "item": "https://globalnepaltreks.com/about/our-team"
+      }
+    ]
+  };
+}
+
+// Generate About Page Schema
+function generateAboutPageSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "Our Team | Expert Himalayan Guides & Local Trekking Staff",
+    "description": "Meet the expert team behind Global Nepal Treks — government-licensed guides, tour operators & international coordinators for your Himalayan adventure.",
+    "url": "https://globalnepaltreks.com/about/our-team",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Global Nepal Treks",
+      "description": "Government-licensed trekking agency with expert local guides"
+    }
+  };
+}
 
 const Team = () => {
     // Leadership Team
@@ -105,8 +238,46 @@ const Team = () => {
         }
     ];
 
+    // Generate all schemas
+    const organizationSchema = generateOrganizationSchema();
+    const aboutPageSchema = generateAboutPageSchema();
+    const breadcrumbSchema = generateBreadcrumbSchema();
+    
+    // Generate person schemas for key team members
+    const personSchemas = [
+        generatePersonSchema(leadershipTeam[0], "Founder & Director"),
+        generatePersonSchema(seniorGuides[0], "Senior Mountain Guide"),
+        generatePersonSchema(seniorGuides[1], "Senior Trekking Guide"),
+        generatePersonSchema(tourOperators[0], "Tour Operator")
+    ];
+
     return (
         <main>
+            {/* JSON-LD Structured Data */}
+            <Script
+                id="organization-schema"
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+            />
+            <Script
+                id="about-page-schema"
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageSchema) }}
+            />
+            <Script
+                id="breadcrumb-schema"
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+            />
+            {personSchemas.map((schema, index) => (
+                <Script
+                    key={index}
+                    id={`person-schema-${index}`}
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+                />
+            ))}
+            
             <HeroSection 
                 image={teamAssets.team_cover.src} 
                 heading={"Our Team"} 
@@ -138,7 +309,7 @@ const Team = () => {
                     />
                     
                     {leadershipTeam.map((leader, index) => (
-                        <div key={index} className="border border-primary-color-dark  rounded-xl shadow-sm overflow-hidden max-w-4xl mx-auto">
+                        <div key={index} className="border border-primary-color-dark rounded-xl shadow-sm overflow-hidden max-w-4xl mx-auto">
                             <div className="md:flex items-center">
                                 <div className="md:w-1/3 p-6 md:p-8">
                                     <div className="aspect-square rounded-full overflow-hidden mx-auto max-w-62.5">
@@ -152,7 +323,7 @@ const Team = () => {
                                     </div>
                                 </div>
                                 <div className="md:w-2/3 p-8">
-                                    <h3 className="text-2xl font-bold text-gray-900 mb-1">{leader.name}</h3>
+                                    <h2 className="text-2xl font-bold text-gray-900 mb-1">{leader.name}</h2>
                                     <p className="text-primary-color-dark font-semibold mb-4">{leader.position}</p>
                                     
                                     <div className="grid grid-cols-2 gap-4 mb-4">
@@ -189,7 +360,7 @@ const Team = () => {
                     
                     <div className="grid md:grid-cols-2 gap-8">
                         {seniorGuides.map((guide, index) => (
-                            <div key={index} className="border border-primary-color-dark  rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+                            <div key={index} className="border border-primary-color-dark rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
                                 <div className="flex flex-col items-center p-8">
                                     <div className="w-40 h-40 rounded-full overflow-hidden mb-6">
                                         <Image 
@@ -200,7 +371,7 @@ const Team = () => {
                                             className="w-full h-full object-cover"
                                         />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 mb-1 text-center">{guide.name}</h3>
+                                    <h2 className="text-xl font-bold text-gray-900 mb-1 text-center">{guide.name}</h2>
                                     <p className="text-primary-color-dark font-medium mb-3 text-center">{guide.position}</p>
                                     
                                     <div className="flex flex-wrap gap-2 justify-center mb-4">
@@ -244,7 +415,7 @@ const Team = () => {
                                     </div>
                                 </div>
                                 <div className="md:w-2/3 p-8">
-                                    <h3 className="text-2xl font-bold text-gray-900 mb-1">{operator.name}</h3>
+                                    <h2 className="text-2xl font-bold text-gray-900 mb-1">{operator.name}</h2>
                                     {operator.nickname && (
                                         <p className="text-primary-color-dark/70 font-medium mb-1">"{operator.nickname}"</p>
                                     )}
@@ -289,7 +460,7 @@ const Team = () => {
                     
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {internationalCoordinators.map((coordinator, index) => (
-                            <div key={index} className="border border-primary-color-dark  rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+                            <div key={index} className="border border-primary-color-dark rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
                                 <div className="p-8">
                                     <div className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-6">
                                         <Image 
@@ -300,7 +471,7 @@ const Team = () => {
                                             className="w-full h-full object-cover"
                                         />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 mb-1 text-center">{coordinator.name}</h3>
+                                    <h2 className="text-xl font-bold text-gray-900 mb-1 text-center">{coordinator.name}</h2>
                                     <p className="text-primary-color-dark font-medium mb-2 text-center">{coordinator.position}</p>
                                     <p className="text-sm text-accent-color font-medium mb-3 text-center">{coordinator.location}</p>
                                     

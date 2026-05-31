@@ -15,18 +15,21 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import HeroSection from '@/app/components/sections/HeroSection';
 import Heading from '@/app/components/ui/Heading';
 import { travelGuidesAssets } from '@/app/assets/assets';
+import Script from 'next/script';
 
 // SEO metadata
 export const metadata = {
   title: 'Trekking Gears and Equipments | Complete Packing List for Nepal Trekking',
-  description: 'Essential trekking gear and equipment for Nepal Himalayas: clothing, trekking equipment, toiletries, and medical supplies. Expert packing guide for a safe and comfortable trek.',
-  keywords: 'trekking gears nepal, trekking equipment, packing list for nepal trek, himalayan trekking gear, trekking boots, down jacket, sleeping bag, altitude sickness medicine',
+  description: 'Essential trekking gear for Nepal Himalayas: clothing, equipment, toiletries & medical supplies. Expert packing list for a safe, comfortable trek.',
+  // keywords: 'trekking gears nepal, trekking equipment, packing list for nepal trek, himalayan trekking gear, trekking boots, down jacket, sleeping bag, altitude sickness medicine, trekking poles, nepal trek packing, himalayan trek preparation, trek clothing guide',
   openGraph: {
     title: 'Trekking Gears and Equipments | Complete Packing List for Nepal Trekking',
     description: 'Essential trekking gear and equipment for Nepal Himalayas: clothing, trekking equipment, toiletries, and medical supplies.',
     url: 'https://globalnepaltreks.com/travel-guides/trekking-gears',
     type: 'article',
-    images: [{ url: `${travelGuidesAssets.travel_gear_and_equipment_cover.src}`, width: 1200, height: 630 }],
+    locale: 'en_US',
+    siteName: 'Global Nepal Treks',
+    images: [{ url: travelGuidesAssets.travel_gear_and_equipment_cover.src, width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -40,12 +43,185 @@ export const metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 
+// Generate Article Schema
+function generateArticleSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Trekking Gears and Equipments | Complete Packing List for Nepal Trekking",
+    "description": "Essential trekking gear and equipment for Nepal Himalayas: clothing, trekking equipment, toiletries, and medical supplies. Expert packing guide for a safe and comfortable trek.",
+    "url": "https://globalnepaltreks.com/travel-guides/trekking-gears",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://globalnepaltreks.com/travel-guides/trekking-gears"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Global Nepal Treks",
+      "url": "https://globalnepaltreks.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Global Nepal Treks",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://globalnepaltreks.com/logo.png"
+      }
+    },
+    "image": {
+      "@type": "ImageObject",
+      "url": travelGuidesAssets.travel_gear_and_equipment_cover.src,
+      "width": 1200,
+      "height": 630
+    },
+    "datePublished": "2025-04-08",
+    "dateModified": "2026-05-31",
+    "articleSection": "Travel Guides",
+    "keywords": "trekking gears nepal, trekking equipment, packing list, himalayan trekking gear",
+    "inLanguage": "en-US",
+    "about": {
+      "@type": "Thing",
+      "name": "Trekking Gear",
+      "description": "Essential equipment for trekking in the Himalayas"
+    }
+  };
+}
+
+// Generate BreadcrumbList Schema
+function generateBreadcrumbSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://globalnepaltreks.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Travel Guides",
+        "item": "https://globalnepaltreks.com/travel-guides"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Trekking Gears and Equipments",
+        "item": "https://globalnepaltreks.com/travel-guides/trekking-gears"
+      }
+    ]
+  };
+}
+
+// Generate Organization Schema
+function generateOrganizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "TravelAgency",
+    "name": "Global Nepal Treks",
+    "alternateName": "Global Nepal Treks Pvt. Ltd.",
+    "description": "Government-licensed trekking agency offering authentic Himalayan treks and tours across Nepal, Tibet, and Bhutan.",
+    "url": "https://globalnepaltreks.com",
+    "logo": "https://globalnepaltreks.com/logo.png",
+    "email": "info@globalnepaltreks.com",
+    "telephone": "+977-9744258519",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Bikramshila Mahavihar (Bhagawan Bahal), Tham Bahee Road",
+      "addressLocality": "Kathmandu",
+      "addressCountry": "Nepal",
+      "postalCode": "44600"
+    },
+    "sameAs": [
+      "https://www.facebook.com/globalnepaltreks",
+      "https://www.instagram.com/globalnepaltreks",
+      "https://www.linkedin.com/company/global-nepal-treks"
+    ],
+    "priceRange": "$$",
+    "areaServed": ["Nepal", "Tibet", "Bhutan"]
+  };
+}
+
+// Generate Checklist Schema
+function generateChecklistSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Checklist",
+    "name": "Trekking Gear Checklist for Nepal",
+    "description": "Complete packing checklist for trekking in the Nepal Himalayas",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Clothing",
+        "description": "Down jacket, thermal wear, trekking boots, socks, gloves, hats"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Trekking Gear",
+        "description": "Backpack, sleeping bag, trekking poles, head torch, water bottles"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Toiletries",
+        "description": "Toilet paper, soap, quick-dry towel, toothbrush"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "Medical Supplies",
+        "description": "Altitude sickness medicine, sunscreen, pain relievers, first aid kit"
+      }
+    ],
+    "numberOfItems": 4
+  };
+}
+
 export default function TrekkingGearsPage() {
+  // Generate all schemas
+  const articleSchema = generateArticleSchema();
+  const breadcrumbSchema = generateBreadcrumbSchema();
+  const organizationSchema = generateOrganizationSchema();
+  const checklistSchema = generateChecklistSchema();
+
   return (
     <main>
+      {/* JSON-LD Structured Data */}
+      <Script
+        id="article-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <Script
+        id="organization-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <Script
+        id="checklist-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(checklistSchema) }}
+      />
+
       {/* Hero Section */}
       <HeroSection
         image={travelGuidesAssets.travel_gear_and_equipment_cover.src}
@@ -59,7 +235,7 @@ export default function TrekkingGearsPage() {
           <Heading title="What You Need to Know Before You Pack" titleClass="text-center mb-4" />
           <p className="text-md text-gray-600 leading-relaxed">
             Trekking in Nepal varies from easy to hard depending on the region, weather, and whether you go solo or with a guide.  
-            Since Nepal is home to 8 of the world’s 14 highest peaks, multi‑day treks are the norm.  
+            Since Nepal is home to 8 of the world's 14 highest peaks, multi‑day treks are the norm.  
             A strong mindset and capable leadership are important, but having the right gear makes the journey safe and enjoyable.  
             Below is a detailed list of everything you should consider bringing.
           </p>
@@ -125,7 +301,6 @@ export default function TrekkingGearsPage() {
                   { title: 'Sleeping Mat', desc: 'Insulated mat for camping or extra comfort in lodges.' },
                 ].map((item, idx) => (
                   <div key={idx} className="flex gap-3">
-                    {/* <FontAwesomeIcon icon={faCheckCircle} className="w-5 h-5 text-primary-color-dark mt-1 shrink-0" /> */}
                     <FontAwesomeIcon icon={faShoePrints} className="w-5 h-5 text-primary-color-dark mt-1 shrink-0" />
                     <div>
                       <h3 className="font-semibold text-gray-900">{item.title}</h3>
@@ -199,7 +374,7 @@ export default function TrekkingGearsPage() {
               <li>Test your boots before the trek to avoid blisters.</li>
               <li>Pack layers – temperatures vary greatly between day and night.</li>
               <li>Carry a reusable water bottle and purification tablets to reduce plastic waste.</li>
-              <li>Remember that less is more – you don’t need to bring everything from this list; choose based on season and route.</li>
+              <li>Remember that less is more – you don't need to bring everything from this list; choose based on season and route.</li>
             </ul>
           </div>
         </div>
@@ -249,22 +424,6 @@ export default function TrekkingGearsPage() {
           </div>
         </div>
       </section> */}
-
-      {/* Structured Data – BreadcrumbList */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://globalnepaltreks.com' },
-              { '@type': 'ListItem', position: 2, name: 'Travel Guides', item: 'https://globalnepaltreks.com/travel-guides' },
-              { '@type': 'ListItem', position: 3, name: 'Trekking Gears and Equipments', item: 'https://globalnepaltreks.com/travel-guides/trekking-gears' },
-            ],
-          }),
-        }}
-      />
     </main>
   );
 }

@@ -17,23 +17,26 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import HeroSection from '@/app/components/sections/HeroSection';
 import Heading from '@/app/components/ui/Heading';
 import { travelGuidesAssets } from '@/app/assets/assets';
+import Script from 'next/script';
 
 // SEO metadata
 export const metadata = {
   title: 'Protected Areas and Ecosystems of Nepal | Conservation & Biodiversity Guide',
-  description: 'Explore Nepal\'s national parks, wildlife reserves, and conservation areas. Learn about the rich biodiversity, ecosystems, and conservation efforts in the Himalayas.',
-  keywords: 'protected areas nepal, national parks nepal, chitwan national park, sagarmatha national park, nepal biodiversity, ecosystem conservation',
+  description: 'Explore Nepal\'s national parks, wildlife reserves & conservation areas. Discover rich biodiversity, Himalayan ecosystems, and conservation efforts.',
+  // keywords: 'protected areas nepal, national parks nepal, chitwan national park, sagarmatha national park, nepal biodiversity, ecosystem conservation, nepal wildlife reserves, annapurna conservation area, nepal protected areas list, himalayan conservation',
   openGraph: {
     title: 'Protected Areas and Ecosystems of Nepal | Conservation & Biodiversity Guide',
-    description: 'Explore Nepal\'s national parks, wildlife reserves, and conservation areas. Learn about the rich biodiversity, ecosystems, and conservation efforts.',
+    description: 'Explore Nepal\'s national parks, wildlife reserves, and conservation areas. Learn about the rich biodiversity, ecosystems, and conservation efforts in the Himalayas.',
     url: 'https://globalnepaltreks.com/travel-guides/protected-areas',
     type: 'article',
-    images: [{ url: `${travelGuidesAssets.protected_areas_of_nepal_cover.src}`, width: 1200, height: 630 }],
+    locale: 'en_US',
+    siteName: 'Global Nepal Treks',
+    images: [{ url: travelGuidesAssets.protected_areas_of_nepal_cover.src, width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Protected Areas and Ecosystems of Nepal | Conservation & Biodiversity Guide',
-    description: 'Explore Nepal\'s national parks, wildlife reserves, and conservation areas.',
+    description: 'Explore Nepal\'s national parks, wildlife reserves, and conservation areas. Learn about rich biodiversity and conservation efforts.',
     images: [travelGuidesAssets.protected_areas_of_nepal_cover.src],
   },
   alternates: {
@@ -42,12 +45,186 @@ export const metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 
+// Generate Article Schema
+function generateArticleSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Protected Areas and Ecosystems of Nepal | Conservation & Biodiversity Guide",
+    "description": "Explore Nepal's national parks, wildlife reserves, and conservation areas. Learn about the rich biodiversity, ecosystems, and conservation efforts in the Himalayas.",
+    "url": "https://globalnepaltreks.com/travel-guides/protected-areas",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://globalnepaltreks.com/travel-guides/protected-areas"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Global Nepal Treks",
+      "url": "https://globalnepaltreks.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Global Nepal Treks",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://globalnepaltreks.com/logo.png"
+      }
+    },
+    "image": {
+      "@type": "ImageObject",
+      "url": travelGuidesAssets.protected_areas_of_nepal_cover.src,
+      "width": 1200,
+      "height": 630
+    },
+    "datePublished": "2025-04-15",
+    "dateModified": "2026-05-31",
+    "articleSection": "Travel Guides",
+    "keywords": "protected areas nepal, national parks nepal, biodiversity, conservation, himalayan ecosystem",
+    "inLanguage": "en-US",
+    "about": {
+      "@type": "Thing",
+      "name": "Protected Areas of Nepal",
+      "description": "National parks, wildlife reserves, and conservation areas in Nepal"
+    }
+  };
+}
+
+// Generate BreadcrumbList Schema
+function generateBreadcrumbSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://globalnepaltreks.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Travel Guides",
+        "item": "https://globalnepaltreks.com/travel-guides"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Protected Areas and Ecosystems of Nepal",
+        "item": "https://globalnepaltreks.com/travel-guides/protected-areas"
+      }
+    ]
+  };
+}
+
+// Generate Organization Schema
+function generateOrganizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "TravelAgency",
+    "name": "Global Nepal Treks",
+    "alternateName": "Global Nepal Treks Pvt. Ltd.",
+    "description": "Government-licensed trekking agency offering authentic Himalayan treks and tours across Nepal, Tibet, and Bhutan.",
+    "url": "https://globalnepaltreks.com",
+    "logo": "https://globalnepaltreks.com/logo.png",
+    "email": "info@globalnepaltreks.com",
+    "telephone": "+977-9744258519",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Bikramshila Mahavihar (Bhagawan Bahal), Tham Bahee Road",
+      "addressLocality": "Kathmandu",
+      "addressCountry": "Nepal",
+      "postalCode": "44600"
+    },
+    "sameAs": [
+      "https://www.facebook.com/globalnepaltreks",
+      "https://www.instagram.com/globalnepaltreks",
+      "https://www.linkedin.com/company/global-nepal-treks"
+    ],
+    "priceRange": "$$",
+    "areaServed": ["Nepal", "Tibet", "Bhutan"]
+  };
+}
+
+// Generate HowTo Schema for visiting protected areas
+function generateHowToSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Visit Protected Areas in Nepal",
+    "description": "A guide to visiting Nepal's national parks, wildlife reserves, and conservation areas responsibly.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Choose Your Destination",
+        "text": "Select from Nepal's national parks like Chitwan, Sagarmatha, or Annapurna Conservation Area based on your interests."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Get Necessary Permits",
+        "text": "Obtain required entry permits from the Department of National Parks and Wildlife Conservation or local entry points."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Plan Your Visit",
+        "text": "Book eco-friendly accommodations, hire licensed guides, and prepare appropriate gear for the terrain."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Follow Conservation Guidelines",
+        "text": "Stay on designated trails, don't feed wildlife, and support local conservation efforts."
+      }
+    ],
+    "totalTime": "P3D",
+    "estimatedCost": {
+      "@type": "MonetaryAmount",
+      "currency": "USD",
+      "value": "30"
+    }
+  };
+}
+
 export default function ProtectedAreasPage() {
+  // Generate all schemas
+  const articleSchema = generateArticleSchema();
+  const breadcrumbSchema = generateBreadcrumbSchema();
+  const organizationSchema = generateOrganizationSchema();
+  const howToSchema = generateHowToSchema();
+
   return (
     <main>
+      {/* JSON-LD Structured Data */}
+      <Script
+        id="article-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <Script
+        id="organization-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <Script
+        id="howto-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      />
+
       {/* Hero Section */}
       <HeroSection
         image={travelGuidesAssets.protected_areas_of_nepal_cover.src}
@@ -294,22 +471,6 @@ export default function ProtectedAreasPage() {
           </div>
         </div>
       </section> */}
-
-      {/* Structured Data – BreadcrumbList */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://globalnepaltreks.com' },
-              { '@type': 'ListItem', position: 2, name: 'Travel Guides', item: 'https://globalnepaltreks.com/travel-guides' },
-              { '@type': 'ListItem', position: 3, name: 'Protected Areas and Ecosystems of Nepal', item: 'https://globalnepaltreks.com/travel-guides/protected-areas' },
-            ],
-          }),
-        }}
-      />
     </main>
   );
 }

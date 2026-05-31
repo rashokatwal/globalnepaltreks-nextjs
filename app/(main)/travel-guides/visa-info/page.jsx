@@ -10,24 +10,28 @@ import {
   faPlane,
   faQuestionCircle,
   faPhone,
-  faEnvelope
+  faEnvelope,
+  faCheckCircle
 } from '@fortawesome/free-solid-svg-icons';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import HeroSection from '@/app/components/sections/HeroSection';
 import Heading from '@/app/components/ui/Heading';
 import { travelGuidesAssets } from '@/app/assets/assets';
+import Script from 'next/script';
 
 // SEO metadata
 export const metadata = {
   title: 'Nepal Visa Information | Entry Requirements, Fees & Application Guide',
-  description: 'Complete guide to Nepal tourist visa: fees (15/30/90 days), on‑arrival process, multiple‑entry options, extension rules, and special conditions for SAARC and Indian nationals.',
-  keywords: 'nepal visa, tourist visa nepal, visa on arrival nepal, nepal visa fees, trekking visa, visa for himalayas',
+  description: 'Complete Nepal tourist visa guide: fees for 15/30/90 days, on-arrival process, multiple-entry options, extension rules & SAARC conditions.',
+  // keywords: 'nepal visa, tourist visa nepal, visa on arrival nepal, nepal visa fees, trekking visa, visa for himalayas, nepal entry requirements, nepal visa extension, online visa nepal, nepal immigration, SAARC visa nepal',
   openGraph: {
     title: 'Nepal Visa Information | Entry Requirements, Fees & Application Guide',
-    description: 'Complete guide to Nepal tourist visa: fees (15/30/90 days), on‑arrival process, multiple‑entry options, extension rules.',
+    description: 'Complete guide to Nepal tourist visa: fees (15/30/90 days), on‑arrival process, multiple‑entry options, extension rules, and special conditions for SAARC and Indian nationals.',
     url: 'https://globalnepaltreks.com/travel-guides/visa',
     type: 'article',
-images: [{ url: `${travelGuidesAssets.visa_information_cover.src}`, width: 1200, height: 630 }],
+    locale: 'en_US',
+    siteName: 'Global Nepal Treks',
+    images: [{ url: travelGuidesAssets.visa_information_cover.src, width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -41,12 +45,187 @@ images: [{ url: `${travelGuidesAssets.visa_information_cover.src}`, width: 1200,
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 
+// Generate Article Schema
+function generateArticleSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Nepal Visa Information | Entry Requirements, Fees & Application Guide",
+    "description": "Complete guide to Nepal tourist visa: fees (15/30/90 days), on‑arrival process, multiple‑entry options, extension rules, and special conditions for SAARC and Indian nationals.",
+    "url": "https://globalnepaltreks.com/travel-guides/visa",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://globalnepaltreks.com/travel-guides/visa"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Global Nepal Treks",
+      "url": "https://globalnepaltreks.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Global Nepal Treks",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://globalnepaltreks.com/logo.png"
+      }
+    },
+    "image": {
+      "@type": "ImageObject",
+      "url": travelGuidesAssets.visa_information_cover.src,
+      "width": 1200,
+      "height": 630
+    },
+    "datePublished": "2025-04-16",
+    "dateModified": "2026-05-31",
+    "articleSection": "Travel Guides",
+    "keywords": "nepal visa, tourist visa, visa on arrival, nepal immigration",
+    "inLanguage": "en-US",
+    "about": {
+      "@type": "Thing",
+      "name": "Nepal Visa",
+      "description": "Tourist visa requirements and application process for Nepal"
+    }
+  };
+}
+
+// Generate BreadcrumbList Schema
+function generateBreadcrumbSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://globalnepaltreks.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Travel Guides",
+        "item": "https://globalnepaltreks.com/travel-guides"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Visa Information",
+        "item": "https://globalnepaltreks.com/travel-guides/visa"
+      }
+    ]
+  };
+}
+
+// Generate Organization Schema
+function generateOrganizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "TravelAgency",
+    "name": "Global Nepal Treks",
+    "alternateName": "Global Nepal Treks Pvt. Ltd.",
+    "description": "Government-licensed trekking agency offering authentic Himalayan treks and tours across Nepal, Tibet, and Bhutan.",
+    "url": "https://globalnepaltreks.com",
+    "logo": "https://globalnepaltreks.com/logo.png",
+    "email": "info@globalnepaltreks.com",
+    "telephone": "+977-9744258519",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Bikramshila Mahavihar (Bhagawan Bahal), Tham Bahee Road",
+      "addressLocality": "Kathmandu",
+      "addressCountry": "Nepal",
+      "postalCode": "44600"
+    },
+    "sameAs": [
+      "https://www.facebook.com/globalnepaltreks",
+      "https://www.instagram.com/globalnepaltreks",
+      "https://www.linkedin.com/company/global-nepal-treks"
+    ],
+    "priceRange": "$$",
+    "areaServed": ["Nepal", "Tibet", "Bhutan"]
+  };
+}
+
+// Generate HowTo Schema for visa application steps
+function generateHowToSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Get a Nepal Tourist Visa",
+    "description": "Step-by-step guide to obtaining a tourist visa for Nepal on arrival or online.",
+    "totalTime": "PT30M",
+    "estimatedCost": {
+      "@type": "MonetaryAmount",
+      "currency": "USD",
+      "value": "30"
+    },
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Fill the Visa Application",
+        "text": "Complete the visa application form using the kiosks at the airport or fill it online beforehand.",
+        "url": "https://nepaliport.immigration.gov.np"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Pay the Visa Fee",
+        "text": "Pay the applicable visa fee at the bank counter. Accepts USD, EUR, GBP, and major credit cards."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Proceed to Immigration",
+        "text": "Present your passport, payment receipt, and application form to the immigration officer."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Receive Your Visa",
+        "text": "Get your passport stamped and enter Nepal."
+      }
+    ]
+  };
+}
+
 export default function VisaInfoPage() {
+  // Generate all schemas
+  const articleSchema = generateArticleSchema();
+  const breadcrumbSchema = generateBreadcrumbSchema();
+  const organizationSchema = generateOrganizationSchema();
+  const howToSchema = generateHowToSchema();
+
   return (
     <main>
+      {/* JSON-LD Structured Data */}
+      <Script
+        id="article-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <Script
+        id="organization-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <Script
+        id="howto-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      />
+
       {/* Hero Section */}
       <HeroSection
         image={travelGuidesAssets.visa_information_cover.src}
@@ -62,7 +241,7 @@ export default function VisaInfoPage() {
             Nepal offers one of the most straightforward tourist visa systems in the world.  
             Most nationalities can obtain a visa on arrival at Tribhuvan International Airport in Kathmandu or at land border crossings.  
             You can also apply online in advance.  
-            Below you’ll find all the details you need to plan your entry.
+            Below you'll find all the details you need to plan your entry.
           </p>
         </div>
       </section>
@@ -259,22 +438,6 @@ export default function VisaInfoPage() {
           </div>
         </div>
       </section> */}
-
-      {/* Structured Data – BreadcrumbList */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://globalnepaltreks.com' },
-              { '@type': 'ListItem', position: 2, name: 'Travel Guides', item: 'https://globalnepaltreks.com/travel-guides' },
-              { '@type': 'ListItem', position: 3, name: 'Visa Information', item: 'https://globalnepaltreks.com/travel-guides/visa' },
-            ],
-          }),
-        }}
-      />
     </main>
   );
 }

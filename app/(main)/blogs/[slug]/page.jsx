@@ -16,6 +16,7 @@ import { blogsAssets } from '@/app/assets/assets';
 import BlogCard from '@/app/components/cards/BlogCard';
 import Heading from '@/app/components/ui/Heading';
 import ShareButtons from '@/app/components/ui/ShareButtons';
+import Script from 'next/script';
 
 async function getBlogPost(slug) {
   try {
@@ -53,7 +54,115 @@ function getReadingTime(content, providedTime) {
   return Math.ceil(wordCount / wordsPerMinute);
 }
 
-// ✅ FIX: generateMetadata must also use a reliable URL — same fix applied here
+// Generate BlogPosting Schema
+function generateBlogPostingSchema(post, shareUrl, formattedDate, readingTime) {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://globalnepaltreks.com';
+  const imageUrl = post.featured_image?.startsWith('http')
+    ? post.featured_image
+    : `${baseUrl}${post.featured_image}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "description": post.meta_description || post.excerpt || post.short_description,
+    "url": shareUrl,
+    "datePublished": post.published_at || post.created_at,
+    "dateModified": post.updated_at || post.published_at || post.created_at,
+    "author": {
+      "@type": "Person",
+      "name": post.author || "Global Nepal Treks",
+      "url": `${baseUrl}/about/our-team`
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Global Nepal Treks",
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${baseUrl}/logo.png`
+      }
+    },
+    "image": {
+      "@type": "ImageObject",
+      "url": imageUrl,
+      "width": 1200,
+      "height": 630
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": shareUrl
+    },
+    "articleSection": post.category || post.categories?.[0] || "Trekking",
+    "keywords": post.keywords || "",
+    "wordCount": post.content?.split(/\s+/).length || 0,
+    "timeRequired": `PT${readingTime}M`,
+    "inLanguage": "en-US",
+    "isAccessibleForFree": true,
+    "copyrightHolder": {
+      "@type": "Organization",
+      "name": "Global Nepal Treks"
+    },
+    "copyrightYear": new Date(post.published_at || post.created_at).getFullYear()
+  };
+}
+
+// Generate BreadcrumbList Schema
+function generateBreadcrumbSchema(post, shareUrl) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://globalnepaltreks.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://globalnepaltreks.com/blogs"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": post.title,
+        "item": shareUrl
+      }
+    ]
+  };
+}
+
+// Generate Organization Schema
+function generateOrganizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "TravelAgency",
+    "name": "Global Nepal Treks",
+    "alternateName": "Global Nepal Treks Pvt. Ltd.",
+    "description": "Government-licensed trekking agency offering authentic Himalayan treks and tours across Nepal, Tibet, and Bhutan.",
+    "url": "https://globalnepaltreks.com",
+    "logo": "https://globalnepaltreks.com/logo.png",
+    "email": "info@globalnepaltreks.com",
+    "telephone": "+977-9744258519",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Bikramshila Mahavihar (Bhagawan Bahal), Tham Bahee Road",
+      "addressLocality": "Kathmandu",
+      "addressCountry": "Nepal",
+      "postalCode": "44600"
+    },
+    "sameAs": [
+      "https://www.facebook.com/globalnepaltreks",
+      "https://www.instagram.com/globalnepaltreks",
+      "https://www.linkedin.com/company/global-nepal-treks"
+    ],
+    "priceRange": "$$",
+    "areaServed": ["Nepal", "Tibet", "Bhutan"]
+  };
+}
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const post = await getBlogPost(slug);
@@ -63,52 +172,57 @@ export async function generateMetadata({ params }) {
   }
 
   const canonicalUrl = `https://globalnepaltreks.com/blogs/${post.slug}`;
+  const imageUrl = post.featured_image?.startsWith('http')
+    ? post.featured_image
+    : `https://globalnepaltreks.com${post.featured_image}`;
 
   return {
     title: post.meta_title || `${post.title} | Global Nepal Treks Blog`,
-    description: post.meta_description || post.excerpt,
+    description: post.meta_description || post.excerpt || post.short_description,
     keywords: post.keywords || '',
-
-    // ✅ These were missing — needed for LinkedIn/Facebook sharing
     alternates: {
       canonical: canonicalUrl,
     },
-
     openGraph: {
       title: post.meta_title || post.title,
-      description: post.meta_description || post.excerpt,
-      url: canonicalUrl,                          // ✅ LinkedIn reads this
+      description: post.meta_description || post.excerpt || post.short_description,
+      url: canonicalUrl,
       siteName: 'Global Nepal Treks',
       images: [
         {
-          url: post.featured_image?.startsWith('http')
-            ? post.featured_image
-            : `https://globalnepaltreks.com${post.featured_image}`,
+          url: imageUrl,
           width: 1200,
           height: 630,
           alt: post.title,
         },
       ],
       type: 'article',
-      publishedTime: post.published_at,
-      authors: [post.author],
+      publishedTime: post.published_at || post.created_at,
+      modifiedTime: post.updated_at || post.published_at || post.created_at,
+      authors: [post.author || 'Global Nepal Treks'],
+      tags: post.tags || post.keywords?.split(',') || [],
     },
-
     twitter: {
       card: 'summary_large_image',
       title: post.meta_title || post.title,
-      description: post.meta_description || post.excerpt,
-      images: [
-        post.featured_image?.startsWith('http')
-          ? post.featured_image
-          : `https://globalnepaltreks.com${post.featured_image}`,
-      ],
+      description: post.meta_description || post.excerpt || post.short_description,
+      images: [imageUrl],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
   };
 }
 
 export default async function BlogPostPage({ params }) {
-  // ✅ FIX: await params (required in Next.js 15+)
   const { slug } = await params;
   const post = await getBlogPost(slug);
 
@@ -118,12 +232,32 @@ export default async function BlogPostPage({ params }) {
 
   const readingTime = getReadingTime(post.content, post.reading_time);
   const formattedDate = formatDate(post.published_at);
-
-  // ✅ FIX: Always use absolute URL for sharing
   const shareUrl = `https://globalnepaltreks.com/blogs/${post.slug}`;
+
+  // Generate all schemas
+  const blogPostingSchema = generateBlogPostingSchema(post, shareUrl, formattedDate, readingTime);
+  const breadcrumbSchema = generateBreadcrumbSchema(post, shareUrl);
+  const organizationSchema = generateOrganizationSchema();
 
   return (
     <main className="bg-white">
+      {/* JSON-LD Structured Data */}
+      <Script
+        id="blog-posting-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
+      />
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <Script
+        id="organization-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+
       {/* Hero Section */}
       <section className="relative min-h-[80vh] bg-gray-900">
         <div
@@ -230,7 +364,6 @@ export default async function BlogPostPage({ params }) {
           {/* Share Buttons */}
           <div className="mt-8 pt-8 border-t border-gray-200">
             <h3 className="font-semibold mb-4">Share this article:</h3>
-            {/* ✅ FIX: Pass both shareUrl and title so ShareButtons can use them correctly */}
             <ShareButtons shareUrl={shareUrl} title={post.title} />
           </div>
         </div>

@@ -16,23 +16,26 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import HeroSection from '@/app/components/sections/HeroSection';
 import Heading from '@/app/components/ui/Heading';
 import { travelGuidesAssets } from '@/app/assets/assets';
+import Script from 'next/script';
 
 // Metadata for SEO
 export const metadata = {
   title: 'Travel Guides | Expert Tips & Essential Information for Nepal Trekking',
   description: 'Comprehensive travel guides for trekking in Nepal. Learn about trekking gear, protected areas, visa information, and essential tips from our local experts.',
-  keywords: 'nepal travel guides, trekking gear, himalayan trekking tips, nepal visa, protected areas nepal, trekking equipment',
+  // keywords: 'nepal travel guides, trekking gear, himalayan trekking tips, nepal visa, protected areas nepal, trekking equipment, nepal trekking preparation, himalayan travel tips, nepal travel advice, trekking safety nepal',
   openGraph: {
     title: 'Travel Guides | Expert Tips & Essential Information for Nepal Trekking',
-    description: 'Comprehensive travel guides for trekking in Nepal. Learn about trekking gear, protected areas, visa information, and essential tips.',
+    description: 'Comprehensive travel guides for trekking in Nepal. Learn about trekking gear, protected areas, visa information, and essential tips from our local experts.',
     url: 'https://globalnepaltreks.com/travel-guides',
     type: 'website',
-    images: [{ url: `${travelGuidesAssets.travel_guides_cover.src}`, width: 1200, height: 630 }],
+    locale: 'en_US',
+    siteName: 'Global Nepal Treks',
+    images: [{ url: travelGuidesAssets.travel_guides_cover.src, width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Travel Guides | Expert Tips & Essential Information for Nepal Trekking',
-    description: 'Comprehensive travel guides for trekking in Nepal.',
+    description: 'Comprehensive travel guides for trekking in Nepal. Learn about trekking gear, protected areas, visa information, and essential tips.',
     images: [travelGuidesAssets.travel_guides_cover.src],
   },
   alternates: {
@@ -41,8 +44,115 @@ export const metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
+
+// Generate Collection Page Schema
+function generateCollectionPageSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Travel Guides | Expert Tips & Essential Information for Nepal Trekking",
+    "description": "Comprehensive travel guides for trekking in Nepal. Learn about trekking gear, protected areas, visa information, and essential tips from our local experts.",
+    "url": "https://globalnepaltreks.com/travel-guides",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Global Nepal Treks",
+      "url": "https://globalnepaltreks.com"
+    },
+    "about": {
+      "@type": "Thing",
+      "name": "Nepal Travel Guides",
+      "description": "Expert travel advice for trekking in Nepal"
+    },
+    "keywords": "nepal travel guides, trekking gear, himalayan trekking tips, nepal visa, protected areas nepal",
+    "inLanguage": "en-US",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Global Nepal Treks",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://globalnepaltreks.com/logo.png"
+      }
+    }
+  };
+}
+
+// Generate BreadcrumbList Schema
+function generateBreadcrumbSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://globalnepaltreks.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Travel Guides",
+        "item": "https://globalnepaltreks.com/travel-guides"
+      }
+    ]
+  };
+}
+
+// Generate Organization Schema
+function generateOrganizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "TravelAgency",
+    "name": "Global Nepal Treks",
+    "alternateName": "Global Nepal Treks Pvt. Ltd.",
+    "description": "Government-licensed trekking agency offering authentic Himalayan treks and tours across Nepal, Tibet, and Bhutan.",
+    "url": "https://globalnepaltreks.com",
+    "logo": "https://globalnepaltreks.com/logo.png",
+    "email": "info@globalnepaltreks.com",
+    "telephone": "+977-9744258519",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Bikramshila Mahavihar (Bhagawan Bahal), Tham Bahee Road",
+      "addressLocality": "Kathmandu",
+      "addressCountry": "Nepal",
+      "postalCode": "44600"
+    },
+    "sameAs": [
+      "https://www.facebook.com/globalnepaltreks",
+      "https://www.instagram.com/globalnepaltreks",
+      "https://www.linkedin.com/company/global-nepal-treks"
+    ],
+    "priceRange": "$$",
+    "areaServed": ["Nepal", "Tibet", "Bhutan"]
+  };
+}
+
+// Generate ItemList Schema for guides
+function generateItemListSchema(guides) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": guides.map((guide, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": guide.title,
+      "url": `https://globalnepaltreks.com/travel-guides/${guide.slug}`,
+      "description": guide.excerpt,
+      "image": guide.image.src
+    })),
+    "numberOfItems": guides.length,
+    "itemListOrder": "https://schema.org/ItemListOrderDescending"
+  };
+}
 
 // Sample data – replace with actual data from your CMS or database
 const travelGuides = [
@@ -84,8 +194,36 @@ function formatDate(dateString) {
 }
 
 export default function TravelGuidesPage() {
+  // Generate all schemas
+  const collectionPageSchema = generateCollectionPageSchema();
+  const breadcrumbSchema = generateBreadcrumbSchema();
+  const organizationSchema = generateOrganizationSchema();
+  const itemListSchema = generateItemListSchema(travelGuides);
+
   return (
     <main>
+      {/* JSON-LD Structured Data */}
+      <Script
+        id="collection-page-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }}
+      />
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <Script
+        id="organization-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <Script
+        id="item-list-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+
       {/* Hero Section */}
       <HeroSection
         image={travelGuidesAssets.travel_guides_cover.src}
@@ -227,21 +365,6 @@ export default function TravelGuidesPage() {
           </div>
         </div>
       </section> */}
-
-      {/* Structured Data – BreadcrumbList (optional) */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://globalnepaltreks.com' },
-              { '@type': 'ListItem', position: 2, name: 'Travel Guides', item: 'https://globalnepaltreks.com/travel-guides' },
-            ],
-          }),
-        }}
-      />
     </main>
   );
 }
