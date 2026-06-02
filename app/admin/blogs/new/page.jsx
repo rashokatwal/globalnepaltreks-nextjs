@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,7 +14,7 @@ import {
 
 const TipTapEditor = dynamic(() => import('../../../components/admin/TipTapEditor'), { ssr: false });
 
-// ✅ FIXED: Image Upload Component - matches the working package page
+// ✅ CORRECTED Image Upload Component - matches package page exactly
 const ImageUpload = ({ currentImage, onImageUpload, onRemove, label, uploadType = 'blogs' }) => {
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState(currentImage);
@@ -40,23 +40,27 @@ const ImageUpload = ({ currentImage, onImageUpload, onRemove, label, uploadType 
 
     setUploading(true);
     const formData = new FormData();
-    formData.append('file', file); // ✅ Fixed: use 'file' instead of 'image'
-    formData.append('type', uploadType);
-    formData.append('category', 'image');
+    formData.append('file', file);        // ✅ Use 'file' not 'image'
+    formData.append('type', uploadType);  // ✅ 'blogs'
+    formData.append('category', 'image'); // ✅ 'image'
 
     try {
       const res = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
+      
       const data = await res.json();
+      
       if (res.ok && data.success) {
         setPreview(data.url);
         onImageUpload(data.url);
       } else {
+        console.error('Upload error:', data);
         alert(data.error || 'Upload failed');
       }
     } catch (err) {
+      console.error('Fetch error:', err);
       alert('Upload failed. Please try again.');
     } finally {
       setUploading(false);
@@ -171,17 +175,16 @@ const charCount = (str, max) => {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function EditBlogPage() {
+export default function NewBlogPage() {
   const router = useRouter();
-  const { id } = useParams();
 
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
   const [contentMode, setContentMode] = useState('richtext');
   const [categories, setCategories] = useState([]);
   const [countries, setCountries] = useState([]);
   const [activities, setActivities] = useState([]);
+  const [loadingOptions, setLoadingOptions] = useState(true);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -202,44 +205,6 @@ export default function EditBlogPage() {
     activity_id: null,
   });
 
-  // ── Fetch blog ──────────────────────────────────────────────────────────────
-  useEffect(() => {
-    if (!id) return;
-    async function fetchBlog() {
-      try {
-        const res = await fetch(`/api/blogs/${id}`);
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed to load blog');
-        const blog = data.data || data;
-        setFormData({
-          title: blog.title || '',
-          slug: blog.slug || '',
-          excerpt: blog.excerpt || '',
-          content: blog.content || '',
-          featured_image: blog.featured_image || '',
-          author: blog.author || 'Global Nepal Treks',
-          reading_time: blog.reading_time || 5,
-          meta_title: blog.meta_title || '',
-          meta_description: blog.meta_description || '',
-          keywords: blog.keywords || '',
-          is_published: blog.is_published === 1 || blog.is_published === true,
-          is_featured: blog.is_featured === 1 || blog.is_featured === true,
-          published_at: blog.published_at ? blog.published_at.split('T')[0] : '',
-          category_ids: blog.categories?.map(c => c.id) || [],
-          country_id: blog.country_id || null,
-          activity_id: blog.activity_id || null,
-        });
-      } catch (err) {
-        console.error(err);
-        alert('Failed to load blog post');
-        router.push('/admin/blogs');
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchBlog();
-  }, [id, router]);
-
   // ── Fetch supporting data ───────────────────────────────────────────────────
   useEffect(() => {
     async function fetchMeta() {
@@ -256,6 +221,8 @@ export default function EditBlogPage() {
         ]);
       } catch (err) {
         console.error('Failed to load metadata:', err);
+      } finally {
+        setLoadingOptions(false);
       }
     }
     fetchMeta();
@@ -366,14 +333,13 @@ export default function EditBlogPage() {
         activity_id: formData.activity_id ? parseInt(formData.activity_id) : null,
       };
 
-      console.log('Saving blog with featured_image:', payload.featured_image); // Debug log
-
-      const res = await fetch(`/api/blogs/${id}`, {
-        method: 'PUT',
+      const res = await fetch('/api/blogs', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
       const data = await res.json();
+      console.log('Blog creation response:', data);
       if (res.ok && data.success) {
         router.push('/admin/blogs');
       } else {
@@ -381,7 +347,7 @@ export default function EditBlogPage() {
           setErrors(data.errors);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-          alert(data.error || data.message || 'Failed to update blog');
+          alert(data.error || data.message || 'Failed to create blog');
         }
       }
     } catch (err) {
@@ -390,16 +356,6 @@ export default function EditBlogPage() {
       setSaving(false);
     }
   };
-
-  // ── Loading ─────────────────────────────────────────────────────────────────
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
-        <span className="ml-3 text-gray-600">Loading blog post…</span>
-      </div>
-    );
-  }
 
   // ── Render ──────────────────────────────────────────────────────────────────
   return (
@@ -412,8 +368,8 @@ export default function EditBlogPage() {
           <FontAwesomeIcon icon={faArrowLeft} className="w-4 h-4" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Edit Blog Post</h1>
-          <p className="text-sm text-gray-400 mt-0.5">Update your blog content and settings</p>
+          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Write New Blog Post</h1>
+          <p className="text-sm text-gray-400 mt-0.5">Create engaging content for your audience</p>
         </div>
       </div>
 
@@ -507,7 +463,7 @@ export default function EditBlogPage() {
               </Field>
             </div>
 
-            {/* Featured Image Upload - FIXED */}
+            {/* Featured Image Upload */}
             <ImageUpload
               currentImage={formData.featured_image}
               onImageUpload={handleFeaturedImageUpload}
@@ -728,9 +684,9 @@ export default function EditBlogPage() {
             className="bg-gray-900 hover:bg-gray-700 disabled:opacity-60 text-white px-7 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2.5 transition shadow-sm"
           >
             {saving ? (
-              <><FontAwesomeIcon icon={faSpinner} className="animate-spin w-4 h-4" /> Saving…</>
+              <><FontAwesomeIcon icon={faSpinner} className="animate-spin w-4 h-4" /> Creating…</>
             ) : (
-              <><FontAwesomeIcon icon={faSave} className="w-4 h-4" /> Update Blog</>
+              <><FontAwesomeIcon icon={faSave} className="w-4 h-4" /> Publish Blog</>
             )}
           </button>
         </div>

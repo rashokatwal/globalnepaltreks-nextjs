@@ -97,7 +97,8 @@ export default function BlogsPage() {
     if (!confirm(`Are you sure you want to delete "${title}"? This action cannot be undone.`)) return;
     setDeletingId(id);
     try {
-      const res = await fetch(`/api/blogs/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/blogs?id=${id}`, { method: 'DELETE' });
+      console.log('Delete response:', res);
       if (!res.ok) throw new Error('Failed to delete');
       fetchBlogs();
     } catch (err) {
