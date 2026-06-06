@@ -457,6 +457,7 @@ const Home = () => {
                             alt="About Global Nepal Treks"
                             width={700}
                             height={500}
+                            priority
                         />
                     </div>
                 </div>
@@ -607,6 +608,7 @@ const Home = () => {
                                         className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                                         width={300}
                                         height={200}
+                                        priority
                                     />
                                     <div className="absolute inset-0 transition-opacity duration-300 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-70"></div>
                                     <div className="absolute bottom-4 left-4">

@@ -8,7 +8,7 @@ async function getInitialData() {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     
     const [blogsRes, categoriesRes] = await Promise.all([
-      fetch(`${baseUrl}/api/blogs?limit=50`, {
+      fetch(`${baseUrl}/api/blogs?limit=100`, {
         next: { revalidate: 3600 }
       }),
       fetch(`${baseUrl}/api/blogs/categories`, {
