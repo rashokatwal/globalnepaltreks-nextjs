@@ -42,8 +42,28 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/blog',
+        destination: '/blogs',
+        permanent: true,
+      },
+      {
         source: '/public/:path*',
         destination: '/:path*',
+        permanent: true,
+      },
+      {
+        source: '/about-us',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/contact-us',
+        destination: '/contact',
+        permanent: true,
+      },
+      {
+        source: '/destination/:slug*',
+        destination: '/:slug*',
         permanent: true,
       },
     ];
