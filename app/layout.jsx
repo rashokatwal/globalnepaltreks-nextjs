@@ -50,7 +50,7 @@ export const metadata = {
   },
 
   alternates: {
-    // canonical: "https://globalnepaltreks.com",
+    canonical: "https://globalnepaltreks.com",
     languages: {
       'en-US': 'https://globalnepaltreks.com',
     },
