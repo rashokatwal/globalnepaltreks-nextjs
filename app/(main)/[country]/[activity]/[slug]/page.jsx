@@ -8,9 +8,6 @@ import {
   faMountain,
   faStar,
   faMapMarkedAlt,
-  faCheckCircle,
-  faQuestionCircle,
-  faFilePdf,
   faBinoculars,
   faHighlighter,
   faRoute,
@@ -19,8 +16,6 @@ import {
   faFileAlt,
   faHouseChimney,
   faUtensils,
-  faTimesCircle,
-  faArrowLeft,
   faCheck,
   faXmark,
   faShareNodes,
@@ -35,13 +30,11 @@ import {
   faShieldAlt,
   faHandsHelping,
   faLanguage,
-  faFirstAid
+  faFirstAid,
+  faQuestionCircle
 } from '@fortawesome/free-solid-svg-icons';
-import PackageDetails from '@/app/components/sections/PackageDetails';
 import BookingSidebar from '@/app/components/sections/BookingSidebar';
 import PageNavigation from '@/app/components/sections/PageNavigation';
-import Image from 'next/image';
-// import ShareButtons from '@/app/components/ui/ShareButtons';
 import Script from 'next/script';
 import ShareButtonsWrapper from '@/app/components/wrappers/ShareButtonsWrapper';
 
@@ -60,23 +53,15 @@ export async function generateMetadata({ params }) {
     word.charAt(0).toUpperCase() + word.slice(1)
   ).join(' ');
 
-  const canonicalUrl = `https://globalnepaltreks.com/${country}/${activity}/${pkg.slug}`;
-  
-  // Generate keywords from package data
-  const keywords = [
-    pkg.title,
-    `${activityName} in ${countryName}`,
-    pkg.country_name,
-    pkg.activity_name,
-    pkg.difficulty,
-    `${pkg.duration_days} day tour`,
-    ...(pkg.keywords ? pkg.keywords.split(',') : [])
-  ].filter(Boolean).join(', ');
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://globalnepaltreks.com';
+  const canonicalUrl = `${baseUrl}/${country}/${activity}/${pkg.slug}`;
   
   return {
     title: pkg.meta_title || `${pkg.title} | ${activityName} in ${countryName} | Global Nepal Treks`,
     description: pkg.meta_description || pkg.short_description || `Book your ${activityName.toLowerCase()} package in ${countryName} with expert guides. Best price guaranteed.`,
-    // keywords: keywords,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: pkg.title,
       description: pkg.short_description,
@@ -92,9 +77,6 @@ export async function generateMetadata({ params }) {
       description: pkg.short_description,
       images: [pkg.featured_image],
     },
-    alternates: {
-      canonical: canonicalUrl,
-    },
     robots: {
       index: true,
       follow: true,
@@ -106,9 +88,6 @@ export async function generateMetadata({ params }) {
         'max-snippet': -1,
       },
     },
-    verification: {
-      google: 'your-google-verification-code',
-    },
   };
 }
 
@@ -116,7 +95,7 @@ async function getPackage(slug) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     const res = await fetch(`${baseUrl}/api/packages/${slug}?details=true`, {
-      next: { revalidate: 3600 } // Cache for 1 hour
+      next: { revalidate: 3600 }
     });
     
     if (!res.ok) return null;
@@ -128,14 +107,12 @@ async function getPackage(slug) {
   }
 }
 
-// Helper function to calculate average rating
 function getAverageRating(reviews) {
   if (!reviews || reviews.length === 0) return 0;
   const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
   return (sum / reviews.length).toFixed(1);
 }
 
-// Function to get available sections based on package data
 const getAvailableSections = (pkg) => {
   const sections = [
     { 
@@ -186,23 +163,15 @@ const getAvailableSections = (pkg) => {
       icon: faQuestionCircle,
       condition: pkg?.faqs && pkg.faqs.length > 0
     },
-    { 
-      id: 'documents', 
-      label: 'Documents', 
-      icon: faFileAlt,
-      condition: pkg?.documents && pkg.documents.length > 0
-    },
   ];
 
   return sections.filter(section => section.condition);
 };
 
-// Generate JSON-LD structured data
-function generateJsonLd(pkg, countryName, activityName) {
+function generateJsonLd(pkg, countryName, activityName, canonicalUrl) {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://globalnepaltreks.com';
-  const currentUrl = `${baseUrl}/${countryName.toLowerCase()}/${activityName.toLowerCase().replace(/ /g, '-')}/${pkg.slug}`;
+  const currentUrl = canonicalUrl || `${baseUrl}/${countryName.toLowerCase()}/${activityName.toLowerCase().replace(/ /g, '-')}/${pkg.slug}`;
   
-  // Calculate aggregate rating if reviews exist
   const aggregateRating = pkg.reviews && pkg.reviews.length > 0 ? {
     "@type": "AggregateRating",
     "ratingValue": getAverageRating(pkg.reviews),
@@ -211,7 +180,6 @@ function generateJsonLd(pkg, countryName, activityName) {
     "worstRating": "1"
   } : undefined;
   
-  // Build offers (pricing)
   const offers = {
     "@type": "Offer",
     "price": parseFloat(pkg.price),
@@ -221,24 +189,14 @@ function generateJsonLd(pkg, countryName, activityName) {
     "url": currentUrl
   };
   
-  // Add price valid until (1 year from now)
   const validUntil = new Date();
   validUntil.setFullYear(validUntil.getFullYear() + 1);
   offers.priceValidUntil = validUntil.toISOString().split('T')[0];
   
-  // Build image list
   const images = [pkg.featured_image];
   if (pkg.gallery && pkg.gallery.length > 0) {
     images.push(...pkg.gallery.slice(0, 5).map(img => img.image_url || img));
   }
-  
-  // Build itinerary as item list
-  const itemListElement = pkg.itinerary?.map((day, index) => ({
-    "@type": "ListItem",
-    "position": index + 1,
-    "name": `Day ${day.day_number}: ${day.title}`,
-    "description": day.description
-  })) || [];
   
   const jsonLd = {
     "@context": "https://schema.org",
@@ -247,27 +205,12 @@ function generateJsonLd(pkg, countryName, activityName) {
     "description": pkg.short_description || pkg.meta_description,
     "image": images,
     "sku": pkg.id.toString(),
-    "mpn": pkg.id.toString(),
+    "url": currentUrl,
     "brand": {
       "@type": "Brand",
       "name": "Global Nepal Treks"
     },
     "offers": offers,
-    "review": pkg.reviews?.slice(0, 5).map(review => ({
-      "@type": "Review",
-      "author": {
-        "@type": "Person",
-        "name": review.author_name || "Verified Traveler"
-      },
-      "datePublished": review.created_at?.split('T')[0],
-      "reviewBody": review.comment,
-      "reviewRating": {
-        "@type": "Rating",
-        "ratingValue": review.rating,
-        "bestRating": "5",
-        "worstRating": "1"
-      }
-    })),
     ...(aggregateRating && { aggregateRating }),
     "additionalProperty": [
       {
@@ -308,43 +251,12 @@ function generateJsonLd(pkg, countryName, activityName) {
     ]
   };
   
-  // Add tour/package specific schema if it's a tour
-  if (activityName.toLowerCase().includes('tour') || activityName.toLowerCase().includes('trek')) {
-    jsonLd["@type"] = "TouristTrip";
-    jsonLd.touristType = activityName;
-    if (pkg.itinerary && pkg.itinerary.length > 0) {
-      jsonLd.itinerary = {
-        "@type": "ItemList",
-        "itemListElement": itemListElement,
-        "numberOfItems": pkg.itinerary.length
-      };
-    }
-  }
-  
   return jsonLd;
 }
 
-// Generate FAQ Schema from package FAQs
-function generateFaqSchema(faqs) {
-  if (!faqs || faqs.length === 0) return null;
-  
-  return {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqs.map(faq => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer
-      }
-    }))
-  };
-}
-
-// Generate BreadcrumbList Schema
-function generateBreadcrumbSchema(pkg, countryName, activityName) {
+function generateBreadcrumbSchema(pkg, countryName, activityName, canonicalUrl) {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://globalnepaltreks.com';
+  const currentUrl = canonicalUrl || `${baseUrl}/${countryName.toLowerCase()}/${activityName.toLowerCase().replace(/ /g, '-')}/${pkg.slug}`;
   
   return {
     "@context": "https://schema.org",
@@ -366,7 +278,7 @@ function generateBreadcrumbSchema(pkg, countryName, activityName) {
         "@type": "ListItem",
         "position": 3,
         "name": pkg.title,
-        "item": `${baseUrl}/${countryName.toLowerCase()}/${activityName.toLowerCase().replace(/ /g, '-')}/${pkg.slug}`
+        "item": currentUrl
       }
     ]
   };
@@ -385,528 +297,484 @@ export default async function PackagePage({ params }) {
     word.charAt(0).toUpperCase() + word.slice(1)
   ).join(' ');
   
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://globalnepaltreks.com';
+  const canonicalUrl = `${baseUrl}/${country}/${activity}/${pkg.slug}`;
+  
   const averageRating = getAverageRating(pkg.reviews);
   const reviewCount = pkg.reviews?.length || 0;
-
-  // Get only the sections that have data
   const availableSections = getAvailableSections(pkg);
-  
-  // Get essential info if it exists
   const essentialInfo = pkg.essential_info || {};
   
-  // Generate structured data
-  const mainJsonLd = generateJsonLd(pkg, countryName, activityName);
-  const faqJsonLd = generateFaqSchema(pkg.faqs);
-  const breadcrumbJsonLd = generateBreadcrumbSchema(pkg, countryName, activityName);
+  const mainJsonLd = generateJsonLd(pkg, countryName, activityName, canonicalUrl);
+  const breadcrumbJsonLd = generateBreadcrumbSchema(pkg, countryName, activityName, canonicalUrl);
 
   return (
-    <main className="bg-white">
+    <>
+      {/* Canonical URL - Critical for SEO */}
+      <link rel="canonical" href={canonicalUrl} />
+      
       {/* JSON-LD Structured Data */}
       <Script
         id="main-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(mainJsonLd) }}
       />
-      {faqJsonLd && (
-        <Script
-          id="faq-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-        />
-      )}
       <Script
         id="breadcrumb-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
-      {/* Hero Section with Package Image */}
-      <section className="relative min-h-[80vh] bg-gray-900">
-        <div className="absolute inset-0 overflow-hidden bg-fixed bg-cover bg-top" style={{backgroundImage: `url(${pkg.featured_image})`}}>
-          <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-transparent"></div>
-        </div>
+      <main className="bg-white">
+        {/* Hero Section with Package Image */}
+        <section className="relative min-h-[80vh] bg-gray-900">
+          <div className="absolute inset-0 overflow-hidden bg-fixed bg-cover bg-top" style={{backgroundImage: `url(${pkg.featured_image})`}}>
+            <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-transparent"></div>
+          </div>
 
-        {/* Package Title and Quick Info */}
-        <div className="absolute bottom-0 left-0 right-0 max-w-7xl mx-auto px-4 pb-12 text-white">
-          <div className="flex flex-wrap gap-3 mb-4">
-            <span className="bg-primary-color-dark px-3 py-1 rounded-full text-sm font-semibold">
-              {activityName}
-            </span>
-            <span className="bg-accent-color px-3 py-1 rounded-full text-sm font-semibold">
-              {countryName}
-            </span>
-            {pkg.difficulty && (
-              <span className="bg-secondary-color px-3 py-1 rounded-full text-sm font-semibold capitalize">
-                {pkg.difficulty}
+          <div className="absolute bottom-0 left-0 right-0 max-w-7xl mx-auto px-4 pb-12 text-white">
+            <div className="flex flex-wrap gap-3 mb-4">
+              <span className="bg-primary-color-dark px-3 py-1 rounded-full text-sm font-semibold">
+                {activityName}
               </span>
-            )}
-          </div>
-          
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-montserrat mb-4 max-w-4xl">
-            {pkg.title}
-          </h1>
-          
-          <div className="flex flex-wrap items-center gap-6 text-sm text-gray-200">
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon icon={faClock} className="w-4 h-4" />
-              <span>{pkg.duration_days} Days</span>
+              <span className="bg-accent-color px-3 py-1 rounded-full text-sm font-semibold">
+                {countryName}
+              </span>
+              {pkg.difficulty && (
+                <span className="bg-secondary-color px-3 py-1 rounded-full text-sm font-semibold capitalize">
+                  {pkg.difficulty}
+                </span>
+              )}
             </div>
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon icon={faMountain} className="w-4 h-4" />
-              <span>Max Alt: {pkg.max_altitude?.toLocaleString()}m</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon icon={faUsers} className="w-4 h-4" />
-              <span>Group Size: {pkg.group_size_min}-{pkg.group_size_max}</span>
-            </div>
-            {reviewCount > 0 && (
+            
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-montserrat mb-4 max-w-4xl">
+              {pkg.title}
+            </h1>
+            
+            <div className="flex flex-wrap items-center gap-6 text-sm text-gray-200">
               <div className="flex items-center gap-2">
-                <div className="flex items-center">
-                  {[...Array(5)].map((_, i) => (
-                    <FontAwesomeIcon
-                      key={i}
-                      icon={faStar}
-                      className={`w-4 h-4 ${i < Math.floor(averageRating) ? 'text-yellow-400' : 'text-gray-400'}`}
-                    />
-                  ))}
-                </div>
-                <span>({reviewCount} reviews)</span>
+                <FontAwesomeIcon icon={faClock} className="w-4 h-4" />
+                <span>{pkg.duration_days} Days</span>
               </div>
-            )}
-          </div>
-          <div className='mt-5 flex flex-wrap items-center gap-4'>
-            <FontAwesomeIcon icon={faShareNodes} className="hidden sm:block" />
-            <span className="text-sm sm:text-base">Share</span>
-            <ShareButtonsWrapper shareUrl={`${process.env.NEXT_PUBLIC_APP_URL}/${country}/${activity}/${slug}`} />
-          </div>
-        </div>
-      </section>
-
-      {/* Page Navigation - Only shows available sections */}
-      {availableSections.length > 0 && (
-        <PageNavigation sections={availableSections} />
-      )}
-
-      {/* Main Content with Sidebar */}
-      <section className="py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Main Content Area */}
-            <div className="lg:w-2/3">
-              {/* Overview Section */}
-              {(pkg.overview || pkg.short_description) && (
-                <section id="overview" className="mb-12 scroll-mt-24">
-                  <div className="prose max-w-none text-gray-600">
-                    {pkg.overview ? (
-                      <div className='package-content' dangerouslySetInnerHTML={{ __html: pkg.overview }} />
-                    ) : (
-                      <p>{pkg.short_description || 'No overview available.'}</p>
-                    )}
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon={faMountain} className="w-4 h-4" />
+                <span>Max Alt: {pkg.max_altitude?.toLocaleString()}m</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon={faUsers} className="w-4 h-4" />
+                <span>Group Size: {pkg.group_size_min}-{pkg.group_size_max}</span>
+              </div>
+              {reviewCount > 0 && (
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <FontAwesomeIcon
+                        key={i}
+                        icon={faStar}
+                        className={`w-4 h-4 ${i < Math.floor(averageRating) ? 'text-yellow-400' : 'text-gray-400'}`}
+                      />
+                    ))}
                   </div>
-                </section>
+                  <span>({reviewCount} reviews)</span>
+                </div>
               )}
+            </div>
+            <div className='mt-5 flex flex-wrap items-center gap-4'>
+              <FontAwesomeIcon icon={faShareNodes} className="hidden sm:block" />
+              <span className="text-sm sm:text-base">Share</span>
+              <ShareButtonsWrapper shareUrl={canonicalUrl} />
+            </div>
+          </div>
+        </section>
 
-              {/* Highlights Section */}
-              {pkg.highlights && (
-                <section id="highlights" className="mb-12 scroll-mt-24">
-                  <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                    <FontAwesomeIcon icon={faHighlighter} className="text-primary-color-dark w-6 h-6" />
-                    Highlights
-                  </h2>
-                  <div className="bg-gray-50 p-6 rounded-lg">
-                    <div className="whitespace-pre-line text-gray-700">
-                      {pkg.highlights}
+        {/* Page Navigation */}
+        {availableSections.length > 0 && (
+          <PageNavigation sections={availableSections} />
+        )}
+
+        {/* Main Content with Sidebar */}
+        <section className="py-12">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex flex-col lg:flex-row gap-8">
+              {/* Main Content Area */}
+              <div className="lg:w-2/3">
+                {/* Overview Section */}
+                {(pkg.overview || pkg.short_description) && (
+                  <section id="overview" className="mb-12 scroll-mt-24">
+                    <div className="prose max-w-none text-gray-600">
+                      {pkg.overview ? (
+                        <div className='package-content' dangerouslySetInnerHTML={{ __html: pkg.overview }} />
+                      ) : (
+                        <p>{pkg.short_description || 'No overview available.'}</p>
+                      )}
                     </div>
-                  </div>
-                </section>
-              )}
+                  </section>
+                )}
 
-              {/* Itinerary Section */}
-              {pkg.itinerary && pkg.itinerary.length > 0 && (
-                <section id="itinerary" className="mb-12 scroll-mt-24">
-                  <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                    <FontAwesomeIcon icon={faRoute} className="text-primary-color-dark w-6 h-6" />
-                    Detailed Itinerary
-                  </h2>
-                  <div className="space-y-6">
-                    {pkg.itinerary.map((day) => (
-                      <div key={day.id} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
-                        <div className="flex flex-col md:flex-row">
-                          {day.day_image && (
-                            <div className="md:w-48 lg:w-64 h-48 md:h-auto overflow-hidden bg-gray-100">
-                              <img
-                                src={day.day_image}
-                                alt={day.title || `Day ${day.day_number}`}
-                                className="w-full h-full object-cover hover:scale-105 transition duration-300"
-                              />
-                            </div>
-                          )}
-                          <div className="flex-1 p-6">
-                            <div className="flex flex-wrap gap-3 mb-4">
-                              <span className="bg-primary-color-dark text-white px-4 py-1 rounded-full text-sm font-semibold">
-                                Day {day.day_number}
-                              </span>
-                              {day.altitude && (
-                                <span className="text-sm font-semibold text-accent-color flex items-center gap-1">
-                                  <FontAwesomeIcon icon={faMountain} className="w-3 h-3" />
-                                  Altitude: {day.altitude}m
+                {/* Highlights Section */}
+                {pkg.highlights && (
+                  <section id="highlights" className="mb-12 scroll-mt-24">
+                    <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                      <FontAwesomeIcon icon={faHighlighter} className="text-primary-color-dark w-6 h-6" />
+                      Highlights
+                    </h2>
+                    <div className="bg-gray-50 p-6 rounded-lg">
+                      <div className="whitespace-pre-line text-gray-700">
+                        {pkg.highlights}
+                      </div>
+                    </div>
+                  </section>
+                )}
+
+                {/* Itinerary Section */}
+                {pkg.itinerary && pkg.itinerary.length > 0 && (
+                  <section id="itinerary" className="mb-12 scroll-mt-24">
+                    <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                      <FontAwesomeIcon icon={faRoute} className="text-primary-color-dark w-6 h-6" />
+                      Detailed Itinerary
+                    </h2>
+                    <div className="space-y-6">
+                      {pkg.itinerary.map((day) => (
+                        <div key={day.id} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
+                          <div className="flex flex-col md:flex-row">
+                            {day.day_image && (
+                              <div className="md:w-48 lg:w-64 h-48 md:h-auto overflow-hidden bg-gray-100">
+                                <img
+                                  src={day.day_image}
+                                  alt={day.title || `Day ${day.day_number}`}
+                                  className="w-full h-full object-cover hover:scale-105 transition duration-300"
+                                />
+                              </div>
+                            )}
+                            <div className="flex-1 p-6">
+                              <div className="flex flex-wrap gap-3 mb-4">
+                                <span className="bg-primary-color-dark text-white px-4 py-1 rounded-full text-sm font-semibold">
+                                  Day {day.day_number}
                                 </span>
-                              )}
-                              {day.trekking_hours && (
-                                <span className="text-sm font-semibold text-accent-color flex items-center gap-1">
-                                  <FontAwesomeIcon icon={faClock} className="w-3 h-3" />
-                                  Trekking: {day.trekking_hours} hrs
-                                </span>
-                              )}
-                              {day.distance_km && (
-                                <span className="text-sm font-semibold text-accent-color flex items-center gap-1">
-                                  <FontAwesomeIcon icon={faRoad} className="w-3 h-3" />
-                                  Distance: {day.distance_km} km
-                                </span>
-                              )}
-                            </div>
-                            <h3 className="text-xl font-bold mb-3 text-gray-800">{day.title}</h3>
-                            <p className="text-gray-600 leading-relaxed mb-4">{day.description}</p>
-                            {(day.accommodation || day.meal_info) && (
-                              <div className="flex flex-wrap gap-4 pt-3 border-t border-gray-100">
-                                {day.accommodation && (
-                                  <span className="text-sm text-gray-500 flex items-center gap-2">
-                                    <FontAwesomeIcon icon={faHouseChimney} className="text-primary-color-dark w-4 h-4" />
-                                    {day.accommodation}
+                                {day.altitude && (
+                                  <span className="text-sm font-semibold text-accent-color flex items-center gap-1">
+                                    <FontAwesomeIcon icon={faMountain} className="w-3 h-3" />
+                                    Altitude: {day.altitude}m
                                   </span>
                                 )}
-                                {day.meal_info && (
-                                  <span className="text-sm text-gray-500 flex items-center gap-2">
-                                    <FontAwesomeIcon icon={faUtensils} className="text-primary-color-dark w-4 h-4" />
-                                    {day.meal_info}
+                                {day.trekking_hours && (
+                                  <span className="text-sm font-semibold text-accent-color flex items-center gap-1">
+                                    <FontAwesomeIcon icon={faClock} className="w-3 h-3" />
+                                    Trekking: {day.trekking_hours} hrs
+                                  </span>
+                                )}
+                                {day.distance_km && (
+                                  <span className="text-sm font-semibold text-accent-color flex items-center gap-1">
+                                    <FontAwesomeIcon icon={faRoad} className="w-3 h-3" />
+                                    Distance: {day.distance_km} km
                                   </span>
                                 )}
                               </div>
-                            )}
+                              <h3 className="text-xl font-bold mb-3 text-gray-800">{day.title}</h3>
+                              <p className="text-gray-600 leading-relaxed mb-4">{day.description}</p>
+                              {(day.accommodation || day.meal_info) && (
+                                <div className="flex flex-wrap gap-4 pt-3 border-t border-gray-100">
+                                  {day.accommodation && (
+                                    <span className="text-sm text-gray-500 flex items-center gap-2">
+                                      <FontAwesomeIcon icon={faHouseChimney} className="text-primary-color-dark w-4 h-4" />
+                                      {day.accommodation}
+                                    </span>
+                                  )}
+                                  {day.meal_info && (
+                                    <span className="text-sm text-gray-500 flex items-center gap-2">
+                                      <FontAwesomeIcon icon={faUtensils} className="text-primary-color-dark w-4 h-4" />
+                                      {day.meal_info}
+                                    </span>
+                                  )}
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {/* Features Section */}
+                {pkg.features && pkg.features.length > 0 && (
+                  <section id="features" className="mb-12 scroll-mt-24">
+                    <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                      <FontAwesomeIcon icon={faBoxOpen} className="text-primary-color-dark w-6 h-6" />
+                      Inclusions & Exclusions
+                    </h2>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="p-6 rounded-lg bg-green-50">
+                        <h3 className="font-semibold text-lg text-green-800 mb-3 flex items-center gap-2">
+                          Included
+                        </h3>
+                        <ul className="space-y-2">
+                          {pkg.features.filter(f => f.feature_type === 'included').map((feature) => (
+                            <li key={feature.id} className="flex items-start gap-2">
+                              <FontAwesomeIcon icon={faCheck} className="w-4 h-4 mt-1 text-green-700 shrink-0" />
+                              <span className="text-sm">{feature.description}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {/* Features Section (Included/Excluded) */}
-              {pkg.features && pkg.features.length > 0 && (
-                <section id="features" className="mb-12 scroll-mt-24">
-                  <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                    <FontAwesomeIcon icon={faBoxOpen} className="text-primary-color-dark w-6 h-6" />
-                    Inclusions & Exclusions
-                  </h2>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="p-6 rounded-lg bg-green-50">
-                      <h3 className="font-semibold text-lg text-green-800 mb-3 flex items-center gap-2">
-                        {/* <FontAwesomeIcon icon={faCheck} className="w-5 h-5" /> */}
-                        Included
-                      </h3>
-                      <ul className="space-y-2">
-                        {pkg.features.filter(f => f.feature_type === 'included').map((feature) => (
-                          <li key={feature.id} className="flex items-start gap-2">
-                            <FontAwesomeIcon icon={faCheck} className="w-4 h-4 mt-1 text-green-700 shrink-0" />
-                            <span className="text-sm">{feature.description}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      <div className="p-6 rounded-lg bg-red-50">
+                        <h3 className="font-semibold text-lg text-red-800 mb-3 flex items-center gap-2">
+                          Excluded
+                        </h3>
+                        <ul className="space-y-2">
+                          {pkg.features.filter(f => f.feature_type === 'excluded').map((feature) => (
+                            <li key={feature.id} className="flex items-start gap-2">
+                              <FontAwesomeIcon icon={faXmark} className="w-4 h-4 mt-1 text-red-800 shrink-0" />
+                              <span className="text-sm">{feature.description}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
-                    <div className="p-6 rounded-lg bg-red-50">
-                      <h3 className="font-semibold text-lg text-red-800 mb-3 flex items-center gap-2">
-                        {/* <FontAwesomeIcon icon={faXmark} className="w-5 h-5" /> */}
-                        Excluded
-                      </h3>
-                      <ul className="space-y-2">
-                        {pkg.features.filter(f => f.feature_type === 'excluded').map((feature) => (
-                          <li key={feature.id} className="flex items-start gap-2">
-                            <FontAwesomeIcon icon={faXmark} className="w-4 h-4 mt-1 text-red-800 shrink-0" />
-                            <span className="text-sm">{feature.description}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </section>
-              )}
+                  </section>
+                )}
 
-              {/* Essential Information Section */}
-              {essentialInfo && Object.values(essentialInfo).some(v => v) && (
-                <section id="essential_info" className="mb-12 scroll-mt-24">
-                  <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                    <FontAwesomeIcon icon={faInfoCircle} className="text-primary-color-dark w-6 h-6" />
-                    Essential Information
-                  </h2>
-                  <div className="space-y-6">
-                    {/* Quick Info Grid */}
+                {/* Essential Information Section */}
+                {essentialInfo && Object.values(essentialInfo).some(v => v) && (
+                  <section id="essential_info" className="mb-12 scroll-mt-24">
+                    <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                      <FontAwesomeIcon icon={faInfoCircle} className="text-primary-color-dark w-6 h-6" />
+                      Essential Information
+                    </h2>
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        {essentialInfo.trip_code && (
+                          <div className="bg-gray-50 p-4 rounded-lg">
+                            <FontAwesomeIcon icon={faTag} className="w-5 h-5 text-accent-color mb-2" />
+                            <p className="text-xs text-gray-500">Trip Code</p>
+                            <p className="font-semibold text-gray-800">{essentialInfo.trip_code}</p>
+                          </div>
+                        )}
+                        {essentialInfo.trip_type && (
+                          <div className="bg-gray-50 p-4 rounded-lg">
+                            <FontAwesomeIcon icon={faRoute} className="w-5 h-5 text-accent-color mb-2" />
+                            <p className="text-xs text-gray-500">Trip Type</p>
+                            <p className="font-semibold text-gray-800">{essentialInfo.trip_type}</p>
+                          </div>
+                        )}
+                        {essentialInfo.accommodation_type && (
+                          <div className="bg-gray-50 p-4 rounded-lg">
+                            <FontAwesomeIcon icon={faBed} className="w-5 h-5 text-accent-color mb-2" />
+                            <p className="text-xs text-gray-500">Accommodation</p>
+                            <p className="font-semibold text-gray-800">{essentialInfo.accommodation_type}</p>
+                          </div>
+                        )}
+                        {essentialInfo.meal_included && (
+                          <div className="bg-gray-50 p-4 rounded-lg">
+                            <FontAwesomeIcon icon={faUtensils} className="w-5 h-5 text-accent-color mb-2" />
+                            <p className="text-xs text-gray-500">Meals</p>
+                            <p className="font-semibold text-gray-800">{essentialInfo.meal_included}</p>
+                          </div>
+                        )}
+                        {essentialInfo.transportation && (
+                          <div className="bg-gray-50 p-4 rounded-lg">
+                            <FontAwesomeIcon icon={faCar} className="w-5 h-5 text-accent-color mb-2" />
+                            <p className="text-xs text-gray-500">Transportation</p>
+                            <p className="font-semibold text-gray-800">{essentialInfo.transportation}</p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="space-y-4">
+                        {essentialInfo.best_time_description && (
+                          <div className="bg-blue-50 p-5 rounded-lg border-l-4 border-blue-500">
+                            <h3 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
+                              <FontAwesomeIcon icon={faCalendarAlt} className="w-4 h-4" />
+                              Best Time to Visit
+                            </h3>
+                            <p className="text-gray-700 text-sm">{essentialInfo.best_time_description}</p>
+                          </div>
+                        )}
+
+                        {essentialInfo.difficulty_description && (
+                          <div className="bg-amber-50 p-5 rounded-lg border-l-4 border-amber-500">
+                            <h3 className="font-semibold text-amber-800 mb-2 flex items-center gap-2">
+                              <FontAwesomeIcon icon={faMountain} className="w-4 h-4" />
+                              Difficulty Level
+                            </h3>
+                            <p className="text-gray-700 text-sm">{essentialInfo.difficulty_description}</p>
+                          </div>
+                        )}
+
+                        {essentialInfo.fitness_requirements && (
+                          <div className="bg-green-50 p-5 rounded-lg border-l-4 border-green-500">
+                            <h3 className="font-semibold text-green-800 mb-2 flex items-center gap-2">
+                              <FontAwesomeIcon icon={faUsers} className="w-4 h-4" />
+                              Fitness Requirements
+                            </h3>
+                            <div className="text-gray-700 text-sm whitespace-pre-line">{essentialInfo.fitness_requirements}</div>
+                          </div>
+                        )}
+
+                        {essentialInfo.preparation_tips && (
+                          <div className="bg-purple-50 p-5 rounded-lg border-l-4 border-purple-500">
+                            <h3 className="font-semibold text-purple-800 mb-2 flex items-center gap-2">
+                              <FontAwesomeIcon icon={faUmbrella} className="w-4 h-4" />
+                              Preparation Tips
+                            </h3>
+                            <div className="text-gray-700 text-sm whitespace-pre-line">{essentialInfo.preparation_tips}</div>
+                          </div>
+                        )}
+
+                        {essentialInfo.equipment_list && (
+                          <div className="bg-gray-50 p-5 rounded-lg">
+                            <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                              <FontAwesomeIcon icon={faBoxOpen} className="w-4 h-4" />
+                              Equipment List
+                            </h3>
+                            <div className="text-gray-700 text-sm whitespace-pre-line">{essentialInfo.equipment_list}</div>
+                          </div>
+                        )}
+
+                        {essentialInfo.health_considerations && (
+                          <div className="bg-red-50 p-5 rounded-lg border-l-4 border-red-500">
+                            <h3 className="font-semibold text-red-800 mb-2 flex items-center gap-2">
+                              <FontAwesomeIcon icon={faFirstAid} className="w-4 h-4" />
+                              Health Considerations
+                            </h3>
+                            <div className="text-gray-700 text-sm whitespace-pre-line">{essentialInfo.health_considerations}</div>
+                          </div>
+                        )}
+
+                        {essentialInfo.safety_measures && (
+                          <div className="bg-indigo-50 p-5 rounded-lg border-l-4 border-indigo-500">
+                            <h3 className="font-semibold text-indigo-800 mb-2 flex items-center gap-2">
+                              <FontAwesomeIcon icon={faShieldAlt} className="w-4 h-4" />
+                              Safety Measures
+                            </h3>
+                            <div className="text-gray-700 text-sm whitespace-pre-line">{essentialInfo.safety_measures}</div>
+                          </div>
+                        )}
+
+                        {(essentialInfo.permits_required || essentialInfo.permit_cost) && (
+                          <div className="bg-teal-50 p-5 rounded-lg border-l-4 border-teal-500">
+                            <h3 className="font-semibold text-teal-800 mb-2 flex items-center gap-2">
+                              <FontAwesomeIcon icon={faFileAlt} className="w-4 h-4" />
+                              Permits Required
+                            </h3>
+                            {essentialInfo.permits_required && (
+                              <div className="text-gray-700 text-sm whitespace-pre-line mb-2">{essentialInfo.permits_required}</div>
+                            )}
+                            {essentialInfo.permit_cost && (
+                              <p className="text-sm font-medium text-teal-700 mt-2">
+                                <FontAwesomeIcon icon={faDollarSign} className="w-3 h-3 mr-1" />
+                                Permit Cost: ${essentialInfo.permit_cost}
+                              </p>
+                            )}
+                          </div>
+                        )}
+
+                        {essentialInfo.cultural_etiquette && (
+                          <div className="bg-pink-50 p-5 rounded-lg border-l-4 border-pink-500">
+                            <h3 className="font-semibold text-pink-800 mb-2 flex items-center gap-2">
+                              <FontAwesomeIcon icon={faHandsHelping} className="w-4 h-4" />
+                              Cultural Etiquette
+                            </h3>
+                            <div className="text-gray-700 text-sm whitespace-pre-line">{essentialInfo.cultural_etiquette}</div>
+                          </div>
+                        )}
+
+                        {essentialInfo.local_customs && (
+                          <div className="bg-orange-50 p-5 rounded-lg border-l-4 border-orange-500">
+                            <h3 className="font-semibold text-orange-800 mb-2 flex items-center gap-2">
+                              <FontAwesomeIcon icon={faLanguage} className="w-4 h-4" />
+                              Local Customs
+                            </h3>
+                            <div className="text-gray-700 text-sm whitespace-pre-line">{essentialInfo.local_customs}</div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </section>
+                )}
+
+                {/* Map Section */}
+                {pkg.map_image && (
+                  <section id="map" className="mb-12 scroll-mt-24">
+                    <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                      <FontAwesomeIcon icon={faMapMarkedAlt} className="text-primary-color-dark w-6 h-6" />
+                      Route Map
+                    </h2>
+                    <div className="bg-gray-100 rounded-lg overflow-hidden">
+                      <img
+                        src={pkg.map_image}
+                        alt={`${pkg.title} route map`}
+                        className="w-full h-auto"
+                        loading="lazy"
+                      />
+                    </div>
+                  </section>
+                )}
+
+                {/* Gallery Section */}
+                {pkg.gallery && pkg.gallery.length > 0 && (
+                  <section id="gallery" className="mb-12 scroll-mt-24">
+                    <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                      <FontAwesomeIcon icon={faPhotoFilm} className="text-primary-color-dark w-6 h-6" />
+                      Gallery
+                    </h2>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      {essentialInfo.trip_code && (
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <FontAwesomeIcon icon={faTag} className="w-5 h-5 text-accent-color mb-2" />
-                          <p className="text-xs text-gray-500">Trip Code</p>
-                          <p className="font-semibold text-gray-800">{essentialInfo.trip_code}</p>
+                      {pkg.gallery.slice(0, 9).map((image, index) => (
+                        <div key={index} className="relative aspect-square rounded-lg overflow-hidden">
+                          <img
+                            src={image.image_url || image}
+                            alt={`${pkg.title} gallery ${index + 1}`}
+                            className="w-full h-full object-cover hover:scale-105 transition duration-300"
+                            loading="lazy"
+                          />
                         </div>
-                      )}
-                      {essentialInfo.trip_type && (
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <FontAwesomeIcon icon={faRoute} className="w-5 h-5 text-accent-color mb-2" />
-                          <p className="text-xs text-gray-500">Trip Type</p>
-                          <p className="font-semibold text-gray-800">{essentialInfo.trip_type}</p>
-                        </div>
-                      )}
-                      {essentialInfo.accommodation_type && (
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <FontAwesomeIcon icon={faBed} className="w-5 h-5 text-accent-color mb-2" />
-                          <p className="text-xs text-gray-500">Accommodation</p>
-                          <p className="font-semibold text-gray-800">{essentialInfo.accommodation_type}</p>
-                        </div>
-                      )}
-                      {essentialInfo.meal_included && (
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <FontAwesomeIcon icon={faUtensils} className="w-5 h-5 text-accent-color mb-2" />
-                          <p className="text-xs text-gray-500">Meals</p>
-                          <p className="font-semibold text-gray-800">{essentialInfo.meal_included}</p>
-                        </div>
-                      )}
-                      {essentialInfo.transportation && (
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <FontAwesomeIcon icon={faCar} className="w-5 h-5 text-accent-color mb-2" />
-                          <p className="text-xs text-gray-500">Transportation</p>
-                          <p className="font-semibold text-gray-800">{essentialInfo.transportation}</p>
-                        </div>
-                      )}
+                      ))}
                     </div>
+                  </section>
+                )}
 
-                    {/* Detailed Information */}
+                {/* FAQ Section */}
+                {pkg.faqs && pkg.faqs.length > 0 && (
+                  <section id="faq" className="mb-12 scroll-mt-24">
+                    <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                      <FontAwesomeIcon icon={faQuestionCircle} className="text-primary-color-dark w-6 h-6" />
+                      Frequently Asked Questions
+                    </h2>
                     <div className="space-y-4">
-                      {essentialInfo.best_time_description && (
-                        <div className="bg-blue-50 p-5 rounded-lg border-l-4 border-blue-500">
-                          <h3 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                            <FontAwesomeIcon icon={faCalendarAlt} className="w-4 h-4" />
-                            Best Time to Visit
-                          </h3>
-                          <p className="text-gray-700 text-sm">{essentialInfo.best_time_description}</p>
-                        </div>
-                      )}
-
-                      {essentialInfo.difficulty_description && (
-                        <div className="bg-amber-50 p-5 rounded-lg border-l-4 border-amber-500">
-                          <h3 className="font-semibold text-amber-800 mb-2 flex items-center gap-2">
-                            <FontAwesomeIcon icon={faMountain} className="w-4 h-4" />
-                            Difficulty Level
-                          </h3>
-                          <p className="text-gray-700 text-sm">{essentialInfo.difficulty_description}</p>
-                        </div>
-                      )}
-
-                      {essentialInfo.fitness_requirements && (
-                        <div className="bg-green-50 p-5 rounded-lg border-l-4 border-green-500">
-                          <h3 className="font-semibold text-green-800 mb-2 flex items-center gap-2">
-                            <FontAwesomeIcon icon={faUsers} className="w-4 h-4" />
-                            Fitness Requirements
-                          </h3>
-                          <div className="text-gray-700 text-sm whitespace-pre-line">{essentialInfo.fitness_requirements}</div>
-                        </div>
-                      )}
-
-                      {essentialInfo.preparation_tips && (
-                        <div className="bg-purple-50 p-5 rounded-lg border-l-4 border-purple-500">
-                          <h3 className="font-semibold text-purple-800 mb-2 flex items-center gap-2">
-                            <FontAwesomeIcon icon={faUmbrella} className="w-4 h-4" />
-                            Preparation Tips
-                          </h3>
-                          <div className="text-gray-700 text-sm whitespace-pre-line">{essentialInfo.preparation_tips}</div>
-                        </div>
-                      )}
-
-                      {essentialInfo.equipment_list && (
-                        <div className="bg-gray-50 p-5 rounded-lg">
-                          <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
-                            <FontAwesomeIcon icon={faBoxOpen} className="w-4 h-4" />
-                            Equipment List
-                          </h3>
-                          <div className="text-gray-700 text-sm whitespace-pre-line">{essentialInfo.equipment_list}</div>
-                        </div>
-                      )}
-
-                      {essentialInfo.health_considerations && (
-                        <div className="bg-red-50 p-5 rounded-lg border-l-4 border-red-500">
-                          <h3 className="font-semibold text-red-800 mb-2 flex items-center gap-2">
-                            <FontAwesomeIcon icon={faFirstAid} className="w-4 h-4" />
-                            Health Considerations
-                          </h3>
-                          <div className="text-gray-700 text-sm whitespace-pre-line">{essentialInfo.health_considerations}</div>
-                        </div>
-                      )}
-
-                      {essentialInfo.safety_measures && (
-                        <div className="bg-indigo-50 p-5 rounded-lg border-l-4 border-indigo-500">
-                          <h3 className="font-semibold text-indigo-800 mb-2 flex items-center gap-2">
-                            <FontAwesomeIcon icon={faShieldAlt} className="w-4 h-4" />
-                            Safety Measures
-                          </h3>
-                          <div className="text-gray-700 text-sm whitespace-pre-line">{essentialInfo.safety_measures}</div>
-                        </div>
-                      )}
-
-                      {(essentialInfo.permits_required || essentialInfo.permit_cost) && (
-                        <div className="bg-teal-50 p-5 rounded-lg border-l-4 border-teal-500">
-                          <h3 className="font-semibold text-teal-800 mb-2 flex items-center gap-2">
-                            <FontAwesomeIcon icon={faFileAlt} className="w-4 h-4" />
-                            Permits Required
-                          </h3>
-                          {essentialInfo.permits_required && (
-                            <div className="text-gray-700 text-sm whitespace-pre-line mb-2">{essentialInfo.permits_required}</div>
-                          )}
-                          {essentialInfo.permit_cost && (
-                            <p className="text-sm font-medium text-teal-700 mt-2">
-                              <FontAwesomeIcon icon={faDollarSign} className="w-3 h-3 mr-1" />
-                              Permit Cost: ${essentialInfo.permit_cost}
-                            </p>
-                          )}
-                        </div>
-                      )}
-
-                      {essentialInfo.cultural_etiquette && (
-                        <div className="bg-pink-50 p-5 rounded-lg border-l-4 border-pink-500">
-                          <h3 className="font-semibold text-pink-800 mb-2 flex items-center gap-2">
-                            <FontAwesomeIcon icon={faHandsHelping} className="w-4 h-4" />
-                            Cultural Etiquette
-                          </h3>
-                          <div className="text-gray-700 text-sm whitespace-pre-line">{essentialInfo.cultural_etiquette}</div>
-                        </div>
-                      )}
-
-                      {essentialInfo.local_customs && (
-                        <div className="bg-orange-50 p-5 rounded-lg border-l-4 border-orange-500">
-                          <h3 className="font-semibold text-orange-800 mb-2 flex items-center gap-2">
-                            <FontAwesomeIcon icon={faLanguage} className="w-4 h-4" />
-                            Local Customs
-                          </h3>
-                          <div className="text-gray-700 text-sm whitespace-pre-line">{essentialInfo.local_customs}</div>
-                        </div>
-                      )}
+                      {pkg.faqs.map((faq) => (
+                        <details key={faq.id} className="bg-gray-50 rounded-lg group">
+                          <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
+                            <h3 className="text-lg font-semibold text-gray-900">{faq.question}</h3>
+                            <span className="text-primary-color-dark group-open:rotate-180 transition-transform">
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                              </svg>
+                            </span>
+                          </summary>
+                          <div className="px-6 pb-6">
+                            <p className="text-gray-600">{faq.answer}</p>
+                          </div>
+                        </details>
+                      ))}
                     </div>
-                  </div>
-                </section>
-              )}
-
-              {/* Map Section */}
-              {pkg.map_image && (
-                <section id="map" className="mb-12 scroll-mt-24">
-                  <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                    <FontAwesomeIcon icon={faMapMarkedAlt} className="text-primary-color-dark w-6 h-6" />
-                    Route Map
-                  </h2>
-                  <div className="bg-gray-100 rounded-lg overflow-hidden">
-                    <img
-                      src={pkg.map_image}
-                      alt={`${pkg.title} route map`}
-                      className="w-full h-auto"
-                      loading="lazy"
-                    />
-                  </div>
-                </section>
-              )}
-
-              {/* Gallery Section */}
-              {pkg.gallery && pkg.gallery.length > 0 && (
-                <section id="gallery" className="mb-12 scroll-mt-24">
-                  <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                    <FontAwesomeIcon icon={faPhotoFilm} className="text-primary-color-dark w-6 h-6" />
-                    Gallery
-                  </h2>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {pkg.gallery.slice(0, 9).map((image, index) => (
-                      <div key={index} className="relative aspect-square rounded-lg overflow-hidden">
-                        <img
-                          src={image.image_url || image}
-                          alt={`${pkg.title} gallery ${index + 1}`}
-                          className="w-full h-full object-cover hover:scale-105 transition duration-300"
-                          loading="lazy"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  {pkg.gallery.length > 9 && (
-                    <div className="text-center mt-4">
-                      <button className="text-accent-color hover:underline">View All {pkg.gallery.length} Photos →</button>
-                    </div>
-                  )}
-                </section>
-              )}
-
-              {/* FAQ Section */}
-              {pkg.faqs && pkg.faqs.length > 0 && (
-                <section id="faq" className="mb-12 scroll-mt-24">
-                  <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                    <FontAwesomeIcon icon={faQuestionCircle} className="text-primary-color-dark w-6 h-6" />
-                    Frequently Asked Questions
-                  </h2>
-                  <div className="space-y-4">
-                    {pkg.faqs.map((faq) => (
-                      <details key={faq.id} className="bg-gray-50 rounded-lg group">
-                        <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                          <h3 className="text-lg font-semibold text-gray-900">{faq.question}</h3>
-                          <span className="text-primary-color-dark group-open:rotate-180 transition-transform">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                          </span>
-                        </summary>
-                        <div className="px-6 pb-6">
-                          <p className="text-gray-600">{faq.answer}</p>
-                        </div>
-                      </details>
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {/* Documents Section */}
-              {pkg.documents && pkg.documents.length > 0 && (
-                <section id="documents" className="mb-12 scroll-mt-24">
-                  <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                    <FontAwesomeIcon icon={faFileAlt} className="text-primary-color-dark w-6 h-6" />
-                    Documents
-                  </h2>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {pkg.documents.map((doc) => (
-                      <a
-                        key={doc.id}
-                        href={doc.document_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition group"
-                      >
-                        <div className="w-10 h-10 bg-primary-color-dark/10 rounded-lg flex items-center justify-center">
-                          <FontAwesomeIcon icon={faFilePdf} className="w-5 h-5 text-primary-color-dark" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold">{doc.document_title}</h3>
-                          <p className="text-sm text-gray-500 capitalize">{doc.document_type?.replace('_', ' ') || 'Document'}</p>
-                        </div>
-                      </a>
-                    ))}
-                  </div>
-                </section>
-              )}
-            </div>
-
-            {/* Sidebar - Booking Section */}
-            <aside className="lg:w-1/3">
-              <div className="sticky top-35">
-                <BookingSidebar 
-                  package={pkg}
-                  countryName={countryName}
-                  activityName={activityName}
-                />
+                  </section>
+                )}
               </div>
-            </aside>
+
+              {/* Sidebar - Booking Section */}
+              <aside className="lg:w-1/3">
+                <div className="sticky top-35">
+                  <BookingSidebar 
+                    package={pkg}
+                    countryName={countryName}
+                    activityName={activityName}
+                  />
+                </div>
+              </aside>
+            </div>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
+    </>
   );
 }
