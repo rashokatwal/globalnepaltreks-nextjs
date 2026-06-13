@@ -71,6 +71,11 @@ const nextConfig = {
         destination: '/book',
         permanent: true,
       },
+      {
+        source: '/faqs',
+        destination: '/',
+        permanent: true,
+      },
     ];
   }
 };
