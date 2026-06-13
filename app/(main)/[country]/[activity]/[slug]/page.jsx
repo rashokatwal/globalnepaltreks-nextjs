@@ -311,7 +311,7 @@ export default async function PackagePage({ params }) {
   return (
     <>
       {/* Canonical URL - Critical for SEO */}
-      <link rel="canonical" href={canonicalUrl} />
+      {/* <link rel="canonical" href={canonicalUrl} /> */}
       
       {/* JSON-LD Structured Data */}
       <Script
