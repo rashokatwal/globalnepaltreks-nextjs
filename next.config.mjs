@@ -66,6 +66,11 @@ const nextConfig = {
         destination: '/:slug*',
         permanent: true,
       },
+      {
+        source: '/book-now',
+        destination: '/book',
+        permanent: true,
+      },
     ];
   }
 };
