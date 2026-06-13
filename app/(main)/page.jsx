@@ -24,7 +24,7 @@ import HomeClientWrapper from "./HomeClientWrapper";
 export async function generateMetadata() {
   return {
     title: 'Global Nepal Treks | Best Trekking & Tour Agency in Nepal',
-    description: 'Experience authentic Himalayan trekking with expert local guides. Best prices for Everest Base Camp, Annapurna Circuit, and more. Book your adventure today!',
+    description: 'Experience authentic Himalayan trekking with local guides. Best prices for Everest Base Camp, Annapurna & more tours.',
     keywords: 'nepal trekking, everest base camp, annapurna circuit, nepal tour agency, himalayan trekking',
     openGraph: {
       title: 'Global Nepal Treks | Best Trekking & Tour Agency in Nepal',

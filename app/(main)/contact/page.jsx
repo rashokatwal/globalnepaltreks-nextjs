@@ -6,11 +6,11 @@ import Script from "next/script";
 
 export const metadata = {
   title: 'Contact Us | Himalayan Trekking Experts - Global Nepal Treks',
-  description: 'Reach out to Global Nepal Treks. Our trekking experts customize itineraries and help plan authentic Himalayan adventures in Nepal, Tibet & Bhutan.',
+  description: 'Contact Global Nepal Treks for expert trekking advice, custom itineraries, and Himalayan adventures in Nepal.',
   // keywords: 'contact nepal trekking company, himalayan trekking inquiry, plan everest base camp trek, nepal trekking experts contact, trekking agency kathmandu, bhutan tour inquiry, tibet travel contact, global nepal treks contact, himalayan adventure planner, trekking consultation',
   openGraph: {
     title: 'Contact Us | Himalayan Trekking Experts - Global Nepal Treks',
-    description: 'Reach out to Global Nepal Treks. Our trekking experts customize itineraries and help plan authentic Himalayan adventures in Nepal, Tibet & Bhutan.',
+    description: 'Contact Global Nepal Treks for expert trekking advice, custom itineraries, and Himalayan adventures in Nepal.',
     images: [contactAssets.contact_cover?.src],
     type: 'website',
     locale: 'en_US',

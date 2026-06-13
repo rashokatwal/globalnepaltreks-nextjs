@@ -10,11 +10,11 @@ import Script from 'next/script';
 
 export const metadata = {
   title: 'Himalayan Trekking Blog | Tips, Guides & Adventure Stories',
-  description: 'Expert trekking guides, packing tips, destination insights, and adventure stories from the Himalayas.',
+  description: 'Expert trekking guides, packing tips, destination insights, and adventure stories from the Himalayas for safe, memorable treks.',
   keywords: 'nepal trekking blog, himalayan trekking tips, everest base camp guide, annapurna circuit blog, langtang valley trekking, nepal travel blog, himalayan adventure stories, trekking gear guide, nepal trekking seasons, travel tips nepal, bhutan trekking blog, tibet travel blog',
   openGraph: {
     title: 'Himalayan Trekking Blog | Expert Guides & Adventure Stories | Global Nepal Treks',
-    description: 'Expert trekking guides, packing tips, destination insights, and adventure stories from the Himalayas. Written by experienced Sherpa guides.',
+    description: 'Expert trekking guides, packing tips, destination insights, and adventure stories from the Himalayas for safe, memorable treks.',
     images: [blogsAssets.blogs_cover?.src || '/images/blog-cover.jpg'],
     type: 'website',
     locale: 'en_US',
@@ -24,7 +24,7 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Himalayan Trekking Blog | Expert Guides & Adventure Stories',
-    description: 'Expert trekking guides, packing tips, destination insights, and adventure stories from the Himalayas.',
+    description: 'Expert trekking guides, packing tips, destination insights, and adventure stories from the Himalayas for safe, memorable treks.',
     images: [blogsAssets.blogs_cover?.src || '/images/blog-cover.jpg'],
   },
   robots: {

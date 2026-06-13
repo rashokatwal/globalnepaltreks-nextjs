@@ -21,7 +21,7 @@ import Script from 'next/script';
 
 // SEO metadata
 export const metadata = {
-  title: 'Nepal Visa Information | Entry Requirements, Fees & Application Guide',
+  title: 'Nepal Visa Information | Entry, Fees & Application Guide',
   description: 'Complete Nepal tourist visa guide: fees for 15/30/90 days, on-arrival process, multiple-entry options, extension rules & SAARC conditions.',
   // keywords: 'nepal visa, tourist visa nepal, visa on arrival nepal, nepal visa fees, trekking visa, visa for himalayas, nepal entry requirements, nepal visa extension, online visa nepal, nepal immigration, SAARC visa nepal',
   openGraph: {

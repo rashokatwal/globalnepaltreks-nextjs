@@ -33,7 +33,7 @@ const activityIcons = {
 export async function generateMetadata() {
   return {
     title: 'Best Trekking & Tour Destinations | Global Nepal Treks',
-    description: 'Discover Nepal, Bhutan & Tibet trekking with expert guides. Best prices & 1000+ happy trekkers. Book your Himalayan adventure today!',
+    description: 'Discover Nepal, Bhutan & Tibet treks with expert guides, great prices, and 1000+ happy trekkers. Book today',
     // keywords: 'trekking destinations, nepal trekking, bhutan tours, tibet travel, himalayan trekking, adventure travel',
     openGraph: {
       title: 'Best Trekking & Tour Destinations | Global Nepal Treks',

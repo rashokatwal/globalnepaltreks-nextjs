@@ -21,7 +21,7 @@ import Script from 'next/script';
 
 // SEO metadata
 export const metadata = {
-  title: 'Protected Areas and Ecosystems of Nepal | Conservation & Biodiversity Guide',
+  title: 'Protected Areas of Nepal | Conservation & Biodiversity',
   description: 'Explore Nepal\'s national parks, wildlife reserves & conservation areas. Discover rich biodiversity, Himalayan ecosystems, and conservation efforts.',
   // keywords: 'protected areas nepal, national parks nepal, chitwan national park, sagarmatha national park, nepal biodiversity, ecosystem conservation, nepal wildlife reserves, annapurna conservation area, nepal protected areas list, himalayan conservation',
   openGraph: {

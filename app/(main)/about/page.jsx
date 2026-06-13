@@ -8,11 +8,11 @@ import Script from "next/script";
 
 export const metadata = {
   title: 'About Us | Local Himalayan Trekking Experts Since 2008',
-  description: 'Discover authentic Himalayan adventures with Global Nepal Treks — locally owned, 15+ years of experience, and certified guides across Nepal, Tibet & Bhutan.',
+  description: "Discover authentic Himalayan adventures with Global Nepal Treks. Local experts, 15+ years' experience, certified guides for all.",
 //   keywords: 'nepal trekking company, himalayan trekking experts, local guides nepal, government licensed trekking guides, everest base camp specialists, responsible tourism nepal, global nepal treks, about us, himalayan guides',
   openGraph: {
     title: 'About Global Nepal Treks | Local Himalayan Trekking Experts Since 2008',
-    description: 'Discover authentic Himalayan adventures with Global Nepal Treks — locally owned, 15+ years of experience, and certified guides across Nepal, Tibet & Bhutan.',
+    description: "Discover authentic Himalayan adventures with Global Nepal Treks. Local experts, 15+ years' experience, certified guides for all.",
     images: [aboutAssets.about_us_cover.src],
     type: 'website',
     locale: 'en_US',

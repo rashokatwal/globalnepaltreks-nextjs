@@ -19,12 +19,12 @@ import Script from 'next/script';
 
 // SEO metadata
 export const metadata = {
-  title: 'Trekking Gears and Equipments | Complete Packing List for Nepal Trekking',
-  description: 'Essential trekking gear for Nepal Himalayas: clothing, equipment, toiletries & medical supplies. Expert packing list for a safe, comfortable trek.',
+  title: 'Nepal Trekking Gear & Equipment | Full Packing Guide',
+  description: 'Essential trekking gear for Nepal Himalayas including clothing, equipment, toiletries, and medical supplies for a safe trek.',
   // keywords: 'trekking gears nepal, trekking equipment, packing list for nepal trek, himalayan trekking gear, trekking boots, down jacket, sleeping bag, altitude sickness medicine, trekking poles, nepal trek packing, himalayan trek preparation, trek clothing guide',
   openGraph: {
     title: 'Trekking Gears and Equipments | Complete Packing List for Nepal Trekking',
-    description: 'Essential trekking gear and equipment for Nepal Himalayas: clothing, trekking equipment, toiletries, and medical supplies.',
+    description: 'Essential trekking gear for Nepal Himalayas including clothing, equipment, toiletries, and medical supplies for a safe trek.',
     url: 'https://globalnepaltreks.com/travel-guides/trekking-gears',
     type: 'article',
     locale: 'en_US',

@@ -6,11 +6,11 @@ import Script from "next/script";
 
 export const metadata = {
   title: 'Our Team | Expert Himalayan Guides & Local Trekking Staff',
-  description: 'Meet the expert team behind Global Nepal Treks — government-licensed guides, tour operators & international coordinators for your Himalayan adventure.',
+  description: 'Meet the expert team at Global Nepal Treks, with licensed guides, tour operators, and coordinators for every trek.',
 //   keywords: 'nepal trekking guides, saroj ghimire founder, keshar sherpa guide, deepak lamichane trekking, nabaraj gurung tour operator, himalayan guides nepal, global nepal treks team, licensed trekking guides nepal',
   openGraph: {
     title: 'Our Team | Global Nepal Treks',
-    description: 'Meet our government-licensed guides and international representatives who make your Himalayan journey unforgettable.',
+    description: 'Meet the expert team at Global Nepal Treks, with licensed guides, tour operators, and coordinators for every trek.',
     images: [teamAssets.team_cover.src],
     type: 'website',
     locale: 'en_US',
