@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faCompass, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
 
 export const metadata = {
-  title: 'Terms & Conditions | Global Nepal Treks – Nepal Trekking Agency',
+  title: 'Terms & Conditions | Nepal Trekking & Tour Operator',
   description: 'Please read the terms and conditions of Global Nepal Treks. Understand our booking policies, cancellations, refunds, and responsibilities for Himalayan treks.',
 //   keywords: 'nepal trekking guides, saroj ghimire founder, keshar sherpa guide, deepak lamichane trekking, nabaraj gurung tour operator, himalayan guides nepal',
   openGraph: {

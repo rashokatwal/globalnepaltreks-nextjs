@@ -20,11 +20,11 @@ import Script from 'next/script';
 
 // Metadata for SEO
 export const metadata = {
-  title: 'Travel Guides | Expert Tips & Essential Information for Nepal Trekking',
-  description: 'Comprehensive travel guides for trekking in Nepal. Learn about trekking gear, protected areas, visa information, and essential tips from our local experts.',
+  title: 'Expert Nepal Trekking Guides | Travel Tips & Advice',
+  description: 'Comprehensive Nepal trekking guide covering gear, permits, visas, protected areas, safety tips, and expert travel advice.',
   // keywords: 'nepal travel guides, trekking gear, himalayan trekking tips, nepal visa, protected areas nepal, trekking equipment, nepal trekking preparation, himalayan travel tips, nepal travel advice, trekking safety nepal',
   openGraph: {
-    title: 'Travel Guides | Expert Tips & Essential Information for Nepal Trekking',
+    title: 'Expert Nepal Trekking Guides | Travel Tips & Advice',
     description: 'Comprehensive travel guides for trekking in Nepal. Learn about trekking gear, protected areas, visa information, and essential tips from our local experts.',
     url: 'https://globalnepaltreks.com/travel-guides',
     type: 'website',
@@ -34,7 +34,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Travel Guides | Expert Tips & Essential Information for Nepal Trekking',
+    title: 'Expert Nepal Trekking Guides | Travel Tips & Advice',
     description: 'Comprehensive travel guides for trekking in Nepal. Learn about trekking gear, protected areas, visa information, and essential tips.',
     images: [travelGuidesAssets.travel_guides_cover.src],
   },
