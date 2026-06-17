@@ -226,6 +226,7 @@ export default function RootLayout({ children }) {
         {/* DNS Prefetch */}
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <script defer async src='https://cdn.trustindex.io/loader.js?86777d674d4849784336b30abff'></script>
       </head>
       <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
       <body className={`${montserrat.variable} antialiased`}>
