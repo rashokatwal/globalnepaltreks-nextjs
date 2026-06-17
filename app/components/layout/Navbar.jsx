@@ -277,9 +277,12 @@ const NavBar = () => {
             name: 'Travel Guides', 
             link: '/travel-guides',
             items: [
+                { name: 'Trekking Permit and TIMS', link: '/travel-guides/trekking-permit-and-tims' },
                 { name: 'Trekking Gear & Equipment', link: '/travel-guides/trekking-gear-and-equipment' },
                 { name: 'Protected Areas of Nepal', link: '/travel-guides/protected-areas-of-nepal' },
                 { name: 'Visa Information', link: '/travel-guides/visa-info' },
+                { name: 'Useful Tips to Travel in Nepal', link: '/travel-guides/useful-tips-to-travel-in-nepal' },
+                { name: 'Tourist Security in Nepal', link: '/travel-guides/tourist-security-in-nepal' },
             ]
         },
         { 

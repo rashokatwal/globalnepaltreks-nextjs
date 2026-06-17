@@ -41,10 +41,13 @@ import deepak_lamichane from './About/Team/deepak_lamichane.png';
 import saroj_ghimire from './About/Team/saroj_ghimire.jpg';
 import nabaraj_gurung from './About/Team/nabaraj_gurung.png';
 
+import trekking_permit_and_tims_cover from './TravelGuides/trekking_permits_and_tims_cover.jpg';
+import useful_tips_to_travel_in_nepal_cover from './TravelGuides/useful_tips_to_travel_in_nepal_cover.jpg';
 import travel_guides_cover from './TravelGuides/travel_guides_cover.jpg';
 import travel_gear_and_equipment_cover from './TravelGuides/travel_gear_and_equipment_cover.jpg';
 import protected_areas_of_nepal_cover from './TravelGuides/protected_areas_of_nepal_cover.jpg';
 import visa_information_cover from './TravelGuides/visa_information_cover.jpg';
+import tourist_security_in_nepal_cover from './TravelGuides/tourist_security_in_nepal_cover.jpg';
 
 import walk from './Loader/walk.json';
 
@@ -82,7 +85,10 @@ const travelGuidesAssets = {
     travel_gear_and_equipment_cover,
     protected_areas_of_nepal_cover,
     visa_information_cover,
-    travel_guides_cover
+    travel_guides_cover,
+    trekking_permit_and_tims_cover,
+    useful_tips_to_travel_in_nepal_cover,
+    tourist_security_in_nepal_cover
 }
 
 const logos = {
