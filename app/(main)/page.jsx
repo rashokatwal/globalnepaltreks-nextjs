@@ -561,9 +561,9 @@ export default async function Home() {
       <section className="pb-10 pt-10 bg-dark-section">
         
         <div className="mx-auto max-w-6xl px-5 md:px-0">
-          <Heading title={"Our Reviews"} subtitle={"Read our reviews on Trustpilot and different platforms"} titleClass={"md:text-left text-center"} subtitleClass={"md:text-left text-center mb-15"} />
-          <div src={'https://cdn.trustindex.io/loader.js?86777d674d4849784336b30abff'} className={""} />
-          {/* <div className="relative z-10 px-10 py-10">
+          {/* <Heading title={"Our Reviews"} subtitle={"Read our reviews on Trustpilot and different platforms"} titleClass={"md:text-left text-center"} subtitleClass={"md:text-left text-center mb-15"} />
+          <div src={'https://cdn.trustindex.io/loader.js?86777d674d4849784336b30abff'} className={""} /> */}
+          <div className="relative z-10 px-10 py-10">
             <Heading title={"Partners"} titleClass={"text-center text-secondary-color"} />
           </div>
           <div className="w-fit mx-auto grid gap-12 md:gap-10 md:grid-cols-2 lg:grid-cols-4">
@@ -595,7 +595,7 @@ export default async function Home() {
                 alt="PVN Nepal Logo"
               />
             </Link>
-          </div> */}
+          </div>
         </div>
       </section>  
     </main>
