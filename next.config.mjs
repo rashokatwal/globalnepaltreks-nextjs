@@ -9,6 +9,7 @@ const nextConfig = {
       },
     ];
   },
+  htmlLimitedBots: /.*/,
   images: {
     remotePatterns: [
       {
