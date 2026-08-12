@@ -18,7 +18,7 @@ const Footer = () => {
             icon: faLinkedin, url: "https://www.linkedin.com/company/global-nepal-treks-your-travel-partner-in-nepal/", label: "LinkedIn"
         },
         {
-            icon: faWhatsapp, url: "https://www.whatsapp.com", label: "WhatsApp"
+            icon: faWhatsapp, url: "https://wa.me/+9779744258519", label: "WhatsApp"
         },
         {
             icon: faWeixin, url: "https://www.wechat.com", label: "WeChat"
