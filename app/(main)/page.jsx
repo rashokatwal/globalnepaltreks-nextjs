@@ -242,8 +242,8 @@ export default async function Home() {
         </div>
 
         <div className="absolute z-10 flex flex-col items-center w-full px-5 transform -translate-x-1/2 -translate-y-1/3 md:translate-y-0 md:mx-0 md:w-fit top-1/2 left-1/2">
-          <h1 className="text-3xl font-semibold text-center text-white md:text-4xl">Beyond Travel, Into Relationships.</h1>
-          <p className="mt-4 text-center text-white text-md md:text-lg">Hospitality, Authenticity, Connection, Sustainability.</p>
+          <h1 className="text-3xl font-semibold text-center text-white md:text-4xl">Nepal's Most Trusted Trekking Agency - Since 2008</h1>
+          <p className="mt-4 text-center text-white text-md md:text-lg">Everest Base Camp · Annapurna · Upper Mustang · Expert Sherpa Guides</p>
           
           {/* Search form - server component friendly */}
           <form action="/search" method="GET" className="relative duration-200 overflow-hidden w-full my-5">
